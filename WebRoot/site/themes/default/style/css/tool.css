@@ -1,0 +1,35 @@
+@charset "utf-8";
+/* CSS Document */
+.nohighlight:focus { outline:none; }
+#header{border-bottom:1px solid #e6e6e6;}
+#main{ width:100%; background:#f9f9f9; padding-bottom:34px;}
+.main_inner{ width:1000px; margin:0 auto; padding-top:34px;}
+
+.main_l{ float:left; width:196px; background:#fff;}
+.main_l ul li a{ position:relative; display:block; line-height:56px; height:56px; text-align:center; border-bottom:1px solid #f3f3f3; color:#666; font-size:18px;}
+.sanjiao{ position:absolute; right:-9px; top:20px;}
+.main_r{ float:right; width:764px; padding:28px 0; border-bottom:1px solid #e6e6e6;border-left:1px solid #e6e6e6;border-right:1px solid #e6e6e6;border-top:1px solid #3ec226; border-radius:5px;background-color: #fff;}
+.m_t{ border-bottom:1px solid #e6e6e6;}
+.m_t p,.m_b p{ padding:0 24px;padding-bottom:28px;font-size:24px; color:#333;}
+.m_m{ padding:34px 24px ;}
+.m_b_t{ pa}
+.m_b_t li,.m_b_b li{ float:left;}
+.m_b_t{border-top:1px solid #e6e6e6;}
+.m_b_b{border-bottom:1px solid #e6e6e6;border-top:1px solid #e6e6e6;}
+.m_b_b li{ width:190px; line-height:46px; text-align:center;border-right:1px solid #e6e6e6;}
+
+.m_m ul{ width:625px; float:left;}
+.m_btn{ float:right; width:72px; padding-top:7px;}
+.m_m ul li{ float:left;}
+.item-label,.item-cont{ float:left;}
+.form-item {margin-bottom: 16px;}
+.form-item::after {clear: both; display: table; content: " ";}
+.item-label {width: 78px; text-align: right; line-height: 40px; float: left; min-height: 1em; color:#666;}
+.item-cont {text-align: left; line-height:40px; margin-left:4px; min-height: 1em;}
+.item-cont .note img {left: 0px; top: -1px; margin-right: 4px; position: relative;}
+.item-cont > label {margin-right: 20px; display: inline-block;}
+.form-item span{ line-height:40px; margin-left:8px; color:#666;}
+.txt{ border-radius:5px; border:1px solid #e6e6e6;}
+.bnt_1{ border-radius:5px; border:1px solid #3ec226; color:#3ec226;text-align:center; line-height:24px; background:#f9f9f9; margin-bottom:30px;}
+.bnt_2{ border-radius:5px; border:1px solid #3ec226; color:#3ec226;text-align:center; line-height:24px; background:#f9f9f9; margin-bottom:30px;}
+.bnt_2:hover{background:#3ec226; color:#fff;-webkit-transition: background-color .6s; -moz-transition: background-color .6s; transition: background-color .8s;}

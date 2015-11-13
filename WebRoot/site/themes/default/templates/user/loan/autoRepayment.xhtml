@@ -1,0 +1,106 @@
+<ui:composition template="../center.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pm="http://primefaces.org/mobile"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+
+
+<ui:param name="activeCenterMenuUrl" value="/user/loan/autoRepayment"></ui:param>
+	<ui:define name="center_right">
+	<link href="#{tplVars.themeStylePath}/center.css" type="text/css" rel="stylesheet" />
+	<div class="main_r">
+				<div class="m_t">
+					<ui:include src="../userCenterTop.xhtml"></ui:include>
+					<p class="zdtb_gb">
+						自动扣款功能：
+						<ui:repeat var="invest" value="#{autoRepaymentController.getFindAllwhere()}" varStatus="status">
+							<ui:fragment rendered="#{invest.utype !='Y'}">
+								<span><h:outputText value="关闭状态"></h:outputText> </span>
+							</ui:fragment>
+							<ui:fragment rendered="#{invest.utype =='Y'}">
+								<span><h:outputText value="开启状态"></h:outputText></span>
+							</ui:fragment>
+						</ui:repeat>
+					</p>
+				</div>
+				<h:form id="form">
+				<div class="zdtb">
+				<ui:repeat var="invest" value="#{autoRepaymentController.banksList}" varStatus="status">
+					<!-- 如果id不等于空则证明写过显示出来 -->
+					<ui:fragment rendered="#{invest.id !=''}">
+						<div class="zdtb_box">
+						<div class="zdtb_l">真实姓名：</div>
+						<div class="zdtb_r">
+							#{invest.user.realname}
+						</div>
+						<div class="clear"></div>
+						</div>
+						<div class="zdtb_box">
+							<div class="zdtb_l">银行名称：</div>
+							<div class="zdtb_r">
+								#{invest.bank}
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="zdtb_box">
+							<div class="zdtb_l">银行卡号：</div>
+							<div class="zdtb_r">
+					            #{invest.cardNo}
+							</div>
+						<div class="clear"></div>
+						</div>
+						<div>
+					
+						<!-- <p:commandButton value="关闭" actionListener="#{autoRepaymentController.saveorupdate('N')}" ajax="false" />	
+						<p:commandButton value="开启" actionListener="#{autoRepaymentController.saveorupdate('Y')}" ajax="false" />	 -->
+					<ui:repeat var="invest2" value="#{autoRepaymentController.getFindAllwhere()}" varStatus="status">
+						<ui:fragment rendered="#{invest2.utype !='Y'}">
+							<h:commandLink styleClass="txczje02_btn btn" value="开启扣款" action="#{autoRepaymentController.saveorupdate('Y')}">
+							</h:commandLink>
+						</ui:fragment>
+						<ui:fragment rendered="#{invest2.utype =='Y'}">
+							<h:commandLink styleClass="txczje02_btn btn" value="关闭扣款" action="#{autoRepaymentController.saveorupdate('N')}">
+							</h:commandLink>
+						</ui:fragment>
+					</ui:repeat>
+					</div>
+					</ui:fragment>
+					<!-- 如果id等于空则证明没绑定过可输入状态-->
+					<ui:fragment rendered="#{invest.id ==''}">
+						<DIV style="padding: 40px 0 0 90px;color: red;">
+							温馨提示：<br/>
+							请联系客服进行审核确认！
+						</DIV>
+						
+					</ui:fragment>
+				</ui:repeat>
+				</div>
+				<p class="zhcz_p02 zhcz_p03">
+					自动投标工具说明<br /> 
+					1、借款进入招标中#{configHome.getConfigValue('auto_invest_delay_time')}分钟后，系统开启自动投标。<br/>
+					2、投标进度达到#{configHome.getConfigValue('auto_invest_end_percent')}%时停止自动投标，
+						若剩余自动投标金额小于用户设定的每次投标金额，也会进行投标，投资金额向下取该标剩余自动投标金额。<br/>
+					3、单笔投标金额若超过该标单笔最大投资额，则向下取该标最大投资额。<br/>
+					4、投标排序规则如下：<br/>
+					&#160;&#160;&#160;&#160;a）投标序列按照开启自动投标的时间先后进行排序。<br/>
+					&#160;&#160;&#160;&#160;b）每个用户每个标仅自动投标一次，投标后，排到队尾。<br/>
+					&#160;&#160;&#160;&#160;c）轮到用户投标时没有符合用户条件的标，该用户会继续保持在最前，只到投入。<br/>
+				</p>
+			</h:form>
+		</div>
+		<div class="clear"></div>
+		
+		
+		
+	
+	
+			
+		
+     </ui:define>
+
+</ui:composition>

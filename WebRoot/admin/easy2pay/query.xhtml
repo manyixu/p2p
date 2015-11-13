@@ -1,0 +1,83 @@
+<ui:composition template="/admin/templates/ui.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:composite="http://java.sun.com/jsf/composite/primefaces"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:o="http://omnifaces.org/ui"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+    xmlns:c="http://java.sun.com/jsp/jstl/core"
+    xmlns:sec="http://www.springframework.org/security/facelets/tags">
+
+    <ui:define name="content">
+    <div class="entry">
+    	<p:toolbar>
+            <p:toolbarGroup>
+	            <h:outputLabel style="padding-left: 15px;" value="#{commonMsg.currentPositionLabel}汇付查询"></h:outputLabel>
+            </p:toolbarGroup>
+        </p:toolbar>
+        <h:form id="form">
+        	<p:spacer></p:spacer> 
+        	
+			<p:panel id="filters1">
+				<span style="color:red;margin-right:10px;">账户查询</span>
+                  <h:inputText value="#{queryHome.userId}" id="userId1"></h:inputText>
+                  <span style="color:red;margin-right:10px;">账户类型--1：融资人，2：商户，3：投资人</span>
+                  
+                  <h:inputText value="#{queryHome.userType}" id="userType"></h:inputText>
+                  <p:commandButton update="result1" process="filters1"  value="#{commonMsg.searchLabel}" ajax="true" action="#{queryHome.userQuery()}"></p:commandButton>
+               <p:watermark for="userId1" value="用户名" /> 
+			</p:panel>
+            <p:spacer></p:spacer> 
+        	<h:panelGroup id="result1">
+        	<h:outputText value="#{queryHome.result}" escape="false"></h:outputText>
+        	</h:panelGroup>
+        	
+			<p:panel id="filters2">
+				<span style="color:red;margin-right:10px;">充值查询</span>
+				<h:inputText value="#{queryHome.rechargeId}" id="rechargeId"></h:inputText>
+                <p:commandButton update="result2" process="filters2"  value="#{commonMsg.searchLabel}" ajax="true" action="#{queryHome.rechargeQuery()}"></p:commandButton>
+                <p:watermark for="rechargeId" value="充值编号" /> 
+			</p:panel>
+            <p:spacer></p:spacer> 
+        	<h:panelGroup id="result2">
+        		<h:outputText value="#{queryHome.result}" escape="false"></h:outputText>
+        	</h:panelGroup>
+        	
+			<p:panel id="filters3">
+				<span style="color:red;margin-right:10px;">提现查询</span>
+                  <h:inputText value="#{queryHome.withdrawId}" id="money3"></h:inputText>
+                <p:commandButton update="result3" process="filters3"  value="#{commonMsg.searchLabel}" ajax="true" action="#{queryHome.withdrawQuery()}"></p:commandButton>
+                <p:watermark for="money3" value="提现编号" />  
+			</p:panel>
+            <p:spacer></p:spacer> 
+        	<h:panelGroup id="result3">
+        		<h:outputText value="#{queryHome.result}" escape="false"></h:outputText>
+        	</h:panelGroup>
+        	
+			<p:panel id="filters4">
+				<span style="color:red;margin-right:10px;">投资查询</span>
+				<h:inputText value="#{queryHome.investId}" id="investId"></h:inputText>
+                <p:commandButton update="result4" process="filters4"  value="#{commonMsg.searchLabel}" ajax="true" action="#{queryHome.investQuery()}"></p:commandButton>
+                <p:watermark for="investId" value="投资编号" />  
+			</p:panel>
+            <p:spacer></p:spacer> 
+        	<h:panelGroup id="result4">
+        		<h:outputText value="#{queryHome.result}" escape="false"></h:outputText>
+        	</h:panelGroup>
+        	
+        	<p:panel id="filters5">
+				<span style="color:red;margin-right:10px;">分账查询</span>
+				<h:inputText value="#{queryHome.productid}" id="productid"></h:inputText>
+                <p:commandButton update="result5" process="filters5"  value="#{commonMsg.searchLabel}" ajax="true" action="#{queryHome.RRQuery()}"></p:commandButton>
+                <p:watermark for="productid" value="项目ID，如果是债权则填写债权转让编号" />  
+			</p:panel>
+            <p:spacer></p:spacer> 
+        	<h:panelGroup id="result5">
+        		<h:outputText value="#{queryHome.result}" escape="false"></h:outputText>
+        	</h:panelGroup>
+		</h:form>
+	</div>
+    </ui:define>
+</ui:composition>

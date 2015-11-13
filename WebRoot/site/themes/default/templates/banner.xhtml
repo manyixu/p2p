@@ -1,0 +1,35 @@
+<ui:component xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:sec="http://www.springframework.org/security/facelets/tags">
+
+<!--  -->
+	<ui:param name="allinvestsmoney" value="#{investStatistics.getAllInvestsMoney()}"></ui:param>
+	<ui:param name="usercount" value="#{userStatistics.getUserCount()}"></ui:param>
+  <!--  -->
+    <div id="full-screen-slider">
+    	<!-- <div class="full_inner">
+        	<div class="land">
+              <div class="land_p01"><span>35</span>倍<br/>活期存款收益</div>
+              <div class="land_p02">
+                成功投资 <font style="color:red" >#{allinvestsmoney}</font>元<br/>注册全利会员  <font style="color:red">#{usercount}</font>人
+              </div>
+              <ui:fragment rendered="#{empty loginUserInfo.loginUserId}">
+	              <input type="button" value="注册成为会员" class="btn04" onclick="window.location.href='#{path}/register'" />
+	              <div class="land_p03">已有账号？<a href="#{path}/memberLogin"> 立即登录</a></div>
+        	 </ui:fragment>
+              
+        	</div>
+        </div> --> 
+        <ul id="slides">
+        	
+          	 <ui:repeat var="pic" value="#{bannerList.getBannerById('index').pictures}" varStatus="i">
+				<a href="#{path}#{pic.url}" target="_blank"><li style="background: url('#{path}#{pic.picture}') no-repeat center top" ></li></a>
+			</ui:repeat> 
+        </ul>
+    </div> 
+  
+</ui:component>

@@ -1,0 +1,40 @@
+@charset "utf-8";
+/* CSS Document */
+.btn{width:130px; height:35px; line-height:35px; background:#1c8c02; font-size:16px; color:#fff; text-align:center; border:0; cursor:pointer; float:right; font-family:"微软雅黑"; margin-top:50px;}
+.tab{line-height:70px; color:#6f6f6f; font-size:16px; background:#fff; margin:0 auto;}
+.tab a{color:#3e3e3e;}
+.tab a:hover{color:#008cd6;}
+.tab tr:hover{ background:#fafbfb;}
+.btn02{float:none; margin:0; width:90px; height:35px; line-height:35px; }
+.tab_span01{font-size:14px; background:#1c8c02; padding:2px 5px; border-radius:4px; margin-right:5px; color:#fff;}
+.tab td{border-bottom:1px solid #d2d2d2;}
+.tab .tab_tr td,.tab .last td{border:0;}
+.tab .tab_tr:hover{background:none;}
+.percentBox{ width:40px; height:40px; position:relative;}
+.pertxt{width:53px;height:53px;line-height:53px;position:absolute;margin-top:-51px;text-align:center;color:#3e3e3e;font-size:12px;font-family:Arial;}
+.tab_span02{background:#008cd6;}
+.btn03{background:#a7a7a7; cursor:text;}
+.btn03:hover{background:#a7a7a7;}
+.tab_tr02{line-height:30px;}
+.tab em{font-style:normal; font-size:20px;}
+.tab b{font-style:normal; font-size:14px; font-weight:normal;}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

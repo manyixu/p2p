@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui"
+	xmlns:archer="http://java.sun.com/jsf/archer"
+	xmlns:sec="http://www.springframework.org/security/facelets/tags">
+
+<ui:param name="path" value="#{request.contextPath}"></ui:param>
+<f:view contentType="text/html">
+	<h:head>
+		<f:facet name="first">
+			<meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+			<meta name="renderer" content="webkit" />
+			<title>#{siteVars.siteName}</title>
+		</f:facet>
+		<ui:fragment
+			rendered="#{configHome.getConfigValue('enable_mobile_site') eq '1'}">
+			<script type="text/javascript" charset="utf-8">
+			//<![CDATA[
+			//手机浏览无法访问，暂时去掉Zhangwq20150818
+			/* if (!!navigator.userAgent.match(/Mobile/)) {
+				
+				location.href = "#{path}/memberLoginMobile";
+			} */
+			//]]>
+			</script>
+		</ui:fragment>
+		<h:outputScript library="primefaces" name="jquery/jquery.js" target="head" />
+		<script type="text/javascript" src="#{tplVars.themeJSPath}/jquery.artDialog.js?skin=idialog"></script>
+		<script type="text/javascript" src="#{tplVars.themeJSPath}/jquery.SuperSlide.2.1.1.js"></script>
+		<script type="text/javascript" src="#{tplVars.themeJSPath}/common.js"></script>
+		<script type="text/javascript" src="#{tplVars.themeJSPath}/Base64.js"></script>
+		<link href="#{tplVars.themeStylePath}/css/login.css" rel="stylesheet"
+			type="text/css" />
+		<link href="#{tplVars.themeStylePath}/css/base.css" rel="stylesheet"
+			type="text/css" />
+		<script type="text/javascript"
+			src="#{tplVars.themeJSPath}/jquery-1.8.0.min.js"></script>
+		<script type="text/javascript"
+			src="#{tplVars.themeJSPath}/jQuery.hhShare.min.js"></script>
+		<script type="text/javascript"
+			src="#{tplVars.themeJSPath}/common_1.js"></script>
+		<script type="text/javascript">
+		/**
+		用户名密码Base64加密后台MyAuthenticationManager解密
+	*/
+		$(function(){
+			$("#butt").click(function(){
+				var name=$("#username").val();
+				if(name==""){
+					return ;
+				}
+				var nameB64=base64encode(utf16to8(name));
+				$("#j_username").val(nameB64);
+				//alert(nameB64);
+				var pass=$("#password").val();
+				if(pass==""){
+					return ;
+				}
+				var passB64=base64encode(utf16to8(pass));
+				$("#j_password").val(passB64);
+				//alert(passB64);
+				$("#form").submit();
+			});
+		});
+	</script>
+		
+	</h:head>
+	<h:body style="position:relative;">
+		<ui:include src="header.xhtml"></ui:include>
+
+
+
+
+		<archer:archerMessages focus="false" showGlobalMessages="true" severity="0,2"></archer:archerMessages>
+		<div id="main">
+			<div class="main_inner">
+				<div class="main_con">
+					<div class="main_l">
+						<img src="#{tplVars.themeImagePath}/login_010.png" />
+					</div>
+					<div class="main_r">
+						<form action="#{request.contextPath}/memberLogin" accept-charset="UTF-8" method="post" id="form" class="login-form clearfix dljm">
+							<ui:fragment rendered="#{not empty request.getParameter('spring-security-redirect')}">
+								<input type="hidden" name="spring-security-redirect" value="#{request.getParameter('spring-security-redirect')}"></input>
+							</ui:fragment>
+							<h:inputText id="j_username" style="display:none" />
+							<h:inputText id="j_password" style="display:none" />
+							<h:inputText id="encrypt" value="encrypt" style="display:none" />
+							<div class="form-arrow"></div>
+							<div class="tang-pass-login">
+								<div class="pass-form-item pass-form-item-userName">
+									<label for="" class="pass-label pass-label-userName"></label>
+									<h:inputText id="username" type="text" class="pass-text-input pass-text-input-userName" maxlength="16" />
+									<p:watermark value="请输入用户名/手机号" for="username"></p:watermark>
+									<span class="pass-clearbtn pass-clearbtn-userName" style="display:none;"></span>
+								</div>
+								<div class="pass-form-item pass-form-item-password">
+										<label for="" class="pass-label pass-label-password"></label>
+										<h:inputSecret id="password" type="text" class="pass-text-input  pass-text-input-password" maxlength="16" />
+										<p:watermark value="请输入密码" for="password"></p:watermark>
+										<span class="pass-clearbtn pass-clearbtn-password" style="display:none;"></span>
+								</div>
+									<ui:fragment
+										rendered="#{sessionScope.need_validate_code or configHome.getConfigValue('login_fail_max_times') eq '0'}">
+										<div class="pass-form-item pass-form-item-ma" style="position:relative;">
+											<div class="pass_rr" style="width:266px;">
+												<h:inputText id="captcha_input" maxlength="4" styleClass="pass-text-input pass-text-input-ma"></h:inputText>
+												<p:watermark value="请输入验证码" for="captcha_input"></p:watermark>
+											</div>
+											<div class="huo" >
+												<a class="login_yzm" href="javascript:void(0)">
+													<img alt="点击刷新" id="verifyCode" src="#{request.contextPath}/verifyCodeServlet" onclick="this.src='#{request.contextPath}/verifyCodeServlet?'+new Date().getTime()" />
+												</a>
+											  </div>
+											<div class="clear"></div>
+											
+										</div>
+									</ui:fragment>
+									<div class="fuwu">
+										<div class="gou"></div>
+											<p class="jizhu">
+												<input name="_spring_security_remember_me" type="checkbox" />下次自动登录
+											</p>
+											<p class="forget">
+												<a href="#{request.contextPath}/find_login-password">忘记密码？</a>
+											</p>
+										<div class="clear"></div>
+									</div>
+				                    <p class="pass-form-item pass-form-item-btn">
+				                        <input  type="submit" class="primary" value="登录" style="width:348px; height:36px;  cursor:pointer" id="butt"/>     
+				                    </p>
+				                    
+				                    
+							</div>
+							<p style=" text-align:center; padding-top:30px; color:#666;">没有账号？|&nbsp;<a href="#{request.contextPath}/register" style="color:#3ec226">免费注册</a></p>
+					
+						</form>
+						</div>
+					<div class="clear"></div>
+				</div>
+			</div>
+		</div>
+
+
+
+
+
+
+		<ui:fragment
+			rendered="#{not empty requestScope['SPRING_SECURITY_LAST_EXCEPTION'] and requestScope['SPRING_SECURITY_LAST_EXCEPTION'].message ne 'Authentication method not supported: GET'}">
+			<script>
+				$.dialog.tips('#{requestScope['SPRING_SECURITY_LAST_EXCEPTION'].message}', 2);
+			</script>
+		</ui:fragment>
+		<ui:include src="footer.xhtml"></ui:include>
+	</h:body>
+</f:view>
+</html>

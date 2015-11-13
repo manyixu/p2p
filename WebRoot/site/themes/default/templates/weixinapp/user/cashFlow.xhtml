@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pm="http://primefaces.org/mobile"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:o="http://omnifaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:archer="http://java.sun.com/jsf/archer"
+	xmlns:sec="http://www.springframework.org/security/facelets/tags">
+	<h:head>
+	<title>交易记录</title>
+	<meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no"/>
+	<meta name="apple-touch-fullscreen" content="yes"/> <!--  一会试验下是否有必要存在 -->
+	<meta name="apple-mobile-web-app-capable" content="yes"/>
+	<meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+	<meta name="format-detection" content="telephone=no"/>
+	<meta http-equiv="x-rim-auto-match" content="none"/>
+	<link href="#{tplVars.themeStylePath}/weixincss/down.css" rel="stylesheet" type="text/css"/>
+    <link href="#{tplVars.themeStylePath}/weixincss/mobilebase.css" rel="stylesheet"/>
+    <script type="text/javascript" src="#{tplVars.themeJSPath}/weixinjs/jquery-1.8.0.min.js"></script>
+	<script type="text/javascript" src="#{tplVars.themeJSPath}/weixinjs/base.js"></script>
+    </h:head>
+    <h:body style="background:#f2f2f2;">
+    	<div class="warp_2">
+	<div class="spe"></div>
+	<div class="top">
+	
+    	<div class="top_inner">
+    		<p style="color:#fff;padding:3% 3%; ;background:#62ba50; border-radius:4px 4px 0 0;">交易记录</p> 
+    		<ui:fragment rendered="#{userBillList.lazyModelDataNoPage == '[]'}">
+    			<p style="color:#999;padding:3% 3%;text-align:center; background: #fff; ">没有记录</p>
+    		</ui:fragment>
+			<f:event type="preRenderComponent" listener="#{userBillList.example.user.setId(loginUserInfo.loginUserId)}"></f:event>
+			<f:event type="preRenderComponent" listener="#{userBillList.addOrder('userBill.seqNum','desc')}"></f:event>
+            <div class="down_bt"  style="padding-bottom:20%;">
+            <ui:repeat var="ib" value="#{userBillList.lazyModelDataNoPage}" varStatus="status">
+            <div class="xiangqing">
+            	
+            	<div class="xiang_t">
+                    <p style="color:#58b85f">
+                    #{dictUtil.getValue('bill_operator',ib.typeInfo)}        
+                    <h:outputText
+									value="#{ib.time}">
+									<f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss"
+										timeZone="GMT+8" locale="zh_CN" />
+								</h:outputText>
+                    </p>  
+                    <p class="toggle xiangmu js_btn_chakan" style="float:right; padding-right:3%; color:#afafaf">查看</p>
+                    <div class="clear"></div>
+                </div>
+                <div class="inf xiang_con js_zhankai">
+                    <div class="inf_l_jilu">
+                    	<ul>
+                        	<li>时            间：<span class="star">
+                        		<h:outputText
+									value="#{ib.time}">
+									<f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss"
+										timeZone="GMT+8" locale="zh_CN" />
+								</h:outputText>
+                        	</span></li>
+                            <li>类型|明细：<span>#{dictUtil.getValue('bill_operator',ib.typeInfo)}</span></li>
+                            <li>金           额：<span class="end">
+                            	<ui:fragment
+									rendered="#{ib.type=='ti_balance'}">
+									<span class="tab_blue">+<h:outputText
+											value="#{ib.money}">
+											<f:convertNumber maxFractionDigits="2" />
+										</h:outputText>元
+									</span>
+								</ui:fragment> <ui:fragment
+									rendered="#{ib.type=='to_balance' or ib.type=='to_frozen'}">
+									<span class="tab_red">-<h:outputText value="#{ib.money}">
+											<f:convertNumber maxFractionDigits="2" />
+										</h:outputText>元
+									</span>
+								</ui:fragment> <ui:fragment
+									rendered="#{ib.type=='unfreeze' or ib.type=='freeze'}">
+									<span><h:outputText value="#{ib.money}">
+											<f:convertNumber maxFractionDigits="2" />
+										</h:outputText>元 </span>
+								</ui:fragment>
+                            </span></li>
+                            <li>可用余额：<span>
+                            	<h:outputText
+									value="#{ib.balance}">
+									<f:convertNumber type="currency" currencySymbol="￥"
+										maxFractionDigits="2" />
+								</h:outputText>
+                            </span></li>
+                            <li>冻结金额：<span>
+                            	<h:outputText
+									value="#{ib.frozenMoney}">
+									<f:convertNumber type="currency" currencySymbol="￥"
+										maxFractionDigits="2" />
+								</h:outputText>
+                            </span></li>
+                            <li>备         注 : <span>#{ib.detail}</span></li>
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+            </ui:repeat>
+            </div>
+            
+    </div>
+ </div>  
+</div>
+<ui:include src="../bottom.xhtml"></ui:include>
+    </h:body>
+</html>

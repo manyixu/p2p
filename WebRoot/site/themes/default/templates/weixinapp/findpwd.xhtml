@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pm="http://primefaces.org/mobile"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:o="http://omnifaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:archer="http://java.sun.com/jsf/archer"
+	xmlns:sec="http://www.springframework.org/security/facelets/tags">
+	<h:head>
+	<title>找回密码</title>
+	<meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no"/>
+	<meta name="apple-touch-fullscreen" content="yes"/> <!--  一会试验下是否有必要存在 -->
+	<meta name="apple-mobile-web-app-capable" content="yes"/>
+	<meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+	<meta name="format-detection" content="telephone=no"/>
+	<meta http-equiv="x-rim-auto-match" content="none"/>
+	<link href="#{tplVars.themeStylePath}/weixincss/zhanghao.css" rel="stylesheet" type="text/css"/>
+    <link href="#{tplVars.themeStylePath}/weixincss/shiming.css" rel="stylesheet" type="text/css"/>
+	<link href="#{tplVars.themeStylePath}/weixincss/pay.css" rel="stylesheet" type="text/css"/>
+    <link href="#{tplVars.themeStylePath}/weixincss/mobilebase.css" rel="stylesheet"/>
+    <h:outputScript library="primefaces" name="jquery/jquery.js" target="head" />
+	<script type="text/javascript" src="#{tplVars.themeJSPath}/jquery.artDialog.js?skin=idialog"></script>
+	<script type="text/javascript" src="#{tplVars.themeJSPath}/jquery.SuperSlide.2.1.1.js"></script>
+	<script type="text/javascript" src="#{tplVars.themeJSPath}/common.js"></script>
+	<script type="text/javascript" src="#{tplVars.themeJSPath}/timer.js"></script>
+    </h:head>
+    <h:body>
+    <div class="main">
+    	<div class="main_inner">
+    	<div class="btn_t shi">
+    			<a href="#{path}/weixinapp/findpwdemail" class="login_btn">通过邮箱找回</a>
+          	</div>
+          	<div class="btn_t shi">
+          		<a href="#{path}/weixinapp/findpwdphone" class="login_btn">通过手机找回</a>
+          	</div>
+             <div class="bb">
+                <p style=" padding:4% 0;"><img src="#{tplVars.themeImagePath}/weixinappimages/register_4_14.png" width="100%"/></p>
+                <div class="clear"></div>
+            </div>
+            <div class="r_btn_b" style=" padding-bottom:4%;">
+            	<p>已有账号?    <a href="#{path}/weixinapp/loginweixin">立即登录</a></p>
+            </div>
+        </div>
+    </div>
+    <ui:include src="bottomnologin.xhtml"></ui:include>
+    </h:body>
+</html>

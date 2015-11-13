@@ -1,0 +1,343 @@
+﻿<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	template="page.xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:archer="http://java.sun.com/jsf/archer"
+	xmlns:pm="http://primefaces.org/mobile"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:sec="http://www.springframework.org/security/facelets/tags"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:o="http://omnifaces.org/ui"
+	xmlns:of="http://omnifaces.org/functions">
+
+	<ui:param name="keywords" value="全利网|全利网理财|p2p短期理财|p2p投资理财|p2p理财网"></ui:param>
+	<ui:param name="description" value="全利网互联网金融领域领先的P2P理财网,专注个人短期小额借贷，为p2p网上理财用户提供全利网理财业务.有着科学严格的风险管理、自控优质债权、运营健康无坏账、为广大投资用户实现高收益低风险理财而服务。"></ui:param>
+	
+	<ui:define name="content">
+<script type="text/javascript" src="#{tplVars.themeJSPath}/common_0.js"></script>
+			<link href="#{tplVars.themeStylePath}/css/index.css" rel="stylesheet" type="text/css"/>
+	<script type="text/javascript">
+		//<![CDATA[
+		
+		//]]>
+	</script>
+	
+<!--轮播图开始 -->
+	<div id="banner">
+		<ui:include src="banner.xhtml"></ui:include>
+	</div>
+<!--轮播图结束 -->
+	<div id="space"></div>
+<!--公告开始 -->
+	<div id="new">
+    	<div class="new_inner">
+        		<p class="new_l"><span></span>最新公告:</p>
+            <ul class="new_m">
+                <ui:repeat var="node" value="#{nodeList.getNodes('hdgg',5).data}">
+					<li><a href="#{path}/node/hdgg/#{node.id}" target="_blank"><span class="con_l">#{stringHome.ellipsis(node.title,14)}</span>
+					<span class="con_r"><h:outputText value="#{node.createTime}">
+										<f:convertDateTime pattern="yyyy-MM-dd" locale="cn"
+											timeZone="GMT+8"></f:convertDateTime>
+									</h:outputText></span></a></li>
+            	</ui:repeat>
+            </ul>
+            <p class="new_r"><a href="#{path}/term/hdgg" >更多</a></p>
+            <div class="clear"></div>
+        </div>
+    </div>                                                                                                                                                          
+<!--公告结束 -->
+<!--特点开始 -->
+	<div id="special">
+    	<div class="special_inner">
+        	<ul>
+            	<li>
+                	<div class="spec_pic"><img src="#{tplVars.themeImagePath}/img/index_1_15.png"/></div>
+                   	<div class="spec_r">
+                    	<p style="color:#333">本息保障</p>
+                        <p style="color:#c1c1c1;width:130px;margin:auto;">平台保障金先行垫付自控优质债权</p>
+                    </div>
+                    <div class="clear"></div>
+                </li>
+                <li>
+                	<div class="spec_pic bg_1">
+                    	<div><img src="#{tplVars.themeImagePath}/img/quan_06.png"/></div>
+                     </div>
+                   	<div class="spec_r">
+                    	<p style="color:#333">资金托管</p>
+                        <p style="color:#c1c1c1;width:130px;margin:auto;">第三方托管易宝支付第三方律师合作</p>
+                    </div>
+                    <div class="clear"></div>
+                </li>
+                <li>
+                	<div class="spec_pic"><img src="#{tplVars.themeImagePath}/img/index_3_15.png"/></div>
+                   	<div class="spec_r">
+                    	<p style="color:#333">绿色金融</p>
+                        <p style="color:#c1c1c1;width:120px;margin:auto;">个人短期小额信贷扶小微助三农</p>
+                    </div>
+                    <div class="clear"></div>
+                </li>
+                <li  class="li">
+                	<div class="spec_pic bg_2"><img src="#{tplVars.themeImagePath}/img/li_1_12.png"/></div>
+                   	<div class="spec_r">
+                    	<p style="color:#333;">安全有利</p>
+                        <p style="color:#c1c1c1;width:120px;margin:auto;">周期短收益高年化利率高</p>
+                    </div>
+                    <div class="clear"></div>
+                </li>
+                <div class="clear"></div>
+            </ul>
+        </div>
+    </div>
+<!--特点结束 -->
+
+<!--新手开始 -->
+	<div id="main">
+    	<div class="main_inner">
+    	<!-- <p style="font-size:24px; margin-bottom:34px;">新手专项</p> -->
+        	<div class="new_share">
+            	<div class="share"><img src="#{tplVars.themeImagePath}/img/index_5_02.png"/></div>
+                <div class="line"><img src="#{tplVars.themeImagePath}/img/index_20_03.png"/></div>
+                <div class="list_con">
+                	<div class="list_con_l" style="*width:664px;">
+                <ui:param name="restriction"
+					value="#{'(loan.status=\''}#{LoanStatus.RAISING}#{'\' or loan.status=\''}#{LoanStatus.COMPLETE}#{''}#{'\' or loan.status=\''}#{LoanStatus.RECHECK}#{'\' or loan.status=\''}#{LoanStatus.REPAYING}#{'\')'}"></ui:param>
+				<f:event type="preRenderComponent" listener="#{loanList3.addRestriction(restriction)}"></f:event>
+				<f:event type="preRenderComponent" listener="#{loanList3.addRestriction(' attr.id = \'freshman\'')}"></f:event>
+				<f:event type="preRenderComponent" listener="#{loanList3.setPageSize(1)}"></f:event>
+				<ui:param name="orderColumn" value="#{'(case loan.status when \''}#{LoanStatus.RAISING}#{'\' then 1 when \''}#{LoanStatus.RECHECK}#{'\' then 2 when \''}#{LoanStatus.REPAYING}#{'\' then 3 else 4 end)'}"></ui:param>
+				<f:event type="preRenderComponent" listener="#{loanList3.addOrder(orderColumn, 'asc')}"></f:event>
+				<f:event type="preRenderComponent" listener="#{loanList3.addOrder('loan.seqNum','desc')}"></f:event>
+				<f:event type="preRenderComponent" listener="#{loanList3.addOrder('loan.commitTime','desc')}"></f:event>
+                <ui:repeat var="loan" value="#{loanList3.lazyModelData}">
+                <ui:param name="cr" value="#{loanCalculator.calculateRaiseCompletedRate(loan.id)}"></ui:param>
+                <ui:param name="moneyNeedRaised" value="#{loanCalculator.calculateMoneyNeedRaised(loan.id)}"></ui:param>
+                
+                
+                    	<ul class="l_t">
+                        	<li style="margin-left:10px;margin-right:110px;">金额</li>
+                            <li style="margin-right:58px;">年利率</li>
+                            <li style="margin-right:70px;">期限</li>
+                            <li style="margin-right:165px;">投标进度</li>
+                            <li class="much">状态</li>
+                            <div class="clear"></div>
+                        </ul>
+  						<ul class="l_b">
+                        	<li class="number_1"><span><h:outputText value="#{loan.loanMoney}">
+					                      <f:convertNumber type="number" />
+					                    </h:outputText></span>&#160;元</li>
+                            <li class="number_2"><span><h:outputText value="#{loan.ratePercent}">
+					                      <f:convertNumber minFractionDigits="2" />
+					                    </h:outputText></span>&#160;%</li>
+                            <li class="number_3"><span><span>#{loan.deadline*loan.type.repayTimePeriod}</span></span>&#160;#{dictUtil.getValue('repay_unit',loan.type.repayTimeUnit)}</li>
+                            <li class="number_5">
+                                <div class="progressbar" data-perc="#{cr}">
+                                    <div class="bar color2"  style=" float:left;"><span></span></div>
+                                    <div class="label"  style=" float:left;"></div>
+                                    <div class="clear"></div>
+                                </div>
+                            </li>
+                            <li class="number_4">
+                            	<a href="#{path}/invest-calculator" class="jisuanqi"></a>
+				 				<ui:fragment rendered="#{loan.status ==LoanStatus.RAISING}">
+										<a href="javascript:void(0);" onclick="window.location.href='#{path}/loan/#{loan.id}'" class="bnt_6 bnt">立即投资</a>
+								</ui:fragment> 
+								<ui:fragment rendered="#{loan.status ==LoanStatus.RECHECK}">
+									<a href="javascript:void(0);" onclick="window.location.href='#{path}/loan/#{loan.id}'" class="bnt_6 bnt2">已满额</a>
+								</ui:fragment>
+								<ui:fragment rendered="#{loan.status ==LoanStatus.REPAYING}">
+									<a href="javascript:void(0);" onclick="window.location.href='#{path}/loan/#{loan.id}'" class="bnt_6 bnt">还款中</a>
+								</ui:fragment>
+								<ui:fragment rendered="#{loan.status ==LoanStatus.COMPLETE}">
+									<a href="javascript:void(0);" onclick="window.location.href='#{path}/loan/#{loan.id}'" class="bnt_6 bnt">已完成</a>
+								</ui:fragment>                              
+                               <div class="clear"></div>
+                            </li>
+                            <div class="clear"></div>
+                        </ul>               
+        </ui:repeat>
+        
+                    
+                       
+                    
+                    </div>
+                    <div class="list_con_r">
+                    	<ul>
+                        	<li><a>参与条件：首次投资用户</a></li>
+                            <li><a>还款方式：到期一次性还本付息</a></li>
+                        </ul>
+                        <a href="#{path}/node/xinshouguanzhu/xszj001" class="bnt_2 bnt5">点击查看新手入门攻略</a>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+            </div>
+<!--新手结束 -->
+<!--项目开始 -->
+            <div class="project">
+            	<div class="pro_top">
+                	<p style="font-size:20px; margin-bottom:34px; float:left;font-weight: bold;">项目专项</p>
+                    <p style="float:right;"><a href="#{path}/p2p_loan-list" class="bnt_5 ">更多</a></p>	
+                    <div class="clear"></div>
+                </div>
+                <div class="project_con">
+               		<table width="1000" border="1" bordercolor="black" cellspacing="0" >
+                    	<tr class="tr_1">                
+                        	<td class="td_1">借款标题</td>
+                            <td class="td_2">年利率</td>
+                            <td class="td_3">金额</td>
+                            <td class="td_4">期限</td>
+                            <td class="td_5">还款方式</td>
+                            <td class="td_6" style="padding-left:30px;">进度</td>
+                            <td class="td_7" style="padding-left:20px;">状态</td>
+                      	</tr>
+
+					  		<ui:param name="restriction"
+										value="#{'(loan.status=\''}#{LoanStatus.RAISING}#{'\' or loan.status=\''}#{LoanStatus.COMPLETE}#{''}#{'\' or loan.status=\''}#{LoanStatus.RECHECK}#{'\' or loan.status=\''}#{LoanStatus.REPAYING}#{'\')'}"></ui:param>
+							<f:event type="preRenderComponent"
+								listener="#{loanList.addRestriction(restriction)}"></f:event>
+							<f:event type="preRenderComponent"
+								listener="#{loanList.setPageSize(5)}"></f:event>
+							<f:event type="preRenderComponent"
+									listener="#{loanList.addRestriction('attr = \'index\'')}"></f:event>
+							<ui:param name="orderColumn" value="#{'(case loan.status when \''}#{LoanStatus.RAISING}#{'\' then 1 when \''}#{LoanStatus.RECHECK}#{'\' then 2 when \''}#{LoanStatus.REPAYING}#{'\' then 3 else 4 end)'}"></ui:param>
+							<f:event type="preRenderComponent" listener="#{loanList.addOrder(orderColumn, 'asc')}"></f:event>
+							<f:event type="preRenderComponent" listener="#{loanList.addOrder('loan.seqNum','desc')}"></f:event>
+							<f:event type="preRenderComponent" listener="#{loanList.addOrder('loan.commitTime','desc')}"></f:event>
+					              
+							<ui:repeat var="loan" value="#{loanList.lazyModelData}">
+							<ui:param name="cr" value="#{loanCalculator.calculateRaiseCompletedRate(loan.id)}"></ui:param>
+								<tr class="tr_2">
+									<td class="td_1"><a href="#{path}/loan/#{loan.id}">#{loan.name}</a></td>
+									<td class="td_2">
+									<span>
+									<h:outputText value="#{loan.ratePercent}">
+					                      <f:convertNumber minFractionDigits="2" />
+					                    </h:outputText>%</span></td>
+									<td class="td_3"><span><h:outputText value="#{loan.loanMoney}">
+					                      <f:convertNumber type="number" />
+					                    </h:outputText></span>元</td>
+									<td class="td_4"><span>#{loan.deadline*loan.type.repayTimePeriod}</span>#{dictUtil.getValue('repay_unit',loan.type.repayTimeUnit)}</td>
+					       			<td class="td_5"><span>#{dictUtil.getValue('repay_type',loan.type.repayType)}</span></td>
+									<td class="td_6">
+										<div class="progressbar" data-perc="#{cr}">
+	                                    <div class="bar color2"  style=" float:left;"><span></span></div>
+	                                    <div class="label"  style=" float:left;"></div>
+	                                    <div class="clear"></div>
+                                		</div>
+									
+									</td>
+									<td class="td_7">
+									<div class="zhuangtai">   
+					                    <ui:fragment rendered="#{loan.status ==LoanStatus.RAISING}">
+											<a href="#{path}/loan/#{loan.id}"  class="bnt_3 bnt">立即投资</a>
+											<a href="#{path}/invest-calculator" class="jisuanqi_1"></a>
+						                    <div class="clear"></div>
+										</ui:fragment> 
+										<ui:fragment rendered="#{loan.status !=LoanStatus.RAISING}">
+											<ui:fragment rendered="#{loan.status ==LoanStatus.RECHECK}">
+												<a href="javascript:void(0);" onclick="window.location.href='#{path}/loan/#{loan.id}'" class="bnt_3 bnt2">已满额</a>
+											</ui:fragment>
+											<ui:fragment rendered="#{loan.status !=LoanStatus.RECHECK}">
+												<a href="javascript:void(0);" onclick="window.location.href='#{path}/loan/#{loan.id}'" class="bnt_4 bnt2">#{dictUtil.getValue('loan',loan.status)}</a>
+											</ui:fragment>
+										     <a href="#{path}/invest-calculator" class="jisuanqi_1"></a>
+					                        <div class="clear"></div>
+										</ui:fragment>	
+					                </div>
+										</td>
+								</tr>
+								
+								</ui:repeat>                      
+              			 </table>
+                         <p><a href="#{path}/p2p_loan-list"><span class="span1">查看更多项目</span><span class="span2">（共45个项目）</span></a></p>
+                    </div>
+    			</div>
+<!--项目结束 -->
+<!--媒体动态开始 -->
+				<div class="news">
+<!--媒体报道开始 -->
+                	<div class="media">
+                    	<div class="pro_top medis_t">
+                            <p style="font-size:20px;float:left;font-weight: bold;">媒体报道</p>
+                            <p style="float:right;"><a href="#{path}/term/meitibaodao" class="bnt_7">更多</a></p>	
+                            <div class="clear"></div>
+                		</div>
+                		 <ui:param name="pageModel" value="#{nodeList.getNodes('meitibaodao',2)}"></ui:param>
+                        <div class="medis_b">
+                        	<div class="medis_b_l">
+                            	<ul>
+                            		<ui:repeat var="node" value="#{pageModel.data}">
+                                	<li style=" padding-bottom:34px;">
+                                    	<div class="picture"><img src="#{path}#{node.thumb}"/></div>
+                                        <div class="describe">
+                                        	<p class="tit" style="width:208px; overflow:hidden;"><a href="#{path}/node/meitibaodao/#{node.id}">#{stringHome.ellipsis(node.title,10)}</a></p>
+                                            <p class="content">"#{stringHome.ellipsis(node.description,18)}</p>
+                                        </div>
+                                        <div class="clear"></div>
+                                    </li>
+           							</ui:repeat>
+                               </ul>
+                            </div>
+                            <div class="medis_b_r">
+                            	<ul>
+                                	<li style=" margin-right:20px; margin-bottom:7px;"><a href="http://finance.china.com/fin/lc/201508/25/3136018.html" target="_blank"><img src="#{tplVars.themeImagePath}/img/china.png"/></a></li>
+                                	<li><a href="http://finance.huanqiu.com/zl/2015-09/7400363.html" target="_blank"><img src="#{tplVars.themeImagePath}/img/huanqiu.png"/></a></li>
+                                    <li style=" margin-right:20px;margin-bottom:7px;"><a href="http://gx.people.com.cn/n/2015/0901/c348117-26206199.html" target="_blank"><img src="#{tplVars.themeImagePath}/img/index_9.png"/></a></li>
+                                    <li><a href="http://money.163.com/15/0915/09/B3HVNFO800253B0H.html" target="_blank"><img src="#{tplVars.themeImagePath}/img/wangyi.png"/></a></li>
+                                    <li style=" margin-right:20px; margin-bottom:7px;"><a href="http://www.3news.cn/html/2015/guandian_0923/159805.html" target="_blank"><img src="#{tplVars.themeImagePath}/img/caijing.png"/></a></li>
+                                    <li><a href="http://mt.sohu.com/20150915/n421141529.shtml" target="_blank"><img src="#{tplVars.themeImagePath}/img/souhu.png"/></a></li>
+                                    <div class="clear"></div>
+                                </ul>
+                            </div>
+                            <div class="clear"></div>
+                        </div>
+                    </div>
+<!--动态开始 --> 
+					<div class="dynamic">
+                    	<div class="pro_top dynamic_t">
+                            <p style="font-size:20px;float:left;font-weight: bold;">公司动态</p>
+                            <p style="float:right;"><a href="#{path}/term/zuixindongtai" class="bnt_5">更多</a></p>	
+                            <div class="clear"></div>
+                		</div>
+                		<ui:param name="pageModel" value="#{nodeList.getNodes('zuixindongtai',2)}"></ui:param>
+                        <div class="dynamic_b">
+                            <ul>
+                            <ui:repeat var="node" value="#{pageModel.data}">
+                                <li style="padding-bottom:34px;">
+                                     <div class="picture"><img src="#{path}#{node.thumb}"/></div>
+                                     <div class="describe de_2">
+                                        <p class="tit" style="width:138px; overflow:hidden;">
+                                        <a href="#{path}/node/zuixindongtai/#{node.id}">#{stringHome.ellipsis(node.title,10)}</a></p>
+                                        <p class="content">"#{stringHome.ellipsis(node.description,18)}</p>
+                                     </div>
+                                     <div class="clear"></div>
+                                </li>
+								</ui:repeat>
+                            </ul>
+                        </div>	
+                        
+                     </div>
+                    <div class="clear"></div>
+                </div>
+<!--媒体动态结束 -->
+<!--合作伙伴开始 -->
+				<div class="partner">
+                	<div class="pro_top partner_t">
+                    	<p style="font-size:20px;font-weight: bold;">合作伙伴</p>
+                	</div>
+                    <div class="partner_b">
+                    	<ul>
+                            <ui:repeat var="link" value="#{linkList.getFrontLinks()}" varStatus="i">
+								<li><a target="_blank"> <img src="#{path}#{link.logo}" /></a></li>
+							</ui:repeat>
+                            <div class="clear"></div>
+                        </ul>
+                    </div>	
+                </div>
+
+<!--合作伙伴结束 -->
+        </div>
+    </div>
+
+	</ui:define>
+</ui:composition>

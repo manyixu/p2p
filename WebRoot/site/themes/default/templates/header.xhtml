@@ -1,0 +1,152 @@
+<ui:component xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:sec="http://www.springframework.org/security/facelets/tags">
+	<link rel="stylesheet" type="text/css" 
+	 	href="#{tplVars.themeStylePath}/css/base.css" />
+<script> (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){ (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o), m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m) })(window,document,'script','//www.google-analytics.com/analytics.js','ga'); ga('create', 'UA-67470233-1', 'auto'); ga('send', 'pageview'); </script>
+<script> var _hmt = _hmt || []; (function() { var hm = document.createElement("script"); hm.src = "//hm.baidu.com/hm.js?3f7e862f2de7e157f8c97caa22b88eaf"; var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(hm, s); })(); </script>
+	<style>
+		.bnt_8{  width:80px; height:16px;  border-radius:5px; -webkit-border-radius:5px; }
+.bnt6{ background:#a0a0a0; border:1px solid #a0a0a0; color:#fff;text-align:center;}
+	</style>
+	<div id="top">
+    	<div class="top_inner">
+        	<p class="t_i_l">欢迎致电：<span>400-6855-400</span></p>
+            <div class="t_i_m">
+            	<p>关注我们</p>
+               	<div class="weixinn">
+                		<a href="#">
+                			<img src="#{tplVars.themeImagePath}/img/index_top_01_01.png" class="wei wei_h"/>
+                			<img src="#{tplVars.themeImagePath}/img/index_top_01_02.png" class="wei wei_h2 tb"  />
+                    		<div class="ma" style="display:none"><img src="#{tplVars.themeImagePath}/img/index_14_23.png" /></div>
+                    	</a>
+                </div>
+                <div class="weibo">
+                	<a href="http://weibo.com/quanli360">
+                		<img src="#{tplVars.themeImagePath}/img/index_top_01_03.png" class="bo bo_h"/>
+                		<img src="#{tplVars.themeImagePath}/img/index_top_01_04.png" class="bo bo_h2 tb" />
+                	</a>
+                </div>
+                <div class="qq">
+                	<a href="http://wpa.qq.com/msgrd?v=3&amp;uin=2895396070&amp;site=qq&amp;menu=yes" target="_blank">
+                		<img src="#{tplVars.themeImagePath}/img/index_top_01_05.png" class="qie qq_h"/>
+                		<img src="#{tplVars.themeImagePath}/img/index_top_01_06.png" class="qie qq_h2" />
+                	</a>
+                </div>
+               
+                <div class="clear"></div> 
+            </div>
+            <p class="t_i_r">           
+			<ui:fragment rendered="#{empty loginUserInfo.loginUserId}">
+				<a href="#{path}/memberLogin" style="margin-left:none; padding-left:4px;">登录</a> | <a href="#{path}/register"><span>立即注册</span></a>
+            	<a href="#{path}/aqbzzty" style=" margin-left:24px;">安全保障</a><a href="#{path}/term/changjianwenti" style=" margin-left:24px;">帮助中心</a>
+			</ui:fragment>
+			<ui:fragment rendered="#{not empty loginUserInfo.loginUserId}">
+				<sec:ifAllGranted roles="USER">
+					您好，<a href="#{path}/user/center"><span>#{fn:substring(userService.getUserById(loginUserInfo.loginUserId).mobileNumber ,0,3)}****#{fn:substring(userService.getUserById(loginUserInfo.loginUserId).mobileNumber ,7,11)}</span></a> | <a href="#{request.contextPath}/usermember/logout" style="margin-left:none;  padding-left:4px;">注销</a>
+            		<a href="#{path}/aqbzzty" style=" margin-left:24px">安全保障</a>
+            		<a href="#{path}/term/changjianwenti" style=" margin-left:24px">帮助中心</a>
+				</sec:ifAllGranted>
+				<sec:ifNotGranted roles="USER">
+					<a href="#{path}/memberLogin"><span>登录</span></a> | <a href="#{path}/register" style="margin-left:none;  padding-left:4px;">立即注册</a>
+            		<a href="#{path}/aqbzzty" style=" margin-left:24px">安全保障</a>
+            		<a href="#{path}/term/changjianwenti" style=" margin-left:24px">帮助中心</a>
+				</sec:ifNotGranted>
+			</ui:fragment>           
+            </p>
+            <div class="clear"></div>
+        </div>
+    </div>	
+	
+	<!-- 备注显示 -->
+	<div id="headerbak" align="center" style="width: 100%;height: 25px;background-color: #ffed00;border: 1px solid #0000FF; display: none;">
+	<div style="float: left;margin-left: 50px;">建议：请使用<a target="_blank" href="http://windows.microsoft.com/zh-cn/internet-explorer/download-ie">IE9以上</a>、<a target="_blank" href="http://www.firefox.com.cn/">火狐</a>、<a target="_blank" href="http://www.google.cn/intl/zh-CN/chrome/browser/desktop/index.html">谷歌</a>浏览器，进行浏览。</div>
+	<div id="XXX" align="right" style="float:right;border: 1px solid #ffffff;margin-right: 10px; "><a href="javascript:void(0);">x</a></div>
+	<div style="clear:both;"></div>
+	</div>
+	
+	<div id="header">
+		<div class="header_inner">
+			<div class="logo"><a href="#{path}/"><img src="#{tplVars.themeImagePath}/img/index_logo_07.png"/></a></div>
+			<div class="nav">
+			<ul >
+				<ui:repeat var="menu" value="#{menuList.getMainMenus()}" varStatus="status">
+					<li class="none">
+					<ui:fragment rendered="#{menu.label eq '首页'}">
+						<!-- <a href="#{path}#{menu.url}" style="margin-left:none;" class="#{servletPath eq menu.url ? 'frist':''}">#{menu.label}<i></i> </a> -->
+						<a href="#{path}#{menu.url}">#{menu.label}<i></i> </a>
+					</ui:fragment>
+					<ui:fragment rendered="#{menu.label ne '首页'}">
+						<a href="#{path}#{menu.url}" >#{menu.label}<i></i> </a>
+					</ui:fragment>
+					</li>
+				</ui:repeat>
+				<li class="none">
+					<a href="#{path}/user/center" class="bnt_8 bnt6" style="color:#fff;">我的账户<i></i> </a>
+				</li>
+			</ul>
+                <div class="clear"></div>
+			</div>
+		</div>
+	</div>	
+
+	<script type="text/javascript">
+	
+$("#XXX").click(function(){$("#headerbak").hide();});
+if(navigator.userAgent.indexOf("Opera") != -1) 
+{  
+	$("#headerbak").show();
+	//daojishi();
+    // document.write('您的浏览器是Opera吧？'); 
+}else if(navigator.userAgent.indexOf("MSIE") != -1) 
+ {
+ if(navigator.userAgent.indexOf("MSIE 8.0") != -1) 
+ {
+  $("#headerbak").hide();
+ } 
+  else if(navigator.userAgent.indexOf("MSIE 7.0") != -1) 
+ {
+  $("#headerbak").show();
+	//daojishi();
+ }else if(navigator.userAgent.indexOf("MSIE 6.0") != -1) 
+ {
+  $("#headerbak").show();
+	//daojishi();
+ }else{
+ 	$("#headerbak").hide();
+ } 
+ }else if("ActiveXObject" in window){//MSIE X.X在ie11无效，所以单独判断
+ 	$("#headerbak").hide();
+ }   
+ 
+// 包含「Firefox」文字列 
+else if(navigator.userAgent.indexOf("Firefox") != -1) 
+{ 
+$("#headerbak").hide();
+    //document.write('您的浏览器时Firefox吧？'); 
+}
+// 包含「Netscape」文字列 
+else if(navigator.userAgent.indexOf("Netscape") != -1)
+{ 
+$("#headerbak").hide();
+    //document.write('您的浏览器时Netscape吧？'); 
+} 
+// 包含「Safari」文字列 
+else if(navigator.userAgent.indexOf("Safari") != -1) 
+{ 
+$("#headerbak").hide();
+     //document.write('您的浏览器时Safari 吧？'); 
+} 
+else{ 
+ //document.write('无法识别的浏览器。'); 
+$("#headerbak").show();
+//daojishi();
+} 
+var sec=3;
+
+	</script>
+</ui:component>

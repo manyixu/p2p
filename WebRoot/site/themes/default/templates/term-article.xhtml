@@ -1,0 +1,36 @@
+<ui:component xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:sec="http://www.springframework.org/security/facelets/tags">
+	
+	<ui:param name="restriction" value="#{'(categoryTerm.parent.id=\''}#{termId}#{'\')'}"></ui:param>
+	<f:event type="preRenderComponent" listener="#{categoryTermList.addRestriction(restriction)}"></f:event>
+	<ui:param name="term1" value="#{categoryTermList.lazyModelDataNoPage}"></ui:param>
+	<div class="content-right02 fr">
+		<h5 class="fontsize24 color0a8fc7" style="border-bottom: 1px solid #efefef">#{term.name}</h5>
+		<ul class="right-ul">
+			<ui:repeat var="node" value="#{pageModel.data}">
+				<li><a href="#{request.contextPath}/node/#{term.id}/#{node.id}"
+					class="fontsize18 color3d" title="#{node.title}">#{node.title}</a>
+					<span style="float: right; padding-right: 10px;"> <h:outputText
+							value="#{node.updateTime}">
+							<f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss" locale="zh_CN"
+								timeZone="GMT+8"></f:convertDateTime>
+						</h:outputText>
+				</span></li>
+			</ui:repeat>
+			<ui:repeat var="t" value="#{categoryTermList.lazyModelDataNoPage}">
+				<li><a href="#{request.contextPath}/term/#{t.id}"
+					class="fontsize18 color3d" title="#{t.name}">#{t.name}</a>
+					</li>
+			</ui:repeat>
+		</ul>
+		<ui:include src="#{tplVars.componentsPath}/paging.xhtml">
+			<ui:param name="shortUrl" value="term/#{term.id}/"></ui:param>
+			<ui:param name="count" value="#{pageModel.count}"></ui:param>
+		</ui:include>
+	</div>
+	<!--Layout End-->
+</ui:component>

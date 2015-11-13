@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui"
+	xmlns:archer="http://java.sun.com/jsf/archer"
+	xmlns:sec="http://www.springframework.org/security/facelets/tags">
+	<link type="text/css" rel="stylesheet"
+			href="#{tplVars.themeStylePath}/404.css" />
+	<script src="#{tplVars.themeJSPath}/jquery-1.11.1.min.js" type="text/javascript"></script>
+		
+			<ui:param name="path" value="#{request.contextPath}"></ui:param>
+		<div id="bg" >
+			<div class="bg_inner" id="bg_inner">
+		    	<div class="fan" id="fan"><a id="returnImg" href="#{path}"><img src="#{tplVars.themeImagePath}/bt_03.jpg" /></a></div>
+		    	<div id="errorDiv" align="center" style="color:red;font-size:28;"></div>
+		    </div>
+		</div>
+		<div id="footer">
+			<div class="footer_inner f_t">
+		    	<ui:param name="pageModel2" value="#{nodeList.getNodes('aboutUs',4)}"></ui:param>
+	         	<ui:repeat var="node2" value="#{pageModel2.data}" varStatus="i">
+					<a href="#{path}/node/aboutUs/#{node2.id}">#{node2.title}</a>
+					<ui:fragment rendered="#{i.index != 3}">|</ui:fragment>
+				</ui:repeat>
+		        <p class="f_b">©2015 ALL Rights Reserved   北京全利汇丰信息服务有限公司  |  京ICP备15031017号</p>
+		    </div>
+		</div>
+	<script language="javascript" type="text/javascript">
+		  var strPath=window.document.location.pathname;
+		  if(strPath.indexOf("/admin")!="-1"){
+		  	$("#returnImg").attr("href","/archer/admin");
+		  }
+		  var i = 3;
+		  function out(){
+		    if (i>0){
+		      i--;
+		    }else{
+		      window.history.back();
+		    }
+		  //  document.getElementById('errorDiv').innerHTML="不要着急，"+i+"秒钟后为您跳转到首页...";
+		  }
+		  setInterval('out()',1000);
+
+		</script>
+</html>

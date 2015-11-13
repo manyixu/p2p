@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-module
+  type="WEB"
+  name="p2p_standard_2.0_quanli"
+  id="myeclipse.1328240778262"
+  context-root="/archer"
+  j2ee-spec="5.0"
+  archive="p2p_standard_2.0_quanli.war">
+  <attributes>
+    <attribute name="webrootdir" value="WebRoot" />
+  </attributes>
+</project-module>
+

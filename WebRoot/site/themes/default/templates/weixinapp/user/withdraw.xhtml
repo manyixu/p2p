@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pm="http://primefaces.org/mobile"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:o="http://omnifaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:archer="http://java.sun.com/jsf/archer"
+	xmlns:sec="http://www.springframework.org/security/facelets/tags">
+	<h:head>
+	<title>提现</title>
+	<meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no"/>
+	<meta name="apple-touch-fullscreen" content="yes"/> <!--  一会试验下是否有必要存在 -->
+	<meta name="apple-mobile-web-app-capable" content="yes"/>
+	<meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+	<meta name="format-detection" content="telephone=no"/>
+	<meta http-equiv="x-rim-auto-match" content="none"/>
+	<link href="#{tplVars.themeStylePath}/weixincss/zhanghao.css" rel="stylesheet" type="text/css"/>
+    <link href="#{tplVars.themeStylePath}/weixincss/mobilebase.css" rel="stylesheet"/>
+    <link href="#{tplVars.themeStylePath}/weixincss/shiming.css" rel="stylesheet" type="text/css"/>
+	<link href="#{tplVars.themeStylePath}/weixincss/pay.css" rel="stylesheet" type="text/css"/>
+	<h:outputScript library="primefaces" name="jquery/jquery.js"
+			target="head" />
+		<script type="text/javascript"
+			src="#{tplVars.themeJSPath}/jquery.artDialog.js?skin=idialog"></script>
+		<script type="text/javascript"
+			src="#{tplVars.themeJSPath}/jquery.SuperSlide.2.1.1.js"></script>
+		<script type="text/javascript" src="#{tplVars.themeJSPath}/common.js"></script>
+		<script type="text/javascript" src="#{tplVars.themeJSPath}/timer.js"></script>
+    </h:head>
+    <h:body>
+    <sec:ifNotGranted roles="INVESTOR">
+			<script>
+				$.dialog
+						.alert(
+								'您尚未拥有投资权限，请先进行实名认证!',
+								function() {
+									window.location.href = "#{path}/weixinuser/accountdetails";
+								});
+			</script>
+	</sec:ifNotGranted>
+	<sec:ifAllGranted roles="INVESTOR">
+	<archer:archerWeiXinMessages focus="false" showGlobalMessages="true"
+			severity="0,2"></archer:archerWeiXinMessages>
+    	 <div class="main">
+    	<div class="main_inner">
+            <h:form id="form">
+        		<section>
+                	<div class="pay_tb">	
+                        <p class="pwd ft" style="float:left;">可用金额</p>
+                       	<p style="float:right; color:#ff8503;">
+                       			<h:outputLabel
+									value="#{userBillHome.getBalanceByUserId(loginUserInfo.loginUserId)}">
+									<f:convertNumber />
+								</h:outputLabel>
+                       	元</p>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="pay_tb">
+                            <label class="pwd ft">提现金额</label>
+                            <h:inputText label="提现金额" styleClass="kuang ft" required="true"
+								id="money" value="#{weixinWithdrawHome.instance.money}">
+								<archer:validateNumber precision="2"></archer:validateNumber>
+								<f:validateDoubleRange minimum="1"></f:validateDoubleRange>
+								<f:ajax event="blur" render="fee actualMoney" execute="money"
+									listener="#{weixinWithdrawHome.calculateFee}"></f:ajax>
+								<f:ajax event="blur" render="@this money"></f:ajax>
+							</h:inputText>
+                        	<p:watermark value="请填写提现金额" for="money"></p:watermark>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="pay_tb">	
+                        <p class="pwd ft" style="float:left;">手续费</p>
+                        <p style="float:right;color:#999;">
+                        	<h:outputLabel id="fee"
+									value="#{weixinWithdrawHome.instance.fee}">
+									<f:convertNumber minFractionDigits="2" />
+								</h:outputLabel>
+                        	元</p>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="pay_tb">	
+                        <p class="pwd ft" style="float:left;">实际到账费用</p>
+                        <p style="float:right;color:#999;">
+                        	<h:outputLabel id="actualMoney" value="#{weixinWithdrawHome.instance.money+0}">
+										<f:convertNumber minFractionDigits="2"/>
+									</h:outputLabel>
+                        	元</p>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="pay_tb">	
+                        <p class="pwd ft" style="float:left;">提现储蓄卡</p>
+                        <p style="float:right;color:#acacac;">
+                        	<h:panelGroup id="bankCards">
+								<ui:repeat var="bc" value="#{bankCardList.bankCardListbyLoginUser}">
+									<ui:fragment rendered="#{bc.status eq'VERIFIED'}">
+											<ui:param name="bcnL" value="#{bc.cardNo.length()}"></ui:param>
+											#{bc.bank}#{fn:substring(bc.cardNo ,0,4)} *** ***#{fn:substring(bc.cardNo ,bcnL-4,bcnL)}
+											<f:event type="preRenderComponent" listener="#{weixinWithdrawHome.instance.setBankCard(bc)}"></f:event>
+									</ui:fragment>	
+								</ui:repeat>
+						</h:panelGroup>
+                        </p>
+                        <div class="clear"></div>
+                    </div>
+            	</section>   
+	          	<div class="btn_t tixian">
+	          		<h:panelGroup  id="withdrawBtn">
+	          		<!-- <ui:fragment rendered="#{weixinWithdrawHome.instance.bankCard.bankNo ne 'BOCO'}"> -->
+								<h:commandLink action="#{weixinWithdrawHome.withdraw}"  rendered="#{weixinWithdrawHome.instance.bankCard.id!=null}" value="提现"
+									styleClass="txczje02_btn txczje02_btn_02"></h:commandLink>
+								<ui:fragment  rendered="#{weixinWithdrawHome.instance.bankCard.id==null}">
+									<a href="javascript:void(0)" onclick="$.dialog.tips('请先绑定银行卡！')" class="txczje02_btn txczje02_btn_02" >提现</a>
+								</ui:fragment>
+								<!-- </ui:fragment>
+						<ui:fragment rendered="#{weixinWithdrawHome.instance.bankCard.bankNo=='BOCO'}">
+							<p style="color:red;font-size:14px">因交通银行系统升级维护，暂时无法提供提现功能！将于9月27日24:00以后恢复。如有疑问，请联系客服。</p>
+						</ui:fragment>		 -->						
+							</h:panelGroup>
+	          	</div>
+            </h:form>            
+        </div>
+    </div>
+  <div class="tishi" style="padding-bottom: 20%;">
+  	<p>提现小提示</p>
+    <ul>
+    	<li>1、提现时第三方支付会另外收取2元手续费，因此要确认账户资金充足。</li>
+        <li>2、请确保您输入的提现金额，以及银行帐号信息准确无误。</li>
+        <li>3、如果您填写的提现信息不正确可能会导致提现失败，由此产生的提现费用将不予返还。</li>
+        <li>4、在双休日和法定节假日期间，用户可以申请提现，第三方会在下一个工作日进行处理。由此造成的不便，请多多谅解！</li>
+        <li>5、平台禁止洗钱、信用卡套现、虚假交易等行为，一经发现并确认，将终止该账户的使用。</li>
+    </ul>
+  	
+  </div>
+  </sec:ifAllGranted>
+  <ui:include src="../bottom.xhtml"></ui:include>
+    </h:body>
+</html>

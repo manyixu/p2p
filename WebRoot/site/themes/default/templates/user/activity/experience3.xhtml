@@ -1,0 +1,140 @@
+<ui:composition template="../center.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pm="http://primefaces.org/mobile"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:sec="http://www.springframework.org/security/facelets/tags"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+	<!-- 我的还款中的投资 -->
+	<ui:param name="activeCenterMenuUrl" value="/user/activity/experience"></ui:param>
+	<ui:define name="center_right">
+	<link href="#{tplVars.themeStylePath}/css/usercenter_jiekuan.css" rel="stylesheet" type="text/css"/>
+	<link href="#{tplVars.themeStylePath}/css/style.css" rel="stylesheet" type="text/css" />
+	<link href="#{tplVars.themeStylePath}/css/tool_cash.css" rel="stylesheet" type="text/css" />
+	<!-- <script>
+				$.dialog
+						.alert(
+								'您尚未拥有投资权限，请先进行实名认证!',
+								function() {
+									window.location.href = "#{path}/user/get_investor_permission";
+								});
+			</script> -->
+	<div class="main_r">
+			<div class="tyj_convert">
+				<h2>体验金</h2>
+				<h:form styleClass="tyj_cont">
+					<p>兑换码：<h:inputText value="#{experiencegoldController.instance.rmk23 }" label="兑换码" id="startDate"></h:inputText></p>
+					<p>验证码：<h:inputText value="#{experiencegoldController.captcha}" label="验证码" id="endDate"></h:inputText>
+					<span><a class="login_yzm" href="javascript:void(0)">
+													<img alt="点击刷新" id="verifyCode" src="#{request.contextPath}/verifyCodeServlet" onclick="this.src='#{request.contextPath}/verifyCodeServlet?'+new Date().getTime()" />
+												</a></span></p>
+					<p:commandLink ajax="false" styleClass="tyj_btn1" actionListener="#{experiencegoldController.save}" value="立即兑换" id="saveBtn23" title="立即兑换"></p:commandLink>
+				</h:form>
+			</div>
+			<div class="tab">
+				<div class="m_b_j">
+					<ul>
+                	<li><h:link outcome="pretty:experience" value="未使用"></h:link></li>
+                    <li><h:link outcome="pretty:experience2" value="进行中"></h:link></li>
+                    <li><h:link outcome="pretty:experience3" styleClass="sub_m1" value="已使用"></h:link></li>
+                    <li><h:link outcome="pretty:experience4" value="已过期"></h:link></li>
+                    <div class="clear"></div>
+                </ul>
+				</div>
+				<div class="tab_box"> 
+					<!--进行中-->
+					<div>
+					<h:form>
+					 	<table class="tab_cont" cellpadding="0" cellspacing="0">
+						 	<tr class="tab_a">
+						 		<td>理财体验金</td><td>体验金金额</td><td>体验天数</td><td>年利率</td><td>到期收益</td><td>状态</td>
+						 	</tr>
+						 	<!-- <ui:param name="restriction" value="#{'(rmk22!=\''}A1')"></ui:param>
+						 	<f:event type="preRenderComponent" listener="#{experiencegoldList.addRestriction(restriction)}"></f:event> -->
+                            <ui:param name="restriction" value="#{'(userid=\''}#{loginUserInfo.loginUserId}')"></ui:param>
+                            <f:event type="preRenderComponent" listener="#{experiencegoldList.addRestriction(restriction)}"></f:event>
+							<ui:param name="restriction"
+								value="#{'(utype=\''}N#{'\')'}"></ui:param>
+							<f:event type="preRenderComponent"
+								listener="#{experiencegoldList.addRestriction(restriction)}"></f:event>
+							<f:event type="preRenderComponent"
+								listener="#{investList.addOrder('etime','desc')}"></f:event>
+							<ui:repeat var="exp" value="#{experiencegoldList.lazyModelDataNoPage}"
+								varStatus="status">
+						 	<tr class="tab_b">
+						 		<td>#{exp.projectname}</td><td>￥#{exp.money}</td><td class="tab_pad2">#{exp.pday}天</td><td>#{exp.pinterestrate}%</td><td>￥#{exp.profit}</td>
+						 		<td><span>
+						 		<ui:fragment rendered="#{exp.utype =='Y'}">
+									<p:commandLink style="display:block; width:80px; height:33px; text-align:center; line-height:33px; color:#fff; background:#1c8c02; border-radius:7px; font-size:14px;"
+												ajax="false"
+												actionListener="#{experienceinvestmentController.save2(exp.id)}"
+												value="立即投标" id="saveBtn22" title="立即投标"></p:commandLink>
+									</ui:fragment>
+									<ui:fragment rendered="#{exp.utype =='N'}">
+										已完成投资
+									</ui:fragment>
+									<ui:fragment rendered="#{exp.utype =='Z'}">
+										进行中
+									</ui:fragment>
+									<ui:fragment rendered="#{exp.utype =='S'}">
+										已过期
+									</ui:fragment></span></td>
+						 	</tr>
+						 	</ui:repeat>
+						 </table>
+						 <!-- <div class="tyj_convert">
+							<h2>新手体验金项目</h2>
+						</div>
+					 	<table class="tab_cont" cellpadding="0" cellspacing="0">
+						 	<tr class="tab_a">
+						 		<td>理财体验金</td><td>体验金金额</td><td>体验天数</td><td>年利率</td><td>到期收益</td><td>状态</td>
+						 	</tr>
+						 	<ui:param name="restriction1" value="#{'(rmk22=\''}A1')"></ui:param>
+                            	<ui:param name="restriction1" value="#{'(userid=\''}#{loginUserInfo.loginUserId}')"></ui:param>
+								<f:event type="preRenderComponent" listener="#{experiencegoldList.addRestriction(restriction1)}"></f:event>
+						 	<ui:repeat var="invests" value="#{experiencegoldList.lazyModelDataNoPage}"
+											varStatus="status">
+						 	<tr class="tab_b">
+						 		<td>#{exp.projectname}</td><td>￥#{exp.money}</td><td class="tab_pad2">#{exp.pday}天</td><td>#{exp.pinterestrate}%</td><td>￥#{exp.profit}</td>
+						 		<td><span>
+						 		<ui:fragment rendered="#{exp.utype =='Y'}">
+									<p:commandLink style="display:block; width:80px; height:33px; text-align:center; line-height:33px; color:#fff; background:#1c8c02; border-radius:7px; font-size:14px;"
+												ajax="false"
+												actionListener="#{experienceinvestmentController.save2(exp.id)}"
+												value="立即投标" id="saveBtn22" title="立即投标"></p:commandLink>
+									</ui:fragment>
+									<ui:fragment rendered="#{exp.utype =='N'}">
+										已完成投资
+									</ui:fragment>
+									<ui:fragment rendered="#{exp.utype =='Z'}">
+										进行中
+									</ui:fragment>
+									<ui:fragment rendered="#{exp.utype =='S'}">
+										已过期
+									</ui:fragment></span></td>
+						 	</tr>
+						 	</ui:repeat>
+						 </table> -->
+						 </h:form>
+						 <div class="tab_guize">
+						 	<h2>体验金使用规则</h2>
+						 	<p>1.体验金仅适用于体验全利网产品，本金不能提现 ，请在投资期限内使用体验金券，过期作废；</p>
+						 	<p>2.用户可根据体验金的可持续时间进行体验，体验结束后系统会自动收回本金，收益归用户所有；</p>
+						 	<p>3.如果在使用体验金过程中，采用非法手段获得体验金，全利网保留追究法律责任的权利</p>
+					 	</div>
+					 </div>
+				</div>
+			</div>
+
+			
+		</div>
+		
+		<div class="clear"></div>
+	</ui:define>
+</ui:composition>
+
+
+

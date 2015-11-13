@@ -1,0 +1,24 @@
+@charset "utf-8";
+/* CSS Document */
+
+.pay_tb{ margin-bottom:4%;}
+.main_inner .shi{ padding-top:10%;}
+.main_inner .tixian{ padding-top:4%;}
+.item-cont{ position:absolute; top:0; left:24%;}
+
+.bg_1{ width:30%;height:30% ;padding:12% 0 16% 0; }
+.bg_2{ width:5% ; padding:12% 0 14% 0;}
+.m{ float:left; text-align:center; color:#fff;}
+.pay_m{ line-height:3em; border-bottom:1px solid #dee4e9;}
+.tishi{ padding:4% 4% 0 4%;}
+.tishi p{ padding-bottom:4%; color:#666; font-size:4vw; border-bottom: 1px solid #c2c8d0;}
+.tishi ul{ padding-top:4%;}
+.tishi ul li{ padding-bottom:2%; color:#acacac;}
+.main .yanzhen{ padding:0; display:inline; color:#a4a9ae; background:#e5e7ea; border-radius: 20px;border:4px solid #e5e7ea;-webkit-appearance:none;}
+.main .r_btn_b a{ display:inline;padding:0; color:#41b42a;}
+
+@media screen and (max-width:320px){
+	.main .yanzhen{
+		font-size: 12px;
+	}
+}

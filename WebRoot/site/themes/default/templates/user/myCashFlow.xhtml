@@ -1,0 +1,267 @@
+<ui:composition template="center.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pm="http://primefaces.org/mobile"
+	xmlns:of="http://omnifaces.org/functions"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+	<ui:param name="activeCenterMenuUrl" value="/user/myCashFlow"></ui:param>
+	<ui:define name="center_right">
+	<link href="#{tplVars.themeStylePath}/css/usercenter_jiekuan.css" rel="stylesheet" type="text/css"/>
+	<link href="#{tplVars.themeStylePath}/css/tool_cash.css" rel="stylesheet" type="text/css" />
+		<script>
+			/**初始化时间选择控件*/
+			function initDatepicker() {
+				$(".datepicker").datepicker({
+					changeMonth : true,
+					changeYear : true
+				});
+			}
+			/**清除筛选条件*/
+			function clearFilters() {
+				$(".datepicker").val('');
+				$("#dataTable\\:typeInfoFilter").val('');
+			}
+			$(function() {
+				initDatepicker();
+			});
+		</script>
+		<div class="main_r">
+				<div class="m_t">
+					<ui:include src="userCenterTop.xhtml"></ui:include>
+				</div>
+				<div class="m_m">
+					<ul>
+					    <li><img src="#{tplVars.themeImagePath}/img20.png"
+							title="可用金额" />可用金额<br /> <span class="r">￥</span><span class="num"><h:outputText
+									value="#{billStatistics.getBalanceByUserId(loginUserInfo.loginUserId)}">
+									<f:convertNumber minFractionDigits="2" />
+								</h:outputText></span></li>
+						<li><img src="#{tplVars.themeImagePath}/img20.png"
+							title="冻结金额" />冻结金额<br /> <span class="r">￥</span><span class="num"><h:outputText
+									value="#{billStatistics.getFrozenMoneyByUserId(loginUserInfo.loginUserId)}">
+									<f:convertNumber minFractionDigits="2" />
+								</h:outputText></span></li>
+						<li><img src="#{tplVars.themeImagePath}/img20.png"
+							title="累计充值" />累计充值<br /> <span class="r">￥</span><span class="num"><h:outputText
+									value="#{rechargeStatistics.getPaidRechargeMoney(loginUserInfo.loginUserId)}">
+									<f:convertNumber minFractionDigits="2" />
+								</h:outputText></span></li>
+						<li><img src="#{tplVars.themeImagePath}/img20.png"
+							title="累计提现" />累计提现<br /> <span class="r">￥</span><span class="num"><h:outputText
+									value="#{withdrawStatistics.getSuccessWithdrawMoney(loginUserInfo.loginUserId)}">
+									<f:convertNumber minFractionDigits="2" />
+								</h:outputText></span></li>
+						 <div class="clear"></div>
+					</ul>
+				</div>
+			<h:form id="form">
+				<div class="m_m_tj">
+				<ul>
+						
+						<li>
+                            	<div class="form-item_tj">
+                                    <div class="item-label_tj">
+                                        <label>时间 &#160;：从</label>
+                                    </div>
+                                    <div class="item-cont_tj">
+                                        <h:inputText value="#{userBillList.startTime}" label="起止日期"
+											styleClass="txt date_txt datepicker" id="startDate">
+											<f:convertDateTime pattern="yyyy-MM-dd" timeZone="GMT+8"
+												locale="zh_CN" />
+										</h:inputText>
+                                    </div>
+                                    <div class="clear"></div>
+                            	</div>
+                          </li>
+                          <li>到</li>
+                          <li>
+								<div class="form-item_tj">
+                                    <div class="item-cont_tj">
+                                        <h:inputText value="#{userBillList.endTime}" label="起止日期"
+											styleClass="txt date_txt datepicker" id="endDate">
+											<f:convertDateTime pattern="yyyy-MM-dd" timeZone="GMT+8"
+												locale="zh_CN" />
+										</h:inputText>
+                                    </div>
+                                    <div class="clear"></div>
+                            	</div>
+						</li>
+						<br/>
+						<li>
+								<div class="form-item_tj">
+                                    <div class="item-label_tj">
+                                        <label>类型&#160;：</label>
+                                    </div>
+                                    <div class="item-cont_tj">
+                                        <h:selectOneMenu styleClass="txt" id="typeInfoFilter"
+											value="#{userBillList.example.typeInfo}">
+											<f:selectItem itemLabel="全部" itemValue="" noSelectionOption="true" />
+											<f:selectItems var="bo"
+												value="#{dictUtil.getDictByParentKey('bill_operator')}"
+												itemValue="#{bo.key}" itemLabel="#{bo.value}" />
+										</h:selectOneMenu>
+                                    </div>
+                                    <div class="clear"></div>
+                            	</div>
+						</li>
+				</ul>
+					<div class="m_btn chongzhi_tj">
+                        	<a href="javascript:void(0)" onclick="location.reload();" style="margin-left: 20px;">重置</a>
+                            
+                            <h:commandLink  style="margin-left: 20px;" value="查询">
+							<p:ajax process="@form" update="dataTable"
+								oncomplete="initDatepicker()"></p:ajax>
+							<f:setPropertyActionListener value="1"
+								target="#{userBillList.currentPage}" />
+						</h:commandLink>
+                        </div>
+                       <div class="clear"></div>
+					</div>
+				<div class="m_b">
+				<h:panelGroup id="dataTable">
+				<script type="text/javascript" src="#{tplVars.themeJSPath}/usercenter.js"></script>
+						<script type="text/javascript">	
+								$(document).ready(function() {
+									$(".ma").hide()
+									$(".weixin").hover(function(){
+									$(".ma").show()
+									},function(){
+									$(".ma").hide()
+										});
+									$(".all").css("background","#3ec226")
+									$(".all").css("color","#fff")
+									$(".t a").click(function(){
+									$(".t a").css("background","#fff")
+									$(".t a").css("color","#666");
+									$(this).css("background","#3ec226");
+									$(this).css("color","#fff");
+									});
+									$(".m a").click(function(){
+									$(".m a").css("background","#fff")
+									$(".m a").css("color","#666");
+									$(this).css("background","#3ec226");
+									$(this).css("color","#fff");
+									});
+									$(".b a").click(function(){
+									$(".b a").css("background","#fff")
+									$(".b a").css("color","#666");
+									$(this).css("background","#3ec226");
+									$(this).css("color","#fff");
+									});
+									$(".on").css("background","#3ec226");
+									$(".on").css("color","#fff")
+									$(".on").css("border","1px solid #3ec226;");
+									$(".page a").click(function(){
+									$(".page a").css("background","#fff");
+									$(".page a").css("color","#5a5a5a");
+									$(".page a").css("border","1px solid #dddddd;");
+									$(this).css("background","#3ec226");
+									$(this).css("color","#fff");
+									$(this).css("border","1px solid #dddddd;");
+									});
+									/* $('.progressbar').each(function(){
+									var t = $(this),
+									dataperc = t.attr('data-perc'),
+									barperc = Math.round(dataperc*0.88);
+									t.find('.bar').animate({width:barperc}, dataperc*25);
+									t.find('.label').append('<div class="perc"></div>');
+									function perc(){
+										var length = t.find('.bar').css('width'),
+										perc = Math.round(parseInt(length)/0.88),
+										labelpos = (parseInt(length)-2);
+										t.find('.perc').text(perc+'%');
+									}
+									perc();
+									setInterval(perc, 0); 
+								}); */
+								});
+							</script>
+				<div class="m_b_inf">
+				<div id="con_four_1" class="slidnr inf1">
+				<table width="764" border="1" bordercolor="black" cellspacing="0" style="text-align:center;">
+					<tr class="tr_1" style="border-top:1px solid #e6e6e6">     
+						<td class="td_1" width="100px;" style="border-right:1px solid #e6e6e6">时间</td>
+						<td class="td_2" width="140px;" style="border-right:1px solid #e6e6e6">类型|明细</td>
+						<td class="td_3" width="140px;" style="border-right:1px solid #e6e6e6">金额</td>
+						<td class="td_4" width="140px;" style="border-right:1px solid #e6e6e6">可用余额</td>
+						<td class="td_5" width="140px;" style="border-right:1px solid #e6e6e6">冻结金额</td>
+						<td class="td_6" width="140px;">备注</td>
+					</tr>
+					<f:event type="preRenderComponent"
+						listener="#{userBillList.setPageSize(10)}"></f:event>
+					<f:event type="preRenderComponent"
+						listener="#{userBillList.example.user.setId(loginUserInfo.loginUserId)}"></f:event>
+					<f:event type="preRenderComponent"
+						listener="#{userBillList.addOrder('userBill.seqNum','desc')}"></f:event>
+					<ui:repeat var="ib" value="#{userBillList.lazyModelData}"
+						varStatus="status">
+						<tr class="tr_2">
+							<td class="td_1"><h:outputText
+									value="#{ib.time}">
+									<f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss"
+										timeZone="GMT+8" locale="zh_CN" />
+								</h:outputText></td>
+							<td class="td_2">#{dictUtil.getValue('bill_operator',ib.typeInfo)}
+								<!-- <span class="tab_green"><a href="#">（明细）</a></span> -->
+							</td>
+							<td class="td_3"><ui:fragment
+									rendered="#{ib.type=='ti_balance'}">
+									<span class="tab_blue">+<h:outputText
+											value="#{ib.money}">
+											<f:convertNumber maxFractionDigits="2" />
+										</h:outputText>元
+									</span>
+								</ui:fragment> <ui:fragment
+									rendered="#{ib.type=='to_balance' or ib.type=='to_frozen'}">
+									<span class="tab_red">-<h:outputText value="#{ib.money}">
+											<f:convertNumber maxFractionDigits="2" />
+										</h:outputText>元
+									</span>
+								</ui:fragment> <ui:fragment
+									rendered="#{ib.type=='unfreeze' or ib.type=='freeze'}">
+									<span><h:outputText value="#{ib.money}">
+											<f:convertNumber maxFractionDigits="2" />
+										</h:outputText>元 </span>
+								</ui:fragment></td>
+							<td class="td_4"><h:outputText
+									value="#{ib.balance}">
+									<f:convertNumber type="currency" currencySymbol="￥"
+										maxFractionDigits="2" />
+								</h:outputText></td>
+							<td class="td_5"><h:outputText
+									value="#{ib.frozenMoney}">
+									<f:convertNumber type="currency" currencySymbol="￥"
+										maxFractionDigits="2" />
+								</h:outputText></td>
+							<td class="td_6"><LABEL
+								title="#{ib.detail}">#{stringHome.ellipsis(ib.detail,40)}</LABEL></td>
+						</tr>
+					</ui:repeat>
+				</table>
+					<div class="pagebar">
+							<ui:include src="#{tplVars.componentsPath}/myCashFlow_paging_include.xhtml"></ui:include>
+					</div>
+				</div>
+				</div>
+				<!-- <div class="page_box">
+					<div class="page_l">
+						<h:commandLink value="导出查询结果" action="#{userBillList.export}">
+						</h:commandLink>
+					</div>
+					<div class="page_r">
+						<ui:include
+							src="#{tplVars.componentsPath}/myCashFlow_paging_include.xhtml"></ui:include>
+					</div>
+				</div> -->
+				</h:panelGroup>
+				</div>
+			</h:form>
+</div>
+		<div class="clear"></div>
+	</ui:define>
+
+</ui:composition>

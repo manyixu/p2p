@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pm="http://primefaces.org/mobile"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:o="http://omnifaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:archer="http://java.sun.com/jsf/archer"
+	xmlns:sec="http://www.springframework.org/security/facelets/tags">
+	<h:head>
+	<title>充值</title>
+	<meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no"/>
+	<meta name="apple-touch-fullscreen" content="yes"/> <!--  一会试验下是否有必要存在 -->
+	<meta name="apple-mobile-web-app-capable" content="yes"/>
+	<meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+	<meta name="format-detection" content="telephone=no"/>
+	<meta http-equiv="x-rim-auto-match" content="none"/>
+    <link href="#{tplVars.themeStylePath}/weixincss/mobilebase.css" rel="stylesheet"/>
+	<link href="#{tplVars.themeStylePath}/weixincss/pay.css" rel="stylesheet" type="text/css"/>
+    <link href="#{tplVars.themeStylePath}/weixincss/shiming.css" rel="stylesheet" type="text/css"/>
+	<h:outputScript library="primefaces" name="jquery/jquery.js"
+			target="head" />
+		<script type="text/javascript"
+			src="#{tplVars.themeJSPath}/jquery.artDialog.js?skin=idialog"></script>
+		<script type="text/javascript"
+			src="#{tplVars.themeJSPath}/jquery.SuperSlide.2.1.1.js"></script>
+		<script type="text/javascript" src="#{tplVars.themeJSPath}/common.js"></script>
+		<script type="text/javascript" src="#{tplVars.themeJSPath}/timer.js"></script>
+    </h:head>
+    <h:body  style=" width:100%; height:100%;">
+    <sec:ifNotGranted roles="INVESTOR">
+			<script>
+				$.dialog
+						.alert(
+								'您尚未拥有投资权限，请先进行实名认证!',
+								function() {
+									window.location.href = "#{path}/weixinuser/accountdetails";
+								});
+			</script>
+	</sec:ifNotGranted>
+	<sec:ifAllGranted roles="INVESTOR">
+	<!-- <script>
+	//<![CDATA[
+	function checkRecharge() {
+		var flag = false;
+		var regx = /^[1-9]\d*$/;
+		var myselect = $(".center_right .zhcz_ul a.hover");
+		var money = $("#recharge\\:actualMoney").val();
+		if (!regx.test(money)) {
+			$.dialog.tips('请填写正确的整数金额!');
+		}
+		/**
+		if (myselect.length < 1) {
+			$.dialog.tips('请选择充值方式!');
+		}
+		**/
+		if (regx.test(money)) {
+			flag = true;
+		}
+		return flag;
+	}
+	//]]>
+		</script> -->
+		<archer:archerWeiXinMessages focus="false" showGlobalMessages="true"
+			severity="0,2"></archer:archerWeiXinMessages>
+    <div class="warp" >
+	<div class="top">
+    	<img src="#{tplVars.themeImagePath}/weixinappimages/index_top_bg_02.jpg"   class="top_bg"/>
+        <div class="benxi">
+        	<img src="#{tplVars.themeImagePath}/weixinappimages/pay_1_03.png" width="12%" />
+   	    <p>账户余额（元）</p>
+            <div class="clear"></div>
+        </div>
+        <div class="number">
+        	<p>
+        		<h:outputLabel value="#{userBillHome.getBalanceByUserId(loginUserInfo.loginUserId)}">
+					<f:convertNumber />
+				</h:outputLabel>
+        	</p>
+        </div>
+    </div>
+   
+    <div class="main">
+    	<div class="main_inner">
+        	<section>
+            	<h:form  id="recharge">	
+            	<div class="pay_tb">	
+                        <p class="pwd ft" style="float:left;">充值储蓄卡</p>
+                        <p style="float:right;color:#acacac;">
+                        	<h:panelGroup id="bankCards">
+								<ui:repeat var="bc" value="#{bankCardList.bankCardListbyLoginUser}">
+									<ui:fragment rendered="#{bc.status eq'VERIFIED'}">
+											<ui:param name="bcnL" value="#{bc.cardNo.length()}"></ui:param>
+											#{bc.bank}#{fn:substring(bc.cardNo ,0,4)} *** ***#{fn:substring(bc.cardNo ,bcnL-4,bcnL)}
+											<f:event type="preRenderComponent" listener="#{weixinWithdrawHome.instance.setBankCard(bc)}"></f:event>
+									</ui:fragment>	
+								</ui:repeat>
+						</h:panelGroup>
+                        </p>
+                        <div class="clear"></div>
+                    </div>
+                	<div class="pay_tb">	
+                        <label class="pwd ft">充值金额</label>
+                        <h:inputText label="充值金额" styleClass="kuang ft"
+							id="actualMoney" value="#{weixinRechargeHome.instance.actualMoney}"
+							required="true">
+							<f:validateDoubleRange minimum="100"></f:validateDoubleRange>
+							<archer:validateNumber precision="0" />
+							<f:ajax render="allMoney" event="blur"
+								listener="#{weixinRechargeHome.calculateFee}"></f:ajax>
+							<f:ajax event="blur" render="@this actualMoney"></f:ajax>
+						</h:inputText>
+						<p:watermark value="请填写充值金额" for="actualMoney"></p:watermark>
+						
+                        <div class="clear"></div>
+                    </div>
+                    <!-- <div class="pay_bb">
+                        <p style="float:right;">实际支付<span style="color:#ff6000;">
+                        	<h:outputLabel value="#{weixinRechargeHome.instance.fee}"
+								id="fee">
+								<f:convertNumber minIntegerDigits="1" minFractionDigits="2" />
+							</h:outputLabel>
+                        </span>金额</p>
+                        <div class="clear"></div>
+                    </div> -->
+                    <div class="pay_bb">
+                        <p style="float:right;">实际支付金额<span style="color:#ff6000;">
+                        	<h:outputLabel value="#{weixinRechargeHome.instance.actualMoney+0}"
+								id="allMoney"></h:outputLabel>
+                        </span>元</p>
+                        <div class="clear"></div>
+                    </div>
+          	<div class="btn_t">
+				<h:panelGroup>
+				<!-- <ui:fragment rendered="#{weixinWithdrawHome.instance.bankCard.bankNo ne 'BOCO'}"> -->
+					<h:commandLink action="#{weixinRechargeHome.recharge}"  rendered="#{weixinWithdrawHome.instance.bankCard.id!=null}" value="充值" styleClass="txczje02_btn"></h:commandLink>
+					<ui:fragment  rendered="#{weixinWithdrawHome.instance.bankCard.id==null}">
+						<script>
+							$.dialog
+									.alert(
+											'请先绑定银行卡！',
+											function() {
+												window.location.href = "#{path}/weixinuser/bankcards";
+											});
+						</script>
+					</ui:fragment>
+					<!-- </ui:fragment>
+					<ui:fragment rendered="#{weixinWithdrawHome.instance.bankCard.bankNo=='BOCO'}">
+							<p style="color:red;font-size:14px">因交通银行系统升级维护，暂时无法提供提现功能！将于9月27日24:00以后恢复。如有疑问，请联系客服。</p>
+						</ui:fragment>		 -->						
+				</h:panelGroup>
+          	</div>
+                </h:form>           
+            </section>               
+        </div>
+    </div>
+</div>
+</sec:ifAllGranted>
+<ui:include src="../bottom.xhtml"></ui:include>
+    </h:body>
+</html>

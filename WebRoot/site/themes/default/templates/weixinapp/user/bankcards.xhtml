@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pm="http://primefaces.org/mobile"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:o="http://omnifaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:archer="http://java.sun.com/jsf/archer"
+	xmlns:sec="http://www.springframework.org/security/facelets/tags">
+	<h:head>
+	<title>绑定银行卡</title>
+	<meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no"/>
+	<meta name="apple-touch-fullscreen" content="yes"/> <!--  一会试验下是否有必要存在 -->
+	<meta name="apple-mobile-web-app-capable" content="yes"/>
+	<meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+	<meta name="format-detection" content="telephone=no"/>
+	<meta http-equiv="x-rim-auto-match" content="none"/>
+	<link href="#{tplVars.themeStylePath}/weixincss/down.css" rel="stylesheet" type="text/css"/>
+    <link href="#{tplVars.themeStylePath}/weixincss/mobilebase.css" rel="stylesheet"/>
+    <link href="#{tplVars.themeStylePath}/weixincss/shiming.css" rel="stylesheet" type="text/css"/>
+    <script type="text/javascript" src="#{tplVars.themeJSPath}/weixinjs/jquery-1.8.0.min.js"></script>
+    <script type="text/javascript" src="#{tplVars.themeJSPath}/jquery.artDialog.js?skin=idialog"></script>
+	<script type="text/javascript" src="#{tplVars.themeJSPath}/jquery.SuperSlide.2.1.1.js"></script>
+	<script type="text/javascript" src="#{tplVars.themeJSPath}/common.js"></script>
+	<script type="text/javascript" src="#{tplVars.themeJSPath}/timer.js"></script>
+    <script type="text/javascript">
+			function alreadyHas(){
+				if($(".valid-card")[0]){
+					$.dialog.alert('只能绑定一张银行卡，请先联系客服执行解绑操作。',
+								function() {
+									
+								});
+					return false;
+				}
+			}
+		</script>
+    </h:head>
+    <h:body>
+	<sec:ifNotGranted roles="INVESTOR">
+			<script>
+				$.dialog
+						.alert(
+								'您尚未拥有投资权限，请先进行实名认证!',
+								function() {
+									window.location.href = "#{path}/weixinuser/accountdetails";
+								});
+			</script>
+	</sec:ifNotGranted>
+	<sec:ifAllGranted roles="INVESTOR">
+	<h:form>
+	<div class="warp_1">
+	<div class="spe"></div>
+	<div class="top">
+    	<div class="top_inner">
+            <!--列表一-->
+            <div class="xiangqing">
+                <ui:repeat var="bankcard" value="#{bankCardList.getBankCardListbyLoginUser()}">
+	                <div class="inf xiang_con" style=" border-top: 2px solid #62ba50; border-radius:4px;">
+	                    <div class="inf_l_jilu" style="text-align:center;">
+	                    	<ui:fragment rendered="#{bankcard.status ne BankCardStatus.DELETED}">
+	                        	<img src="#{tplVars.themeImagePath}/yeepaybanklogo/#{bankcard.bankNo}.png" style=" padding:8% 0"/>
+	                        	<ui:param name="bcnL" value="#{bankcard.cardNo.length()}"></ui:param>
+	                            <p style="color:#afafaf;">#{fn:substring(bankcard.cardNo ,0,4)}**** **** #{fn:substring(bankcard.cardNo ,bcnL-4,bcnL)}</p>
+	                            <div class="bank" style="padding-top:2%;">
+	                            		<ui:fragment rendered="#{bankcard.status == 'VERIFIED'}">
+			                           		<a class="yhkxx_l valid-card" style="float:left;color:#41b42a;"  href="javascript:void(0);">通过</a>
+			                       		 </ui:fragment>
+			                        	<ui:fragment rendered="#{bankcard.status == 'VERIFYING'}">
+			                         		  <a class="yhkxx_l valid-card" style="float:left;color:#41b42a;"  href="javascript:void(0);"> 审核中</a>
+			                         	</ui:fragment>
+			                        	<ui:fragment rendered="#{bankcard.status == 'FAIL'}">
+			                         		   <a style="float:left;color:#41b42a;" href="javascript:void(0);" >审核失败</a>
+			                        	</ui:fragment>
+			                        	<ui:fragment rendered="#{bankcard.status == 'VERIFIED'}">
+	                                		<h:commandLink action="#{weixinBankCardHome.unbindingCardTrusteeship}" value="解除绑定" style="float:right;color:#41b42a;"></h:commandLink>
+	                                	</ui:fragment>
+	                                <div class="clear"></div>
+	                            </div>
+	                        </ui:fragment>
+	                    </div>
+	                </div>
+                </ui:repeat>
+                <div class="inf xiang_con" style=" border-top: 2px solid #62ba50; border-radius:4px;">
+                    <div class="inf_l_jilu" style="text-align:center;">
+                    	<a href="#" style="display:block;">
+                        	<h:commandLink  action="#{weixinBankCardHome.bindingCardTrusteeship}" onclick="return alreadyHas()">
+							   <img style=" padding:12% 0" src="#{tplVars.themeImagePath}/img46.png" />
+                        	<p style="color:#afafaf;">增加银行卡</p>
+							 </h:commandLink>
+                        </a>
+                    </div>
+                </div>
+            </div>
+<div class="tishi" style="padding-top:8%;padding-bottom:18%;">
+  	<p>绑卡小提示</p>
+    <ul>
+    	<li>1、如果您填写的银行卡信息不正确，可能将无法成功提现，由此产生的提现费用将不予返还。</li>
+        <li>2、不支持提现至信用卡账户。</li>
+        <li>3、一次只能绑定一张银行卡，如需更换卡请联系客服提出解绑申请。400-6855-400</li>
+    </ul> 	
+  </div>  
+            <!--列表一结束-->
+        </div>	
+    </div>
+</div> 
+</h:form>
+</sec:ifAllGranted>
+<ui:include src="../bottom.xhtml"></ui:include>
+    </h:body>
+</html>

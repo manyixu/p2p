@@ -1,0 +1,430 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	template="../page.xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pm="http://primefaces.org/mobile"
+	xmlns:archer="http://java.sun.com/jsf/archer"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:o="http://omnifaces.org/ui"
+	xmlns:sec="http://www.springframework.org/security/facelets/tags"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+	<f:metadata>
+		<f:viewParam name="loanId" value="#{loanHome.id}"></f:viewParam>
+	</f:metadata>
+
+	<ui:define name="content">
+	 <link href="#{tplVars.themeStylePath}/css/down.css" rel="stylesheet" type="text/css"/>
+    <link href="#{tplVars.themeStylePath}/css/base.css" rel="stylesheet" type="text/css"/>
+	  <script type="text/javascript">	
+	$(document).ready(function() {	
+		$(".subnav_1 a").css("backgroundColor","#fff");
+		$(".subnav_1 a").css("borderTop","1px solid #3ec226");
+		$(".subnav a").click(function(){
+		$(".subnav a").css("backgroundColor","#f9f9f9");
+		$(".subnav a").css("borderTop","1px solid #f9f9f9");		
+		$(this).css("backgroundColor","#fff");
+		$(this).css("borderTop","1px solid #3ec226");
+			});
+			$(".ma").hide()
+		$(".weixin").hover(function(){
+		$(".ma").show()
+		},function(){
+		$(".ma").hide()
+			});	
+	$('.frist').css("color","#3ec226");
+	$('.frist').css("borderBottom","2px solid #3ec226");
+	$(".nav li a ").click(function(){
+		$('.nav li a').css("color","#333");
+		$(".nav li a ").css("borderBottom","#fff");
+		$(this).css("color","#61bc51");
+		$(this).css("borderBottom","2px solid #3ec226");
+		});
+
+	$(".special_inner li").hover(function(){
+		$(this).find(".spec_pic img").addClass("xuanzhuan");
+		},function(){
+		$(this).find(".spec_pic img").removeClass("xuanzhuan");
+			});
+	$(function() {
+		});
+	$('.progressbar').each(function(){
+		var t = $(this),
+		dataperc = t.attr('data-perc'),
+		barperc = Math.round(dataperc*2.54);
+		t.find('.bar').animate({width:barperc}, dataperc*25);
+		t.find('.label').append('<div class="perc"></div>');
+		function perc(){
+			var length = t.find('.bar').css('width'),
+			perc = Math.floor(parseInt(length)/2.54),
+			labelpos = (parseInt(length)-2);
+			/*t.find('.label').css('left', labelpos);*/
+			t.find('.perc').text(perc+'%');
+		}
+		perc();
+		setInterval(perc, 0); 
+	});
+	
+	/* var flag=true;
+	$('.g').click(function(){
+	if(flag){
+            flag=false;
+			$(".g").attr("src","images/down_2_03.jpg");
+        }else{
+            flag=true;
+			$(".g").attr("src","images/down_1_03.jpg");
+        }
+		});
+	$(".subnav").pin();//固定导航方便搜索 */
+	});
+	
+	
+	</script>
+	 
+		<!--<link type="text/css" rel="stylesheet"
+			href="tplVars.themeStylePath/p2c.css" />
+		 <link type="text/css" rel="stylesheet"
+			href="#{tplVars.themeStylePath}/p2p.css" /> -->
+		<ui:param name="loan" value="#{loanHome.instance}"></ui:param>
+		<script>
+		//<![CDATA[
+		if (#{loanHome.instance.businessType eq '企业借款'}) {
+			window.location.href = "#{request.contextPath}/loan/#{loanHome.instance.id}";
+		}
+			//如果登录用户没有投资权限，则提示，并跳转页面。
+			function getInvestorPer() {
+				$.dialog
+						.confirm(
+								'您尚未进行实名认证无法投资，是否要实名认证？',
+								function() {
+									window.location.href = "#{request.contextPath}/user/get_investor_permission";
+									$.dialog.tips('正在为您跳转到页面');
+								});
+				return false;
+			}
+			//]]>
+		</script>
+		<div id="main">
+    	<div class="main_inner">
+			<!-- <p style=" padding-bottom:34px;"><a href="#{path}/" style="color:#666666">首页</a> > <a href="#" style="color:#666666">投资详情</a></p>  -->
+			 <div class="choice">
+				 <div class="ch_t">
+	                <p class="tit">#{loan.name}</p>
+	                <p class="xieyi"><a href="#{path}/fanben" target="_blank">《投资协议》范本</a></p>
+	                <div class="clear"></div>
+	            </div>
+	            <div class="ch_b">
+	            	<div class="content_l">
+	            		<div class="con_l_1">
+                    	<ul>
+                        	<li>
+                            	<div class="ti">
+                                	<p class="jie" style=" width:190px; margin-right:26px;">借款金额</p>
+                                    <p style=" color:#333;"><a style=" color:#fb9e3b;font-size:14px;">￥</a><span style="color:#ff8426; font-family:Arial, Helvetica, sans-serif; font-size:20px;"><h:outputText value="#{loan.loanMoney}">
+								<f:convertNumber type="number" />
+							</h:outputText></span></p>
+                                </div>
+                            </li>
+                            <li>
+                            	<div class="ti" style="width:80px; margin-right:135px;">
+                                	<p class="jie">年利率</p>
+                                    <p style="color:#333;"><span style="color:#ff8426; font-family:Arial, Helvetica, sans-serif; font-size:20px;"><h:outputText value="#{loan.ratePercent}">
+									<f:convertNumber minFractionDigits="2" />
+								</h:outputText></span><a style="color:#fb9e3b;font-size:14px;">%</a></p>
+                                </div>
+                            </li>
+                            <li>
+                            	<div class="ti" style="width:80px;">
+                                	<p class="jie">还款期限</p>
+                                    <p style="color:#333;"><span style="color:#ff8426; font-family:Arial, Helvetica, sans-serif; font-size:19px;">#{loan.deadline*loan.type.repayTimePeriod}</span><a style="color:#fb9e3b;font-size:14px;">#{dictUtil.getValue('repay_unit',loan.type.repayTimeUnit)}</a></p>
+                                </div>
+                            </li>
+                            <div class="clear"></div>
+                        </ul>
+                    </div>
+                    <div class="con_l_2">
+                    	<ul>
+                        	<li>
+                            	<div class="ti">
+                                	<p class="jie" style=" width:190px; margin-right:26px;">发布时间</p>
+                                    <p style="color:#666;font-size:14px;"><h:outputText value="#{loan.commitTime}">
+								<f:convertDateTime pattern="yyyy-MM-dd" locale="cn"
+									timeZone="GMT+8"></f:convertDateTime>
+							</h:outputText></p>
+                                </div>
+                            </li>
+                            <li>
+                            	<div class="ti" style="width:80px; margin-right:135px;">
+                                	<p class="jie">保障方式</p>
+                                    <p style="color:#666;font-size:14px;">本息</p>
+                                </div>
+                            </li>
+                            <li>
+                            	<div class="ti">
+                                	<p class="jie">还款方式</p>
+                                    <p style="color:#666;font-size:14px;">#{dictUtil.getValue('repay_type',loan.type.repayType)} <!-- <a href="#" style="color:#3ec226; padding-left:33px;">详情</a> --></p>
+                                </div>
+                            </li>
+                            <div class="clear"></div>
+                        </ul>
+                    </div>
+                    <div class="con_l_3">
+                    	<ul>
+                        	<li class="jie">
+                        	<ui:param name="cr" value="#{loanCalculator.calculateRaiseCompletedRate(loan.id)}"></ui:param>
+                            	<div class="ti" style="margin-right:176px;">
+                                	<p class="jie">投标进度</p>
+                                    <div class="progressbar" data-perc="#{cr}">
+                                        <div class="bar color2"  style="float:left;"><span></span></div>
+                                        <div class="label"  style=" float:left;"></div>
+                                		<div class="clear"></div>
+                           			</div>
+                                </div>
+                            </li>
+                            <li>
+                            	<div class="ti">
+                                	<p class="jie" >剩余时间</p>
+                                    <p style="color:#666;font-size:14px;">#{loanCalculator.calculateRemainTime(loan.id)}</p>
+                                </div>
+                            </li>
+                            <div class="clear"></div>
+                        </ul>	
+                    </div>
+	            	</div>
+                     <div class="content_r">
+                	<div class="c_r_t">
+                        <p style=" color:#666; padding-bottom: 30px;">可投金额:<span style="color:#ff8426;margin-left:10px;">￥</span><span style=" font-family:Arial, Helvetica, sans-serif;color:#ff8426; font-size:22px;"><h:outputText
+								value="#{loanCalculator.calculateMoneyNeedRaised(loan.id)}">
+								<f:convertNumber type="number" />
+							</h:outputText></span> </p>
+                        <p style=" color:#666;">账户余额:<span style=" font-size:18px;margin-left:8px;"><h:outputLabel
+										value="#{userBillHome.getBalanceByUserId(loginUserInfo.loginUserId)}">
+										<f:convertNumber  type="currency"/>
+									</h:outputLabel></span> </p>
+                        <a href="#{path}/user/recharge" class="bnt btn_6">充值</a>
+                        <div class="clear"></div>
+                    </div>
+                  <h:form>
+                  <ui:fragment rendered="#{loan.status ==LoanStatus.RAISING}">
+							
+                    <div class="pay">	
+                        <label class="pwd ft">元</label>
+                        <div class="waikuang">
+                        <p class="inputp">
+                        	<h:inputText label="投资金额" value="#{investHome.instance.money}"
+										styleClass="kuang1 ft" required="true"
+										requiredMessage="投资金额不能为空！">
+										<f:ajax event="blur" render="@this"></f:ajax>
+										 <!-- <ui:fragment rendered="#{loan.loanAttrs!='[]' and loan.loanAttrs.get(0).id=='freshman'}">
+										 <o:validator validatorId="javax.faces.DoubleRange"
+											minimum="#{loan.minInvestMoney}"
+											maximum="#{investHome.makeTopInvest(user.id,loan.id)}"></o:validator>
+										</ui:fragment> -->
+										<o:validator validatorId="javax.faces.DoubleRange"
+											minimum="#{loan.minInvestMoney}"
+											maximum="#{loanCalculator.calculateMoneyMaxInvested(loan.id)}"></o:validator>
+										<o:validator
+											validatorId="com.esoft.core.validator.NumberValidator"
+											cardinalNumber="#{loan.cardinalNumber}"></o:validator>
+									</h:inputText>
+									</p>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                    <!-- <p style=" color:#666; margin-bottom:25px;">预计收益<span style=" color:#333;">￥</span><span style=" font-family:Arial, Helvetica, sans-serif;color:#fb9e3b; font-size:22px;">00.000</span> </p> -->
+                    <div class="fuwu">
+                    	<!-- <div class="gou"><img src="#{tplVars.themeImagePath}/img/down_1_03.jpg" class="g"/></div> -->
+                        <!-- <p><a href="#">全利网投资咨询服务协议</a></p> -->
+                        <div class="clear"></div>
+                    </div>
+                     <div class="pay_btn" style="position:relative;">
+                     				<ui:fragment rendered="#{empty loginUserInfo.loginUserId}">
+										<h:link outcome="pretty:memberLogin" styleClass="primaryi">
+											<f:param name="spring-security-redirect"
+												value="/p2p_loan/#{loan.id}" />
+											<h:outputText value="立即投资"></h:outputText>
+										</h:link>
+									</ui:fragment>
+									<ui:fragment rendered="#{not empty loginUserInfo.loginUserId}">
+										<sec:ifNotGranted roles="INVESTOR">
+											<a class="primaryi" href="javascript:void(0)"
+												onclick="getInvestorPer();">立即投资</a>
+										</sec:ifNotGranted>
+
+										 <sec:ifAllGranted roles="INVESTOR">
+										 	<!-- 如果是新手标则判断是否投资过 -->
+											<ui:fragment rendered="#{loan.loanAttrs!='[]' and loan.loanAttrs.get(0).id=='freshman'}">
+												<!-- 判断是否投资过新手标取值 -->
+												<ui:repeat var="flg" value="#{investHome.investLoanPD}" varStatus="status">
+													<ui:fragment rendered="#{flg=='Y'}">
+														<h:commandLink styleClass="primaryi" onclick="javascript:alert('本次活动仅限于新用户参与，您非全利网的新用户，不可以享受该新手标');" value="立即投资">
+														</h:commandLink>
+													</ui:fragment>
+													<ui:fragment rendered="#{flg=='N'}">
+														<h:commandLink styleClass="primaryi" action="#{investHome.save}" value="立即投资"
+															onclick="return confirm('您确定要投资吗？');">
+															<f:setPropertyActionListener
+																target="#{investHome.instance.loan}" value="#{loan}"></f:setPropertyActionListener>
+														</h:commandLink>
+													</ui:fragment>
+												</ui:repeat>
+											</ui:fragment>
+										<!-- 如果不是新手标则显示正常 -->
+											<ui:fragment rendered="#{loan.loanAttrs=='[]' || loan.loanAttrs.get(0).id!='freshman'}">
+												<h:commandLink styleClass="primaryi"
+													action="#{investHome.save}" value="立即投资"
+													onclick="return confirm('您确定要投资吗？');">
+													<f:setPropertyActionListener
+														target="#{investHome.instance.loan}" value="#{loan}"></f:setPropertyActionListener>
+												</h:commandLink>
+											</ui:fragment>
+										</sec:ifAllGranted>
+									</ui:fragment>
+                    	<!-- <input type="submit" class="primary" value="立即投资" id="butt"/> -->
+                    </div>
+                    </ui:fragment>
+                 </h:form> 
+                </div>
+                	<div class="clear"></div>
+	            </div>
+			 </div>
+			<!--详情结束 -->
+<!--项目描述和记录 -->
+			 <div class="project">
+            <div class="subnav">
+            	<ul>
+            		<li class="subnav_1" id="descriptionBtn" onclick="scrollTo1('description')"><a href="#pr_c1">标的详情</a></li>
+                    <li id="investsBtn" onclick="scrollTo1('invests')"><a href="#pr_c2"> 投标记录</a></li>
+                    <div class="clear"></div>
+                </ul>
+             </div>
+             <!-- <div style="height:84px;">
+				<ul class="map" style="z-index: 999;">
+					<li class="hover" id="descriptionBtn" onclick="scrollTo1('description')">标的详情</li> 
+					<li id="investsBtn" onclick="scrollTo1('invests')">投标记录</li> 
+					<li id="commnetsBtn" onclick="scrollTo1('comments')">留言板</li>
+				</ul>
+			</div> -->
+             <div class="project_con">
+             	<!-- <div class="tab-content"> -->
+             	<div class="xiangqing">
+				<a name="pr_c1" id="pr_c1"><p class="miaoshu">项目描述</p></a>
+				<div class="list_loan-detail">
+					<h:outputText value="#{loan.description}" escape="false"></h:outputText>
+				</div>
+				</div>
+				<div  class="jilu">
+				<p class="miaoshu" id="pr_c2">投标记录</p>
+				<h:form id="investsForm">
+				
+				<ul class="miano_1">
+                        	<li class="m_1">投资人</li>
+                            <li class="m_2">投资金额</li>
+                            <li class="m_3">投资时间</li>
+                            <li class="m_4">状态</li>
+                        </ul>
+                            <div class="clear"></div>
+						<f:event type="preRenderComponent"
+							listener="#{investList.example.loan.setId(loan.id)}"></f:event>
+						<f:event type="preRenderComponent"
+							listener="#{investList.addOrder('invest.time','desc')}"></f:event>
+						<f:event type="preRenderComponent"
+						listener="#{investList.addRestriction('invest.status != \'cancel\'')}"></f:event>
+							<f:event type="preRenderComponent"
+									listener="#{investList.setPageSize(10)}"></f:event>
+						<ui:repeat var="invest" value="#{investList.lazyModelData}">
+							<ul class="miao_2">
+                        	<li class="m_1">#{invest.user.username.substring(0,2)}***</li>
+                            <li class="m_2"><h:outputText
+										value="#{invest.investMoney}">
+										<f:convertNumber maxFractionDigits="2" />
+									</h:outputText>元</li>
+                            <li class="m_3"><h:outputText value="#{invest.time}">
+										<f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss" locale="cn"
+											timeZone="GMT+8"></f:convertDateTime>
+									</h:outputText></li>
+                            <li class="m_4"><ui:fragment rendered="#{invest.status ==LoanStatus.REPAYING}">
+									投标成功
+								</ui:fragment>
+								<ui:fragment rendered="#{invest.status !=LoanStatus.REPAYING}">
+									#{dictUtil.getValue('invest_status',invest.status)}
+								</ui:fragment></li>
+                        </ul>
+                            <div class="clear"></div>
+						</ui:repeat>
+					<div class="pagebar">
+						<ui:include
+							src="#{tplVars.componentsPath}/loan-list_invests-paging_include.xhtml"></ui:include>
+					</div>
+				</h:form>
+			</div>
+				
+             </div>
+             </div>
+		</div>
+		</div>
+		<script>
+			//<![CDATA[
+			jQuery(".img-scroll").slide({
+				mainCell : ".bd div",
+				autoPage : true,
+				effect : "left",
+				autoPlay : true,
+				vis : 4
+			});
+
+			var $map = $(".map");
+			var $guaranteeInfoPics = $("#comments");
+			var floatHeight = $map.offset().top;
+			var guaranteeInfoPicsHeight = $guaranteeInfoPics.offset().top
+					+ $guaranteeInfoPics.height() - $map.height();
+			function tools() {
+				var top = $(document).scrollTop();
+				if (top > floatHeight && top < guaranteeInfoPicsHeight)
+					$map.css({
+						position : "fixed",
+						top:0
+						//top : $(document).scrollTop() - floatHeight
+					});
+				if (top <= floatHeight)
+					$map.css({
+						position : "static",
+						top : 0
+					});
+				if (top >= guaranteeInfoPicsHeight)
+					$map.css({
+						position : "static",
+						top : guaranteeInfoPicsHeight
+					});
+
+				$(".map li").removeClass("hover");
+				if (top >= $("#comments").offset().top - $map.height()) {
+					$("#commnetsBtn").addClass("hover");
+				} else if (top >= $("#invests").offset().top - $map.height()) {
+					$("#investsBtn").addClass("hover");
+				} else {
+					$("#descriptionBtn").addClass("hover");
+				}
+			}
+			window.onload = tools;
+			window.onscroll = tools;
+			window.onresize = tools;
+
+			function scrollTo1(id) {
+				var h = $("#" + id).offset().top - $map.height();
+				$('html, body').animate({
+					scrollTop : h
+				}, 300);
+			}
+
+			function afterMessageSubmit(xhr, status, args) {
+				if (!args.validationFailed) {
+					nextVerifyCode();
+					$('#commentForm\\:commentBody').val('');
+				}
+				$('#commentForm\\:captcha').val('');
+			}
+			//]]>
+		</script>
+	</ui:define>
+</ui:composition>

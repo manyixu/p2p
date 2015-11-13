@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pm="http://primefaces.org/mobile"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:o="http://omnifaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:archer="http://java.sun.com/jsf/archer"
+	xmlns:sec="http://www.springframework.org/security/facelets/tags">
+	<h:head>
+	<title>投资记录</title>
+	<meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no"/>
+	<meta name="apple-touch-fullscreen" content="yes"/> <!--  一会试验下是否有必要存在 -->
+	<meta name="apple-mobile-web-app-capable" content="yes"/>
+	<meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+	<meta name="format-detection" content="telephone=no"/>
+	<meta http-equiv="x-rim-auto-match" content="none"/>
+	<link href="#{tplVars.themeStylePath}/weixincss/down.css" rel="stylesheet" type="text/css"/>
+    <link href="#{tplVars.themeStylePath}/weixincss/mobilebase.css" rel="stylesheet"/>
+	<script>
+			/**清除筛选条件*/
+			function clearFilters() {
+				$(".datepicker").val('');
+				$("#dataTable\\:typeInfoFilter").val('');
+			}
+		</script>
+	<o:importConstants type="com.esoft.jdp2p.invest.InvestConstants.InvestStatus" />
+    </h:head>
+    <h:body style="background:#f2f2f2;">
+    <h:form>
+   <div class="warp_2">
+	<div class="spe"></div>
+	<div class="top">
+    	<div class="top_inner">
+        	<!--标状态nav开始-->
+        	
+            <div class="nav">
+                <ul>
+                    <li>
+                    	<h:commandLink  styleClass="chlid bak"  title="还款中" value="还款中">
+								<f:ajax render="dataTable"
+									listener="#{investList.example.setStatus('repaying')}">
+								</f:ajax>
+							</h:commandLink>
+                    </li>
+                    <li>
+                    	<h:commandLink  styleClass="chlid"  title="已结清" value="已结清">
+								<f:ajax render="dataTable"
+									listener="#{investList.example.setStatus('complete')}">
+								</f:ajax>
+							</h:commandLink>
+                    </li>
+                    <li>
+							<h:commandLink  styleClass="chlid"  title="投标中" value="投标中">
+								<f:ajax render="dataTable"
+									listener="#{investList.example.setStatus('bid_success')}">
+								</f:ajax>
+							</h:commandLink>
+                    </li>
+                    <li>
+                    	<h:commandLink style="border:none;" styleClass="chlid"  title="未成功" value="未成功">
+								<f:ajax render="dataTable"
+									listener="#{investList.example.setStatus('cancel')}">
+								</f:ajax>
+							</h:commandLink>
+                    </li>
+                    <div  class="clear"></div>
+                </ul>
+            </div>
+            <div class="down_bt"  style="padding-bottom:20%;">
+            <!--标状态nav结束-->
+			<f:event type="preRenderComponent" listener="#{investList.example.user.setUsername(loginUserInfo.loginUserId)}"></f:event>
+			<f:event type="preRenderComponent" listener="#{investList.example.setStatus('repaying')}"></f:event>
+			<f:event type="preRenderComponent" listener="#{investList.addOrder('time','desc')}"></f:event>
+			<h:panelGroup id="dataTable">
+			<ui:fragment rendered="#{investList.example.getStatus() == InvestStatus.BID_SUCCESS}">
+				<ui:param name="restriction" value="#{'(invest.status=\''}#{InvestStatus.BID_SUCCESS}#{'\' or invest.status=\''}#{InvestStatus.WAIT_AFFIRM}#{''}')"></ui:param>
+				<f:event type="preRenderComponent" listener="#{investList.addRestriction(restriction)}"></f:event>
+			</ui:fragment>
+			<ui:fragment rendered="#{investList.example.getStatus() != InvestStatus.BID_SUCCESS}">
+				<ui:param name="restriction" value="#{'(invest.status=\''}#{InvestStatus.BID_SUCCESS}#{'\' or invest.status=\''}#{InvestStatus.WAIT_AFFIRM}#{''}')"></ui:param>
+				<f:event type="preRenderComponent" listener="#{investList.removeRestriction(restriction)}"></f:event>
+			</ui:fragment>
+			<script type="text/javascript" src="#{tplVars.themeJSPath}/weixinjs/jquery-1.8.0.min.js"></script>
+			<script type="text/javascript" src="#{tplVars.themeJSPath}/weixinjs/base.js"></script>
+			<ui:fragment rendered="#{investList.lazyModelDataNoPage == '[]'}">
+            	<p style="color:#999;padding:3% 3%;text-align:center; ">没有记录</p>
+            </ui:fragment>
+            
+			<ui:repeat var="invest" value="#{investList.lazyModelDataNoPage}" varStatus="status">
+            <div class="xiangqing">
+            	<div class="xiang_t">
+                    <p style="color:#58b85f"><a href="#{path}/weixinapp/loanDetail/#{invest.loan.id}">#{stringHome.ellipsis(invest.loan.name,15)}</a></p>  
+                    <p class="toggle xiangmu js_btn_chakan" style="float:right; padding-right:3%; color:#afafaf">查看</p>
+                    <div class="clear"></div>
+                </div>
+                <div class="inf xiang_con js_zhankai">
+                    <div class="inf_l_jilu">
+                    	<!-- 还款中 -->
+                    	<ui:fragment rendered="#{investList.example.getStatus() == InvestStatus.REPAYING}">
+	                    	<ul>
+	                        	<li>项目名称：<span class="star"><a href="#{path}/weixinapp/loanDetail/#{loan.id}" style=" font-size:3vw; color:#afafaf;">#{stringHome.ellipsis(invest.loan.name,15)}</a></span><br/> 利       率：<i style="color:#afafaf;"><h:outputText value="#{invest.rate}">
+													<f:convertNumber type="percent" minFractionDigits="2" />
+												</h:outputText> </i><br/> 期     数：<i style="color:#afafaf;">#{invest.repayRoadmap.paidPeriod}/#{invest.repayRoadmap.repayPeriod}</i></li>
+	                            <li>投资时间：<span><h:outputText
+										value="#{invest.time}">
+										<f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss"
+											timeZone="GMT+8" locale="zh_CN" />
+									</h:outputText></span></li>
+	                            <li>投资金额/待收本息：<span class="end"><h:outputText value="#{invest.money}">
+													<f:convertNumber />
+												</h:outputText>/<h:outputText value="#{invest.repayRoadmap.unPaidMoney}">
+													<f:convertNumber maxFractionDigits="2" />
+												</h:outputText></span></li>
+	                            <li>下次还款日：<span><h:outputText
+													value="#{invest.repayRoadmap.nextRepayDate}">
+													<f:convertDateTime pattern="yyyy-MM-dd" timeZone="GMT+8" />
+												</h:outputText></span></li>
+	                            <li>下次还款：<span><h:outputText
+													value="#{invest.repayRoadmap.nextRepayMoney}">
+													<f:convertNumber maxFractionDigits="2" />
+												</h:outputText>元</span></li>
+	                            <li><a href="#{path}/weixinuser/repaymentschedule/#{invest.loan.id}" style=" color:#62ba50; font-size:3vw;">还款计划</a>
+	                            	 | <a href="#{path}/user/invest-contract/#{invest.id}" style=" color:#62ba50; font-size:3vw; ">合同</a>
+	                            </li>
+	                        </ul>
+                        </ui:fragment>
+                        <!-- 已结清-->
+                    	<ui:fragment rendered="#{investList.example.getStatus() == InvestStatus.COMPLETE}">
+	                    	<ul>
+	                        	<li>项目名称：<span class="star"><a href="#{path}/weixinapp/loanDetail/#{loan.id}" style=" font-size:3vw; color:#afafaf;">#{stringHome.ellipsis(invest.loan.name,15)}</a></span><br/> 利       率：<i style="color:#afafaf;"><h:outputText value="#{invest.rate}">
+													<f:convertNumber type="percent" minFractionDigits="2" />
+												</h:outputText> </i><br/> 期     数：<i style="color:#afafaf;">#{invest.repayRoadmap.paidPeriod}/#{invest.repayRoadmap.repayPeriod}</i></li>
+	                            <li>投资金额：<span><h:outputText value="#{invest.money}">
+													<f:convertNumber />
+												</h:outputText>元</span></li>
+	                            <li>回收金额/已赚金额：<span class="end"><h:outputText value="#{invest.repayRoadmap.paidMoney}">
+												<f:convertNumber />
+											</h:outputText>/<h:outputText value="#{invest.repayRoadmap.paidInterest}">
+												<f:convertNumber maxFractionDigits="2" />
+											</h:outputText></span></li>
+	                            <li>投资时间：<span><h:outputText
+										value="#{invest.time}">
+										<f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss"
+											timeZone="GMT+8" locale="zh_CN" />
+									</h:outputText></span></li>
+	                            <li>结清日期：<span><h:outputText
+												value="#{invest.loan.completeTime}">
+												<f:convertDateTime pattern="yyyy-MM-dd" />
+											</h:outputText></span></li>
+	                            <li>
+	                            	<a style=" color:#62ba50; font-size:3vw;" href="#{path}/weixinuser/collectiondetails/#{invest.id}">收款详情</a>
+	                            	 | <a href="#{path}/user/invest-contract/#{invest.id}" style=" color:#62ba50; font-size:3vw; ">合同</a>
+	                            </li>
+	                        </ul>
+                        </ui:fragment>
+                        <!-- 投标中-->
+                    	<ui:fragment rendered="#{investList.example.getStatus() == InvestStatus.BID_SUCCESS}">
+	                    	<ul>
+	                        	<li>项目名称：<span class="star"><a href="#{path}/weixinapp/loanDetail/#{loan.id}" style=" font-size:3vw; color:#afafaf;">#{stringHome.ellipsis(invest.loan.name,15)}</a></span><br/> 利       率：<i style="color:#afafaf;">
+	                        					<h:outputText value="#{invest.rate}">
+													<f:convertNumber type="percent" minFractionDigits="2" />
+												</h:outputText> </i><br/> 期     数：<i style="color:#afafaf;">
+													<h:outputText
+												value="#{invest.loan.deadline/invest.loan.type.repayTimePeriod}">
+												<f:convertNumber maxFractionDigits="0" />
+											</h:outputText>
+												</i></li>
+	                            <li>投资时间：<span><h:outputText
+										value="#{invest.time}">
+										<f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss"
+											timeZone="GMT+8" locale="zh_CN" />
+									</h:outputText></span></li>
+	                            <li>投资金额：<span><h:outputText value="#{invest.money}">
+													<f:convertNumber />
+												</h:outputText>元</span></li>
+	                            <li>剩余时间：<span class="end">#{loanCalculator.calculateRemainTime(invest.loan.id)}</span></li>
+	                            <li>投标进度：
+	                            	<span>
+		                            	<ui:param name="cr"
+												value="#{loanCalculator.calculateRaiseCompletedRate(invest.loan.id)}"></ui:param>
+										#{cr}%
+	                            	</span>
+	                            </li>
+	                            <li>投标状态：<span>#{dictUtil.getValue('invest_status', invest.status)}</span></li>
+	                        </ul>
+                        </ui:fragment>
+                        <!-- 未成功-->
+                    	<ui:fragment rendered="#{investList.example.getStatus() == InvestStatus.CANCEL}">
+	                    	<ul>
+	                        	<li>项目名称：<span class="star"><a href="#{path}/weixinapp/loanDetail/#{loan.id}" style=" font-size:3vw; color:#afafaf;">#{stringHome.ellipsis(invest.loan.name,15)}</a></span><br/> 利       率：<i style="color:#afafaf;"><h:outputText value="#{invest.rate}">
+													<f:convertNumber type="percent" minFractionDigits="2" />
+												</h:outputText> </i><br/> 期     数：<i style="color:#afafaf;">#{invest.repayRoadmap.paidPeriod}/#{invest.repayRoadmap.repayPeriod}</i></li>
+	                            <li>投资时间：<span><h:outputText
+										value="#{invest.time}">
+										<f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss"
+											timeZone="GMT+8" locale="zh_CN" />
+									</h:outputText></span></li>
+	                            <li>投资金额：<span><h:outputText value="#{invest.money}">
+													<f:convertNumber />
+												</h:outputText>元</span></li>
+	                            <li>投标期限：<span class="end">#{invest.loan.deadline*invest.loan.type.repayTimePeriod}(#{dictUtil.getValue('repay_unit',invest.loan.type.repayTimeUnit)})</span></li>
+	                            <li>投标状态：<span>#{dictUtil.getValue('invest_status', invest.status)}</span></li>
+	                        </ul>
+                        </ui:fragment>
+                    </div>
+
+                </div>
+            </div>
+            </ui:repeat>
+            </h:panelGroup>
+            </div>
+    </div>
+</div>   
+</div>
+</h:form>
+<ui:include src="../bottom.xhtml"></ui:include>
+    </h:body>
+</html>

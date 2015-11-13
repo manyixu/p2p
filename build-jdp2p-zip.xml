@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<project name="com.esoft.jdp2p" default="zip" basedir=".">
+	<target name="clean">
+		<delete dir="dist/zip"/>
+	</target>
+	<path id="classpath">
+		<fileset dir="lib">
+			<include name="*.jar"/>
+		</fileset>
+	</path>
+
+	<target name="init">
+		<mkdir dir="dist/zip" />
+		<mkdir dir="dist/zip/jdp2p" />
+	</target>
+	
+	<target name="copyResources">
+		<copy todir="dist/zip/jdp2p" includeEmptyDirs="yes">
+			<fileset dir="WebRoot">
+				<patternset>
+					<exclude name="WEB-INF/classes/com/" />
+					<exclude name="WEB-INF/classes/org/" />
+					<exclude name="WEB-INF/classes/weibo4j/" />
+					<exclude name="WEB-INF/classes/spring-config/" />
+				</patternset>
+			</fileset>
+		</copy>
+		<copy todir="dist/zip/jdp2p/WEB-INF/lib" >
+			<fileset dir="lib"></fileset>
+		</copy>
+		<copy todir="dist/zip/jdp2p/WEB-INF/lib" >
+			<fileset dir="dist/jar"></fileset>
+		</copy>
+	</target>
+	
+	
+	<target name="compile" depends="clean,init,copyResources">
+		
+
+	</target>
+
+	<target name="zip" depends="compile">
+		<zip destfile="dist/zip/jdp2p.zip" basedir="dist/zip/"></zip>
+		<delete dir="dist/zip/jdp2p"></delete>
+	</target>
+</project>

@@ -1,0 +1,84 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	 xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pm="http://primefaces.org/mobile"
+	xmlns:archer="http://java.sun.com/jsf/archer"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:o="http://omnifaces.org/ui"
+	xmlns:sec="http://www.springframework.org/security/facelets/tags"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+	
+<script>
+
+</script>
+	 <link href="#{tplVars.themeStylePath}/zhongqiu.css" rel="stylesheet" type="text/css"/>
+	  <h:body>
+		<div id="top">
+	<div class="pic1"><img src="#{tplVars.themeImagePath}/zhongqiu/banner_0_02.jpg"/></div>
+    <div class="pic2"><img src="#{tplVars.themeImagePath}/zhongqiu/banner_1_02.png"/></div>
+</div>
+<div id="header"></div>
+<div id="main" style="text-align: center">
+	<div class="main_inner">
+    	<div class="pic3"><img src="#{tplVars.themeImagePath}/zhongqiu/banner2_04.jpg"/></div>
+        <div class="pic4"></div>
+        <div class="btn">
+        <!-- 是否实名认证 -->
+        	<sec:ifAllGranted roles="INVESTOR">
+            <a href="#{request.contextPath}/user/get_investor_permission"><img src="#{tplVars.themeImagePath}/zhongqiu/zhong_1_08.png"/></a>
+           </sec:ifAllGranted>
+           <sec:ifNotGranted roles="INVESTOR">
+           <a href="#{request.contextPath}/user/get_investor_permission"><img src="#{tplVars.themeImagePath}/zhongqiu/zhong_1_09.png"/></a>
+           </sec:ifNotGranted>
+           <!-- 是否绑定银行卡 -->
+           
+           <ui:repeat var="bankcard" value="#{bankCardList.bankCardListbyLoginUser}">
+           	<ui:fragment rendered="#{bankcard.status eq'VERIFIED'}">
+           	<f:event type="preRenderComponent" listener="#{withdrawHome.instance.setBankCard(bankcard)}"></f:event>
+           	</ui:fragment>
+            </ui:repeat>
+           <ui:fragment rendered="#{withdrawHome.instance.bankCard.id!=null}">
+            <a href="#{request.contextPath}/user/bankCardList"><img src="#{tplVars.themeImagePath}/zhongqiu/zhong_2_08.png"/></a>
+            </ui:fragment>
+            <ui:fragment rendered="#{withdrawHome.instance.bankCard.id==null}">
+            <a href="#{request.contextPath}/user/bankCardList"><img src="#{tplVars.themeImagePath}/zhongqiu/zhong_2_09.png"/></a>
+            </ui:fragment>
+            <!-- 是否投资 -->
+            <ui:fragment rendered="#{holidayController.getTouZi(loginUserInfo.loginUserId) == 'Y'}">
+            <a href="#{request.contextPath}/p2p_loan-list"><img src="#{tplVars.themeImagePath}/zhongqiu/zhong_3_08.png"/></a>
+    		</ui:fragment>
+            <ui:fragment rendered="#{holidayController.getTouZi(loginUserInfo.loginUserId) == 'N'}">
+            <a href="#{request.contextPath}/p2p_loan-list"><img src="#{tplVars.themeImagePath}/zhongqiu/zhong_3_09.png"/></a>
+    		</ui:fragment>
+    		
+    	</div>
+    	<h:form>
+    	
+    	<ui:repeat var="bankcard" value="#{bankCardList.getBankCardListbyLoginUser()}">
+    		<ui:fragment rendered="#{bankcard.status eq'VERIFIED'}">
+           		<f:event type="preRenderComponent" listener="#{withdrawHome.instance.setBankCard(bankcard)}"></f:event>
+           	</ui:fragment>
+            </ui:repeat>
+           <ui:fragment rendered="#{withdrawHome.instance.bankCard.id!=null}">
+            <p><h:commandLink styleClass="primary" action="#{holidayController.saveHoliday}"><img src="#{tplVars.themeImagePath}/zhongqiu/zhong_4_12.jpg"/></h:commandLink></p>
+            </ui:fragment>
+            <ui:fragment rendered="#{withdrawHome.instance.bankCard.id==null}">
+            <p><a  onclick="javascript:alert('亲,请检查是否实名认证并绑定了银行卡!~哦')"><img src="#{tplVars.themeImagePath}/zhongqiu/zhong_4_12.jpg"/></a></p>
+            <div style="color: #e93c46;font-size: 14px;font-family:'微软雅黑',Arial, Helvetica, sans-serif ;font-weight: bold;padding: 0px 0px 60px 0px;">亲,请检查是否实名认证并绑定了银行卡!~哦</div>
+            </ui:fragment>
+    	
+    	
+    	
+    	
+		</h:form>
+    </div>
+</div>
+<div id="footer">
+	<div class="footer_inner">
+    	<p>©2015 ALL Rights Reserved 北京全利汇丰信息服务有限公司 | 京ICP备15031017号</p>
+    </div>
+</div>
+</h:body>
+</ui:composition>

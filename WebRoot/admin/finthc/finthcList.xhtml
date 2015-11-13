@@ -1,0 +1,121 @@
+<ui:composition template="/admin/templates/ui.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:composite="http://java.sun.com/jsf/composite/primefaces"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:sec="http://www.springframework.org/security/facelets/tags">
+
+	<o:importConstants
+		type="com.esoft.fintheircing.FinthcConstants.FinthcStatus" />
+
+	<ui:define name="content">
+		<div class="entry">
+			<p:toolbar>
+				<p:toolbarGroup>
+					<h:outputLabel style="padding-left: 15px;"
+						value="#{commonMsg.currentPositionLabel}配资规则管理"></h:outputLabel>
+				</p:toolbarGroup>
+				<p:toolbarGroup align="right">
+					<p:separator />
+					<p:button value="新增" outcome="/admin/finthc/finthcEdit"></p:button>
+				</p:toolbarGroup>
+			</p:toolbar>
+			<h:form id="form">
+
+				<p:spacer></p:spacer>
+
+				<p:dataTable id="dataTable" value="#{finthcList.lazyModel}"
+					var="finthc" paginator="true" paginatorPosition="bottom" rows="15"
+					lazy="true" emptyMessage="#{commonMsg.noResultMsg}"
+					currentPageReportTemplate="#{commonMsg.pageReportTemplate}"
+					paginatorTemplate="#{commonMsg.paginatorTemplate}">
+
+					<p:column headerText="编号">
+						<h:outputText value="#{finthc.id}"></h:outputText>
+					</p:column>
+					<p:column headerText="名称">
+						<h:outputText value="#{finthc.name}"></h:outputText>
+					</p:column>
+					<p:column headerText="最大时长">
+						<h:outputText value="#{finthc.maxDeadline}"></h:outputText>
+					</p:column>
+					<p:column headerText="最小时长">
+						<h:outputText value="#{finthc.minDeadline}"></h:outputText>
+					</p:column>
+					<p:column headerText="时长单位">
+						<h:outputText value="#{finthc.unit}"></h:outputText>
+					</p:column>
+					<p:column headerText="最低保证金">
+						<h:outputText value="#{finthc.minCashDeposit}">
+							<f:convertNumber minIntegerDigits="1" maxFractionDigits="2" /></h:outputText>
+					</p:column>
+					<p:column headerText="最高保证金">
+						<h:outputText value="#{finthc.maxCashDeposit}">
+							<f:convertNumber minIntegerDigits="1" maxFractionDigits="2" />
+						</h:outputText>
+					</p:column>
+					<p:column headerText="管理费比例">
+						<h:outputText value="#{finthc.manageFee}">
+							<f:convertNumber minIntegerDigits="1" maxFractionDigits="4" />
+						</h:outputText>
+					</p:column>
+					<p:column headerText="杠杆">
+						<p:commandLink oncomplete="PF('leversDlg').show()"
+							update=":leversDialog" action="#{finthcHome.setInstance(null)}"
+							value="查看">
+							<f:setPropertyActionListener target="#{finthcHome.id}"
+								value="#{finthc.id}"></f:setPropertyActionListener>
+						</p:commandLink>
+					</p:column>
+
+					<p:column headerText="状态">
+						<h:outputText value="#{finthc.status}"></h:outputText>
+					</p:column>
+
+					<p:column headerText="操作">
+						<h:link value="[编辑]"
+							outcome="/admin/finthc/finthcEdit?id=#{finthc.id}">
+						</h:link>
+					</p:column>
+				</p:dataTable>
+			</h:form>
+		</div>
+
+		<!-- 杠杆 -->
+		<p:dialog id="leversDialog" widgetVar="leversDlg" header="杠杆详情">
+			<ui:repeat var="lever" value="#{finthcHome.instance.levers}">
+				<p:panel>
+					<f:facet name="header">
+									#{lever.name}
+								</f:facet>
+					<h:panelGrid columns="2" cellpadding="5"
+						columnClasses="col-img-prop,col-img">
+						<ui:fragment>
+							<h:outputText value="倍数:"></h:outputText>
+							<h:outputText value="#{lever.multiple}"></h:outputText>
+						</ui:fragment>
+						<ui:fragment>
+							<h:outputText value="利率:"></h:outputText>
+							<h:outputText value="#{lever.rate}"></h:outputText>
+						</ui:fragment>
+						<ui:fragment>
+							<h:outputText value="亏损预警线"></h:outputText>
+							<h:outputText value="#{lever.lossLine}"></h:outputText>
+						</ui:fragment>
+						<ui:fragment>
+							<h:outputText value="亏损平仓线"></h:outputText>
+							<h:outputText value="#{lever.closeOutLine}"></h:outputText>
+						</ui:fragment>
+					</h:panelGrid>
+				</p:panel>
+			</ui:repeat>
+
+		</p:dialog>
+
+	</ui:define>
+
+</ui:composition>

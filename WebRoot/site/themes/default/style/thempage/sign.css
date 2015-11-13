@@ -1,0 +1,277 @@
+*{margin: 0;padding: 0;}
+a{list-style: none;}
+body{font-size: 62.5%;}
+.n_whole{width: 100%;}
+/*banner*/
+.n_banner{width: 100%;height: 100%;}
+.n_banner img{display: block;width: 100%;}
+.n_banner h6{width: 30.7%;}
+.n_banner h5{width: 19.2%;}
+.n_banner h4{width: 22.5%;}
+.n_banner h3{width: 27.01%;}
+.n_pic{display: inline-block;float: left;}
+/*握钱*/
+/**/
+.novice{
+	width: 100%;
+	min-width: 100px;
+	height: 100%;	
+	margin: auto;
+}
+
+.nice h2{
+	font-size: 50px;
+	text-align: center;
+	margin-bottom: 3px;
+}
+.nice h3{
+	color: #999999;
+	text-align: center;
+	margin-bottom: 100px;
+	font-size: 18px;
+}
+/*绿色金融*/
+.n_box1{
+	width: 100%;
+	margin: auto;
+	background: #FFFFFF;
+}
+.n_one{
+	width: 1000px;
+	height: 463px;
+	margin: auto;
+	padding-top: 194px;
+	padding-bottom: 20px;
+	text-align: center;
+	clear: both;	
+}
+.one_cont{
+	width: 100%;
+	background: pink;
+	position: relative;
+}
+.one_cont p{display: inline-block;position: absolute;font-weight: bold;}
+.one_cont p img{display: inline-block;width: 100%;}
+.one_cont p a{font-size: 18px;color: #333;}
+.one_cont p span{font-size: 18px;color: #333;}
+.m_1{width: 12.2%;}
+.m_2,.m_4{width: 19.8%;}
+.m_5{width: 16.1%;}
+.m_3{width: 8.6%;}
+.m_1{top: 0;left: 2.6%;}
+.m_2{top: 0;left: 20.7%;}
+.m_3{top: 6px;left: 45.3%;}
+.m_4{top: 0;left: 57.6%;}
+.m_5{top: 0;right: 2.6%;}
+.m_2{position: relative;}
+.m_2 a,.m_4 a{text-align: center;}
+.m_2 img,.m_4 img{margin:5px 0;}
+.m_6{
+	width: 22%;
+	height: 44px;
+	background: #12adff;
+	color: #ffffff;
+	font-size: 23.6px;
+	text-align: center;
+	line-height: 44px;
+	border-radius: 5px;
+	box-shadow: 2px 1px 2px #0d81be;
+	top: 139px;
+	left: 38.3%;
+}
+.m_4 a{font-size: 18px;}
+/*专属安全感*/
+.n_box2{
+	width: 100%;
+	background: #f1f1f1;
+	margin-bottom: 86px;
+}
+.n_two{
+	width: 1000px;
+	height:670px;
+	margin: auto;	
+}
+.n_two h2{padding-top: 43px;}
+.n_two h3{margin-bottom: 0; padding-left: 10px;}
+.n_two dl{
+	width: 40%;
+	margin-top: 115px;
+}
+.n_two dl dt{
+	width: 28%;
+	margin-right: 5%;
+	float: left;
+}
+.n_two dl dt img{display: inline-block;width: 100%;}
+.n_two dl dd h6{font-size: 20px;margin-bottom: 15px;font-family: "微软雅黑";color: #333;}
+.n_two dl dd h4{margin-bottom: 6px;display: inline-block;width: 17%;}
+.n_two dl dd h4 img{display: inline-block;width: 100%;}
+.n_two dl dd h5{font-size: 16px;color: #999999;}
+.t_left{float: left;}
+.t_right{float: right;}
+/*全利理财*/
+.n_box3{margin-bottom: 142px;}
+.n_three h2{margin-bottom: 3px;}
+/*.n_three h2{padding-top: 100px;}
+.n_box3{width: 100%;background: #FFFFFF;}
+.n_three{
+	width: 1000px;
+	height: 1250px;
+	margin: auto;
+}*/
+/*页脚banner*/
+.n_foot{width: 100%;height:287px;background: #ffcc5a;}
+.n_beer{width: 1000px;margin: auto;position: relative;}
+.n_img{display: inline-block;float: left;}
+.n_beer h5{width: 50%;}
+.n_beer h6{width: 49.6%;}
+.n_beer a{
+	display: inline-block;
+	width: 26%;
+	height: 70px;
+	margin: auto;
+	background: #FFFFFF;
+	font-size: 30px;
+	line-height: 70px;
+	text-align: center;
+	color: #3c3c3c;
+	border: 5px solid #ffcc5a;
+	border-radius: 10px;
+	position: absolute;
+	left: 35%;
+	bottom: -35px;
+	text-decoration: none;
+}
+/*手收钱动画*/
+.clear{ clear:both;}
+img{ border:none;}
+.left{ float:left;}
+.right{ float:right;}
+.relative{ position:relative;}
+.absolute{ position:absolute;}
+.n_hand{
+	position: relative;
+}
+.hand_right{ 
+	position:relative;
+	 width:8px; 
+	 left:50%; 
+	 margin-left:-1px;
+	 height:210px;
+}
+.leftImg{ position:absolute; right:0; z-index:5;}
+.rightImg{ 
+	position:absolute; 
+	left:0; 
+	top:32px; 
+	width:1079px; 
+	height:147px;
+}
+.rightImg div{ position:relative;}
+.sz{ 
+	position:absolute; 
+	z-index:10; 
+	right:679px; 
+	top:32px;
+}
+.n_luka{ 
+	width:100%; 
+	overflow:hidden;
+	position: absolute;
+	top: 350px;
+	left: 0px;
+}
+.lsimg{ 
+	position:absolute; 
+	left:70px; 
+	z-index:10; 
+	top:0;
+}
+/*放大镜*/
+.scrollBox {
+	width: 1200px;
+	margin: 100px auto;
+	position: relative;				
+	height:200px;
+}
+.scrollBox ul li {
+	float: left;
+	height: 150px;
+	width: 200px;
+	text-align: center;
+	padding-top: 32px;
+	cursor: pointer;
+}
+.leftBtn,
+.rightBtn {
+	top: 80px;
+	left: 54px;			
+	cursor: pointer;
+	position:absolute;
+
+}
+.rightBtn {
+	left:inherit;
+	right: 65px;
+	
+}
+.ulbox{ position:relative; margin-left:100px; height:200px; width:1000px; overflow:hidden;}
+.ulList {
+	width: 1000px;
+	position:absolute;	
+	left:0;		
+}
+.bigBox {
+	position: absolute;
+	left: 510px;
+}
+.bigBox img {
+	position: absolute;
+	left: 0;
+	top: 0
+}
+.tab {
+	display: none;
+	width: 1000px;
+	height: 500px;
+	margin: auto;
+	font-size: 25px;
+	text-align: center;
+	line-height: 500px
+}
+.tabb {
+	display: block; position: relative; overflow: hidden; /* 这里追加定位 */
+}
+/*
+ * 这里开始追加
+ */
+.limitLeft{
+	width: 273px; height: 384px; position: absolute; left: 10px; top: 58px; overflow: hidden;
+}
+.limitRight{
+	width: 273px; height: 384px; position: absolute; right: 10px; top: 58px; overflow: hidden;
+}
+.limitLeft:after, .limitRight:after{
+	content: ""; display: block; position: absolute; left: 0; top: 0; width: 273px; height: 384px; background: #000; opacity: 0.1; filter:alpha(opacity=10);
+}
+.tabLeft, .tabRight{
+	width: 1365px; height: 384px; position: absolute; left: 0; top: 0;
+}
+.tabLeft li, .tabRight li{
+	float: left;
+}
+
+.limitMiddle{
+	width: 400px; height: 493px; position: absolute; left: 300px; top: 3px; overflow: hidden;
+}
+.tabMiddle{
+	position: absolute; width: 2000px; height: 493px; left: 0; top: 0; font-size: 50px; border: none;
+}
+.tabMiddle li{
+	float: left; width: 400px; height: 493px;
+}
+
+
+
+
+

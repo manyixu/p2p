@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<project name="com.esoft.jdp2p" default="jar" basedir=".">
+	<target name="clean">
+		<delete dir="build"/>
+	</target>
+	<path id="classpath">
+		<fileset dir="lib">
+			<include name="*.jar"/>
+		</fileset>
+	</path>
+
+	<target name="init">
+		<mkdir dir="build/classes" />
+		<mkdir dir="build/classes/META-INF"/>
+	</target>
+	
+	<target name="copyResources">
+		<copy tofile="build/classes/META-INF/faces-config.xml" file="WebRoot/WEB-INF/faces-config.xml"/>
+		<copy tofile="build/classes/META-INF/archer.taglib.xml" file="WebRoot/WEB-INF/archer.taglib.xml"/>
+		<copy tofile="build/classes/META-INF/spring_security.taglib.xml" file="WebRoot/WEB-INF/spring_security.taglib.xml"/>
+		
+		<copy todir="build/classes" includeEmptyDirs="yes">
+			<fileset dir="p2p_basic">
+				<patternset>
+					<include name="**/*.conf" />
+					<include name="**/*.properties" />
+					<include name="**/*.xml" />
+				</patternset>
+			</fileset>
+		</copy>
+	</target>
+	
+	
+	<target name="compile" depends="clean,init,copyResources">
+		
+		<javac srcdir="p2p_basic" destdir="build/classes" encoding="utf-8" target="1.6" includeantruntime="false" failonerror="true" debug="true" debuglevel="source,lines,vars" nowarn="true" deprecation="true" depend="false">
+			<compilerarg line="-Xlint:unchecked" />
+			<classpath refid="classpath"/>
+		</javac>
+
+	</target>
+
+	<target name="jar" depends="compile">
+		<jar destfile="dist/jar/jdp2p.jar" basedir="build/classes" >
+		</jar>
+		<delete dir="build"/>
+	</target>
+</project>

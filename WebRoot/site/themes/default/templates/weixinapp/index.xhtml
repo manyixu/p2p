@@ -1,0 +1,194 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:archer="http://java.sun.com/jsf/archer"
+	xmlns:pm="http://primefaces.org/mobile"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:sec="http://www.springframework.org/security/facelets/tags"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:o="http://omnifaces.org/ui"
+	xmlns:of="http://omnifaces.org/functions">
+	<h:head>
+	<title>全利网-绿色金融 安全有利</title>
+	<meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no"/>
+	<meta name="apple-touch-fullscreen" content="yes"/> <!--  一会试验下是否有必要存在 -->
+	<meta name="apple-mobile-web-app-capable" content="yes"/>
+	<meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+	<meta name="format-detection" content="telephone=no"/>
+	<meta http-equiv="x-rim-auto-match" content="none"/>
+	<link href="#{tplVars.themeStylePath}/weixincss/index.css" rel="stylesheet" type="text/css"/>
+    <link href="#{tplVars.themeStylePath}/weixincss/mobilebase.css" rel="stylesheet"/>
+    
+    <script type="text/javascript" src="#{tplVars.themeJSPath}/weixinjs/jquery-1.8.0.min.js"></script>
+    <script type="text/javascript" src="#{tplVars.themeJSPath}/weixinjs/num2.js"></script>
+    <script type="text/javascript">
+		$(document).ready(function() {
+			$(window).resize(function() {
+    		var width = $(this).width();
+    		var height = $(this).height();
+		if(width > height)
+		$(".warp").css("height","auto");
+		else
+		$(".warp").css("height","100%");
+		});
+		});
+	</script>
+    </h:head>
+    <h:body>
+	<div class="warp">
+	<ui:fragment rendered="#{not empty loginUserInfo.loginUserId}">
+		<sec:ifNotGranted roles="USER">
+			<div class="top_login">
+    	<div class="top_inner_login">
+    		<p class="benxi_r" style="position:absolute;right:3%">
+				<a href="#{path}/weixinapp/register">注册</a>
+   	    	</p>
+    		<img src="#{tplVars.themeImagePath}/weixinappimages/index_top_bg_02.jpg" class="top_bg" />
+            <div class="logn">
+	    		<a href="#{path}/weixinapp/loginweixin">
+                <img src="#{tplVars.themeImagePath}/weixinappimages/login_suo.png" width="30%" />
+	    		</a>
+                <a href="#{path}/weixinapp/loginweixin" class="logn_t">立即登录</a>
+                <p class="logn_b">12%-18%收益等你拿</p>
+            </div>
+        </div>
+    </div>
+		</sec:ifNotGranted>
+	<sec:ifAllGranted roles="USER">
+	<div class="top">
+    	<img src="#{tplVars.themeImagePath}/weixinappimages/index_top_bg_02.jpg"   class="top_bg"/>
+        <div class="benxi">
+        	<img src="#{tplVars.themeImagePath}/weixinappimages/index_top_1_03.png" width="4%" />
+   	    <p class="benxi_m">待收本息（元）</p>
+   	    <p class="benxi_r">
+				<a href="#{path}/weixinuser/center">#{fn:substring(userService.getUserById(loginUserInfo.loginUserId).mobileNumber ,0,3)}****#{fn:substring(userService.getUserById(loginUserInfo.loginUserId).mobileNumber ,7,11)}</a>  |  
+				<a href="#{request.contextPath}/weixinapp/logout">注销</a>
+   	    </p>
+            <div class="clear"></div>
+        </div>
+        <div data-widget-cid="widget-0" id="index-slide" class="slides ui-switchable" style="display:none;">
+        <ul data-switchable-role="content" class="ui-switchable-content">
+			<li style="opacity: 0; position: absolute; z-index: 1; display: none;" class="hidden ui-switchable-panel"></li>
+			<li style="opacity: 0; position: absolute; z-index: 1; display: none;" class="hidden ui-switchable-panel"></li>
+		</ul>
+        </div>
+        <div class="number">
+        	<p>
+        		<span class="animateNum" data-animatetarget="#{investStatistics.getReceivableCorpusWeiXin(loginUserInfo.loginUserId)+investStatistics.getReceivableInterestWeiXin(loginUserInfo.loginUserId)}" data-animatetargetstring="#{investStatistics.getReceivableCorpusWeiXin(loginUserInfo.loginUserId)+investStatistics.getReceivableInterestWeiXin(loginUserInfo.loginUserId)}">
+	        		<h:outputText value="#{investStatistics.getReceivableCorpusWeiXin(loginUserInfo.loginUserId)+investStatistics.getReceivableInterestWeiXin(loginUserInfo.loginUserId)}">
+						<f:convertNumber minFractionDigits="2" />
+					</h:outputText>
+				</span>
+			</p>
+        </div>
+	    <div class="header">
+	    	<div class="lixi">
+	        	<p class="biao">已收利息(元)</p>
+	        	<p>
+	        	<span class="shu animateNum" data-animatetarget="#{investStatistics.getReceivedInterestWeiXin(loginUserInfo.loginUserId)}" data-animatetargetstring="#{investStatistics.getReceivedInterestWeiXin(loginUserInfo.loginUserId)}">
+	        		<h:outputText value="#{investStatistics.getReceivedInterestWeiXin(loginUserInfo.loginUserId)}">
+						<f:convertNumber minFractionDigits="2" />
+					</h:outputText>
+	        	</span></p>
+	        </div>
+	        <div class="chengben">
+	        	<p class="biao">已收本金(元)</p>
+	        	<p>
+	        		<span class="shu animateNum" data-animatetarget="#{investStatistics.getReceivedCorpusWeiXin(loginUserInfo.loginUserId)}" data-animatetargetstring="#{investStatistics.getReceivedCorpusWeiXin(loginUserInfo.loginUserId)}">
+	        		<h:outputText value="#{investStatistics.getReceivedCorpusWeiXin(loginUserInfo.loginUserId)}">
+						<f:convertNumber minFractionDigits="2" />
+					</h:outputText>
+	        	</span></p>
+	        </div>
+	        <div class="clear"></div>
+	    </div>
+    </div>
+    </sec:ifAllGranted>
+    </ui:fragment>
+    <ui:fragment rendered="#{empty loginUserInfo.loginUserId}">
+    <div class="top_login">
+    	<div class="top_inner_login">
+    		<p class="benxi_r" style="position:absolute;right:3%">
+				<a href="#{path}/weixinapp/register">注册</a>
+   	    	</p>
+    		<img src="#{tplVars.themeImagePath}/weixinappimages/index_top_bg_02.jpg" class="top_bg" />
+            <div class="logn">
+	    		<a href="#{path}/weixinapp/loginweixin">
+                <img src="#{tplVars.themeImagePath}/weixinappimages/login_suo.png" width="30%" />
+	    		</a>
+                <a href="#{path}/weixinapp/loginweixin" class="logn_t">立即登录</a>
+                <p class="logn_b">12%-18%收益等你拿</p>
+            </div>
+        </div>
+    </div>
+    </ui:fragment>
+    <div class="main">
+    	<div class="main_inner">
+    	<div class="main_t">
+        	<div class="main_t_1 g">
+            	<a href="#{path}/weixinapp/loanList_fresh">
+                    <p class="pic"><img src="#{tplVars.themeImagePath}/weixinappimages/index_mian_1_07.png" width="70%" /></p>
+                    <p class="tit">新手专项</p>
+                </a>
+            </div>
+            <div class="main_t_2">
+            	<a href="#{path}/weixinapp/loanRecommendList">
+                    <p class="pic"><img src="#{tplVars.themeImagePath}/weixinappimages/index_main_2_07.png" width="70%"/></p>
+                    <p class="tit">推荐项目</p>
+                </a>
+            </div>
+            <div class="main_t_3 g">
+            	<a href="#{path}/weixinapp/loanList">
+                    <p class="pic"><img src="#{tplVars.themeImagePath}/weixinappimages/index_main_3_07.png" width="70%"/></p>
+                    <p class="tit">项目专区</p>
+                </a>
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div class="main_b">
+        	<div class="main_b_1">
+            	<a href="#{path}/weixinuser/recharge">
+                    <p class="pic"><img src="#{tplVars.themeImagePath}/weixinappimages/index_main_4_07.png" width="70%" /></p>
+                    <p class="tit">充值</p>
+                </a>
+            </div>
+            <div class="main_b_2 g">
+            	<a href="#{path}/weixinapp/node">
+                    <p class="pic"><img src="#{tplVars.themeImagePath}/weixinappimages/index_mian_7_07.png" width="70%" /></p>
+                    <p class="tit">联系我们</p>
+                </a>
+            </div>
+            <div class="main_b_3">
+            	<a href="#{path}/weixinapp/activce">
+                    <p class="pic"><img src="#{tplVars.themeImagePath}/weixinappimages/index_mian_6_07.png" width="70%" /></p>
+                    <p class="tit">活动</p>
+                </a>
+            </div>
+            <div class="clear"></div>
+        </div>
+        </div>
+    </div>
+    <div class="bottom">
+    <div class="bian"></div>
+    	<div class="touzi">
+        	<a href="#{path}/weixinapp/index" class="bottom_l">
+            	<p class="pic_b"><img src="#{tplVars.themeImagePath}/weixinappimages/index_bottom_1_hover.png" width="10%" /></p>
+                <p class="tit_b" style="color:#51bf5b">首页</p>
+            </a>
+        </div>
+        <div class="zhanghao">
+        	<a href="#{path}/weixinuser/center">
+            	<p class="pic_b"><img src="#{tplVars.themeImagePath}/weixinappimages/index_bottom_2_11.png" width="10%" /></p>
+                <p class="tit_b">我的账户</p>
+            </a>
+        </div>
+        <div class="clear"></div>
+    </div>
+</div>
+</h:body>
+</html>

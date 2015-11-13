@@ -1,0 +1,241 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	template="../page.xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:archer="http://java.sun.com/jsf/archer"
+	xmlns:pm="http://primefaces.org/mobile"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:sec="http://www.springframework.org/security/facelets/tags"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:o="http://omnifaces.org/ui"
+	xmlns:of="http://omnifaces.org/functions">
+
+	<ui:define name="content">
+		<f:event listener="#{tradeHome.setFinthc('gupiao')}"
+			type="preRenderComponent"></f:event>
+		<link type="text/css" rel="stylesheet"
+			href="#{tplVars.themeStylePath}/pzt.css" />
+		<div class="banner banner03">
+			<div class="banner01 banner03">
+				<a href="#"><img src="#{tplVars.themeImagePath}/peizi/banner03.png" /></a>
+			</div>
+		</div>
+		<div class="kspz">
+			<h3 class="kspz_h3">快速配资</h3>
+			<div class="kspz_box">
+				<div>
+					<h:form id="form">
+						<ul class="slidings">
+							<li class="#{tradeHome.instance.finthc.id eq 'gupiao'? 'hover':''}" id="three1"><p:commandLink value="股票"
+									update="@form" action="#{tradeHome.setFinthc('gupiao')}"
+									oncomplete="selectGupiao()">
+								</p:commandLink></li>
+							<li class="#{tradeHome.instance.finthc.id eq 'qihuo'? 'hover':''}" id="three2"><p:commandLink value="期货" update="@form"
+									action="#{tradeHome.setFinthc('qihuo')}"
+									oncomplete="selectQihuo()">
+								</p:commandLink></li>
+						</ul>
+						<ui:param name="isMonth"
+		value="#{tradeHome.instance.finthc.unit eq 'month'}"></ui:param>
+						<div id="con_three_1" class="slidnr">
+							<div class="kspz_l">
+								<h3 class="kspz_l_h3">您的投资本金</h3>
+								<div class="kspz_l_input">
+									<h:inputText value="#{tradeHome.instance.cashDeposit}">
+										<f:ajax event="blur" render="@form"></f:ajax>
+									</h:inputText>
+									元
+								</div>
+								<p class="kspz_l_p01">您可以配资</p>
+								<ul class="kspz_l_ul">
+									<ui:repeat var="lever"
+										value="#{tradeHome.instance.finthc.levers}">
+										<li class="#{tradeHome.selectedLever.id eq lever.id?'hover':''}"><p:commandLink
+												action="#{tradeHome.setSelectedLever(lever)}"
+												update=":form">
+												<span>#{lever.multiple*tradeHome.instance.cashDeposit}</span>元<br />配资金额</p:commandLink></li>
+									</ui:repeat>
+									<div class="clear"></div>
+								</ul>
+								<p class="kspz_l_p02">
+									如您不清楚规则，或有其他疑问，请联系客服：400-0577-010<br />
+									<h:selectBooleanCheckbox id="agree" selected="true"
+										requiredMessage="请阅读并同意《配资唐合作操盘协议》">
+										<f:validator validatorId="omnifaces.RequiredCheckboxValidator" />
+										<f:ajax event="click"></f:ajax>
+									</h:selectBooleanCheckbox>
+									我已阅读并同意<a href="#" target="_blank">《配资堂合作操盘协议》</a>
+								</p>
+							</div>
+							<div class="kspz_r">
+								<h:panelGroup id="tradeInfo">
+									<h3 class="kspz_l_h3">
+										确认操盘信息<a href="#">今日限制股</a>
+									</h3>
+									<table width="100%" border="0" cellspacing="0" cellpadding="0"
+										class="kspz_r_tab">
+										<tr>
+											<td class="bg">操盘须知</td>
+											<td>投资沪深A股，仓位不限制，盈利全归您</td>
+										</tr>
+										<tr>
+											<td class="bg">资金使用期限</td>
+											<ui:fragment rendered="#{isMonth}">
+												<td><h:selectOneMenu
+														value="#{tradeHome.instance.deadline}">
+														<f:ajax render="interest manageFee payAll" execute="@this"></f:ajax>
+														<f:selectItem itemValue="1" itemLabel="1" />
+														<f:selectItem itemValue="2" itemLabel="2" />
+														<f:selectItem itemValue="3" itemLabel="3" />
+														<f:selectItem itemValue="4" itemLabel="4" />
+														<f:selectItem itemValue="5" itemLabel="5" />
+														<f:selectItem itemValue="6" itemLabel="6" />
+														<f:selectItem itemValue="7" itemLabel="7" />
+														<f:selectItem itemValue="8" itemLabel="8" />
+														<f:selectItem itemValue="9" itemLabel="9" />
+														<f:selectItem itemValue="10" itemLabel="10" />
+														<f:selectItem itemValue="11" itemLabel="11" />
+														<f:selectItem itemValue="12" itemLabel="12" />
+													</h:selectOneMenu>个月</td>
+											</ui:fragment>
+											<ui:fragment rendered="#{not isMonth and tradeHome.instance.finthc.id ne 'week'}">
+												<td><h:inputText required="true" label="资金使用期限"
+														value="#{tradeHome.instance.deadline}">
+														<f:ajax render="interest manageFee payAll" execute="@this"></f:ajax>
+														<f:validateLongRange minimum="1"></f:validateLongRange>
+													</h:inputText>天</td>
+											</ui:fragment>
+										</tr>
+										<tr>
+											<td class="bg">总操盘资金</td>
+											<td><span><h:outputText value="#{(tradeHome.selectedLever.multiple+1)*tradeHome.instance.cashDeposit}">
+												<f:convertNumber maxFractionDigits="2" minIntegerDigits="1" />
+											</h:outputText></span></td>
+										</tr>
+										<tr>
+											<td class="bg">亏损警戒线</td>
+											<td><span><h:outputText value="#{tradeHome.selectedLever.multiple*tradeHome.instance.cashDeposit*tradeHome.selectedLever.lossLine}">
+												<f:convertNumber maxFractionDigits="2" minIntegerDigits="1" />
+											</h:outputText></span>元</td>
+										</tr>
+										<tr>
+											<td class="bg">亏损平仓线</td>
+											<td><span><h:outputText value="#{tradeHome.selectedLever.multiple*tradeHome.instance.cashDeposit*tradeHome.selectedLever.closeOutLine}">
+												<f:convertNumber maxFractionDigits="2" minIntegerDigits="1" />
+											</h:outputText></span>元</td>
+										</tr>
+										<tr>
+											<td class="bg"><h:outputText value="首月利息"
+													rendered="#{isMonth}"></h:outputText> <h:outputText
+													value="利息" rendered="#{not isMonth}"></h:outputText></td>
+											<td><span class="tab_gray"><h:panelGroup id="interest">
+														<h:outputText
+															rendered="#{isMonth and not empty tradeHome.instance.deadline}"
+															value="#{tradeHome.calcuteInterest()/tradeHome.instance.deadline}">
+															<f:convertNumber minIntegerDigits="1"
+																maxFractionDigits="2" />
+														</h:outputText>
+														<h:outputText
+															rendered="#{not isMonth and not empty tradeHome.instance.deadline}"
+															value="#{tradeHome.calcuteInterest()}">
+															<f:convertNumber minIntegerDigits="1"
+																maxFractionDigits="2" />
+														</h:outputText>
+														<h:outputText
+															rendered="#{empty tradeHome.instance.deadline}" value="0">
+														</h:outputText>
+													</h:panelGroup></span>元</td>
+										</tr>
+										<tr>
+											<td class="bg"><h:outputText value="首月管理费"
+													rendered="#{isMonth}"></h:outputText> <h:outputText
+													value="管理费" rendered="#{not isMonth}"></h:outputText></td>
+											<td><span class="tab_gray"><h:panelGroup id="manageFee">
+														<h:outputText
+															rendered="#{isMonth and not empty tradeHome.instance.deadline}"
+															value="#{tradeHome.calcuteManageFee()/tradeHome.instance.deadline}">
+															<f:convertNumber minIntegerDigits="1"
+																maxFractionDigits="2" />
+														</h:outputText>
+														<h:outputText
+															rendered="#{not isMonth and not empty tradeHome.instance.deadline}"
+															value="#{tradeHome.calcuteManageFee()}">
+															<f:convertNumber minIntegerDigits="1"
+																maxFractionDigits="2" />
+														</h:outputText>
+														<h:outputText
+															rendered="#{empty tradeHome.instance.deadline}" value="0">
+														</h:outputText>
+													</h:panelGroup></span>元</td>
+										</tr>
+										<tr>
+											<td class="bg">借款利率</td>
+											<td><span class="tab_gray"><h:outputText value="#{tradeHome.selectedLever.rate*100}">
+												<f:convertNumber maxFractionDigits="2" minIntegerDigits="1" />
+											</h:outputText></span>%</td>
+										</tr>
+										<tr>
+											<td class="bg">共需支付</td>
+											<td><span class="tab_gray"><h:panelGroup
+														id="payAll"> <h:outputText
+														rendered="#{isMonth}"
+														value="#{tradeHome.instance.cashDeposit+tradeHome.instance.interest/tradeHome.instance.deadline+tradeHome.instance.manageFee/tradeHome.instance.deadline}">
+														<f:convertNumber maxFractionDigits="2"
+															minIntegerDigits="1" />
+													</h:outputText> <h:outputText rendered="#{not isMonth}"
+														value="#{tradeHome.instance.cashDeposit+tradeHome.instance.interest+tradeHome.instance.manageFee}">
+														<f:convertNumber maxFractionDigits="2"
+															minIntegerDigits="1" />
+													</h:outputText>
+													</h:panelGroup></span>元</td>
+										</tr>
+									</table>
+								</h:panelGroup>
+							</div>
+							<div class="clear"></div>
+							<div class="kspz_btn">
+								<h:commandButton action="#{tradeHome.apply}" value="我要操盘"
+									class="btn02 kspz_btn_btn" />
+							</div>
+						</div>
+					</h:form>
+				</div>
+			</div>
+			<div class="kspz_box02">
+				<ul class="kspz_box02_ul">
+					<li><img src="#{tplVars.themeImagePath}/peizi/img34.png" />即时申请，即时交易</li>
+					<li><img src="#{tplVars.themeImagePath}/peizi/img35.png" />收益最大可放大10倍</li>
+					<li><img src="#{tplVars.themeImagePath}/peizi/img36.png" />100%真实的实盘交易</li>
+					<li><img src="#{tplVars.themeImagePath}/peizi/img37.png" />最低200元起即可申请</li>
+					<li><img src="#{tplVars.themeImagePath}/peizi/img38.png" />2天-30天，想用几天就几天</li>
+					<li><img src="#{tplVars.themeImagePath}/peizi/img39.png" />严格止损，控制资金风险</li>
+					<div class="clear"></div>
+				</ul>
+				<p>
+					<span>操盘须知</span><br />
+					1、全程只需按天支付账户管理费，无其他任何费用，股市有风险，投资需谨慎！市场风险莫测，务请谨慎行事！<br />
+					2、资金使用期限：最短2天，最长30天，账户管理费按天支付，默认每天自动延期，自动从账户余额扣除管理费（余额不足时自动终止）；<br />
+					3、风险保证金：在您操盘出现亏损后用于支付亏损金，结束时如无亏损全额退还，保证金越低收益越大，同时风险也越大；<br />
+					4、亏损警戒线：当总操盘资金低于警戒线以下时，只能平仓不能建仓，需要尽快补充风险保证金，以免低于亏损平仓线被平仓；<br />
+					5、亏损平仓线：当总操盘资金低于平仓线以下时，我们将有权把您的股票进行平仓，为避免平仓发生，请时刻关注风险保证金是否充足；<br />
+					6、开始交易时间：一般选择下个交易日，如看中行情急需交易，可直接选择今天交易（今天开始收取账户管理费）。<br />
+					7、账户管理费：不包含交易印花税、过户费和佣金，且直接由券商和证券交易所收取，实际费用以交易所和券商规定为准；<br /> <a
+						href="#">更多规则说明</a>
+				</p>
+			</div>
+		</div>
+
+		<script>
+			function selectGupiao() {
+				$("#three1").addClass("hover");
+				$("#three2").removeClass("hover");
+			}
+
+			function selectQihuo() {
+				$("#three2").addClass("hover");
+				$("#three1").removeClass("hover");
+			}
+		</script>
+	</ui:define>
+</ui:composition>

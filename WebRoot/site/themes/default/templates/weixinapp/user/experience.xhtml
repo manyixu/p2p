@@ -1,0 +1,408 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pm="http://primefaces.org/mobile"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:o="http://omnifaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:archer="http://java.sun.com/jsf/archer"
+	xmlns:sec="http://www.springframework.org/security/facelets/tags">
+	<h:head>
+	<title>项目详情</title>
+	<meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no"/>
+	<meta name="apple-touch-fullscreen" content="yes"/> <!--  一会试验下是否有必要存在 -->
+	<meta name="apple-mobile-web-app-capable" content="yes"/>
+	<meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+	<meta name="format-detection" content="telephone=no"/>
+	<meta http-equiv="x-rim-auto-match" content="none"/>
+    <link href="#{tplVars.themeStylePath}/weixincss/down.css" rel="stylesheet" type="text/css"/>
+    <link href="#{tplVars.themeStylePath}/weixincss/mobilebase.css" rel="stylesheet"/>
+    <link rel="stylesheet" type="text/css" href="#{tplVars.themeStylePath}/weixincss/sign.css"/>	
+    <h:outputScript library="primefaces" name="jquery/jquery.js"
+			target="head" />
+		<script type="text/javascript"
+			src="#{tplVars.themeJSPath}/jquery.artDialog.js?skin=idialog"></script>
+		<script type="text/javascript"
+			src="#{tplVars.themeJSPath}/jquery.SuperSlide.2.1.1.js"></script>
+		<script type="text/javascript" src="#{tplVars.themeJSPath}/common.js"></script>
+		<script type="text/javascript" src="#{tplVars.themeJSPath}/timer.js"></script>
+	</h:head>
+	<h:body  style="background:#f2f2f2;padding-bottom:35px;">
+	<sec:ifNotGranted roles="INVESTOR">
+			<script>
+				$.dialog
+						.alert(
+								'您尚未拥有投资权限，请先进行实名认证!',
+								function() {
+									window.location.href = "#{path}/weixinuser/accountdetails";
+								});
+			</script>
+	</sec:ifNotGranted>
+	<ui:repeat var="bc" value="#{bankCardList.bankCardListbyLoginUser}">
+									<ui:fragment rendered="#{bc.status eq'VERIFIED'}">
+											<f:event type="preRenderComponent" listener="#{weixinWithdrawHome.instance.setBankCard(bc)}"></f:event>
+									</ui:fragment>	
+								</ui:repeat>
+								<ui:fragment  rendered="#{weixinWithdrawHome.instance.bankCard.id==null}">
+									<script>
+										$.dialog
+												.alert(
+														'请先绑定银行卡！',
+														function() {
+															window.location.href = "#{path}/weixinuser/bankcards";
+														});
+									</script>
+								</ui:fragment>
+	<archer:archerWeiXinMessages focus="false" showGlobalMessages="true"
+			severity="0,2"></archer:archerWeiXinMessages>
+	<div id="z_index">
+			<h:form styleClass="register">
+				<h:inputText value="#{experiencegoldController.instance.rmk23 }" label="兑换码" id="rmk23"></h:inputText>
+				<p:watermark value="请输入兑换码" for="rmk23"></p:watermark>
+				<h:inputText value="#{experiencegoldController.captcha}" label="验证码" styleClass="ma" id="captcha"></h:inputText>
+				<p:watermark value="请输入验证码" for="captcha"></p:watermark>
+				<a class="login_yzm" href="javascript:void(0)">
+					<img alt="点击刷新" id="verifyCode" src="#{request.contextPath}/verifyCodeServlet" onclick="this.src='#{request.contextPath}/verifyCodeServlet?'+new Date().getTime()" />
+				</a>
+				<p:commandLink ajax="false" styleClass="sub" actionListener="#{experiencegoldController.save}" value="立即兑换" id="saveBtn23" title="立即兑换"></p:commandLink>
+			</h:form>
+			<!-- <form class="register">
+				<input type="text" placeholder="兑换码" />
+				<input type="text" placeholder="验证码" class="ma" />
+				<input type="button" value="立即兑换" class="sub" />
+				<a></a>
+			</form> -->
+			<dl class="rule">
+				<dt>使用规则：</dt>
+				<dd>1.&#160;体验金仅适用于体验全利网产品，本金不能提现,请在投资期限内使用，过期作废；</dd>
+				<dd>2.&#160;用户可根据体验金的可持续时间进行体验，体验结束后自动收回本金，收益归用户所有；</dd>
+				<dd>3.&#160;如在使用体验金过程中，采用非法手段获得体验金，全利网保留追究法律责任的权利。</dd>
+			</dl><!--rule-->
+			<div class="use_process">
+				<ul class="menu">
+					
+					<li class="one">
+						<a class="current">未使用</a>
+					</li>
+					<li>
+						<a>进行中</a>
+					</li>
+					<li>
+						<a>已使用</a>
+					</li>
+					<li>
+						<a>已过期</a>
+					</li>
+					<div class="clear_both"></div>
+				</ul>
+				<div class="use_mant">
+				
+					<!--未使用-->
+					<div class="use_cont Tshow">
+							<!-- <ui:param name="restriction" value="#{'(rmk22!=\''}A1')"></ui:param>
+							<f:event type="preRenderComponent" listener="#{experiencegoldList2.addRestriction(restriction)}"></f:event> -->
+                            <ui:param name="restriction" value="#{'(userid=\''}#{loginUserInfo.loginUserId}')"></ui:param>
+                            <f:event type="preRenderComponent" listener="#{experiencegoldList2.addRestriction(restriction)}"></f:event>
+							<ui:param name="restriction" value="#{'(utype=\''}Y#{'\')'}"></ui:param>
+							<f:event type="preRenderComponent" listener="#{experiencegoldList2.addRestriction(restriction)}"></f:event>
+							<f:event type="preRenderComponent"
+								listener="#{investList.addOrder('etime','desc')}"></f:event>
+							<ui:repeat var="exp" value="#{experiencegoldList2.lazyModelDataNoPage}"
+								varStatus="status">
+						<div class="use_cont1">
+							<div class="left marg6">
+								<h1>#{exp.projectname}</h1>	
+							</div>
+							<div class="right">
+								<ul class="right_top">
+									<li>
+										<span>¥<a>#{exp.money}</a></span>
+										<i>体验金额</i>
+									</li>
+									<li>
+										<span><a>#{exp.pday}</a>天</span>
+										<i>体验天数</i>
+									</li>
+									<div class="clear_both"></div>
+								</ul>
+								<ul class="right_bottom">
+									<li>
+										<span>¥<a>#{exp.profit}</a></span>
+										<i>体验收益</i>
+									</li>
+									<li>
+										<span><a>#{exp.pinterestrate}</a>%</span>
+										<i>年利率</i>
+									</li>
+									<div class="clear_both"></div>
+								</ul>
+							</div>
+							<div class="clear_both"></div>
+							<p class="date">投资期限：<h:outputText value="#{exp.etime}">
+										<f:convertDateTime pattern="yyyy-MM-dd" locale="cn"
+											timeZone="GMT+8"></f:convertDateTime>
+									</h:outputText>至<h:outputText value="#{exp.rmk21}">
+										<f:convertDateTime pattern="yyyy-MM-dd" locale="cn"
+											timeZone="GMT+8"></f:convertDateTime>
+									</h:outputText></p>
+									<h:form>
+							<h2 class="now first past">
+								
+								<p:commandLink style="font-size:12px;" ajax="false"
+												actionListener="#{experienceinvestmentController.save2(exp.rmk23,exp.rmk22)}"
+												value="立即使用" id="saveBtn22" title="立即使用"></p:commandLink>
+												
+							</h2>
+							</h:form>
+						</div>	
+						</ui:repeat>
+					</div>
+					<!--进行中-->
+					<div class="use_cont">
+							<!-- <ui:param name="restriction" value="#{'(rmk22!=\''}A1')"></ui:param>
+							<f:event type="preRenderComponent" listener="#{experiencegoldList2.addRestriction(restriction)}"></f:event> -->
+                            <ui:param name="restriction" value="#{'(userid=\''}#{loginUserInfo.loginUserId}')"></ui:param>
+                            <f:event type="preRenderComponent" listener="#{experiencegoldList.addRestriction(restriction)}"></f:event>
+							<ui:param name="restriction" value="#{'(utype=\''}Z#{'\')'}"></ui:param>
+							<f:event type="preRenderComponent" listener="#{experiencegoldList.addRestriction(restriction)}"></f:event>
+							<f:event type="preRenderComponent"
+								listener="#{investList.addOrder('etime','desc')}"></f:event>
+							<ui:repeat var="exp" value="#{experiencegoldList.lazyModelDataNoPage}"
+								varStatus="status">
+						<div class="use_cont1 use_ct">
+							<div class="left marg6">
+								<h1 style="color:#f4ac00;">#{exp.projectname}</h1>						
+							</div>
+							<div class="right">
+								<ul class="right_top">
+									<li>
+										<span>¥<a>#{exp.money}</a></span>
+										<i>体验金额</i>
+									</li>
+									<li>
+										<span><a>#{exp.pday}</a>天</span>
+										<i>体验天数</i>
+									</li>
+									<div class="clear_both"></div>
+								</ul>
+								<ul class="right_bottom">
+									<li>
+										<span>¥<a>#{exp.profit}</a></span>
+										<i>体验收益</i>
+									</li>
+									<li>
+										<span><a>#{exp.pinterestrate}</a>%</span>
+										<i>年利率</i>
+									</li>
+									<div class="clear_both"></div>
+								</ul>
+							</div>
+							<div class="clear_both"></div>
+							<h2 class="now">进行中</h2>
+						</div>	
+						</ui:repeat>
+						
+					</div>
+					<!--已使用-->
+					<div class="use_cont">
+							<!-- <ui:param name="restriction" value="#{'(rmk22!=\''}A1')"></ui:param>
+							<f:event type="preRenderComponent" listener="#{experiencegoldList3.addRestriction(restriction)}"></f:event> -->
+                            <ui:param name="restriction" value="#{'(userid=\''}#{loginUserInfo.loginUserId}')"></ui:param>
+                            <f:event type="preRenderComponent" listener="#{experiencegoldList3.addRestriction(restriction)}"></f:event>
+							<ui:param name="restriction" value="#{'(utype=\''}N#{'\')'}"></ui:param>
+							<f:event type="preRenderComponent" listener="#{experiencegoldList3.addRestriction(restriction)}"></f:event>
+							<f:event type="preRenderComponent"
+								listener="#{investList.addOrder('etime','desc')}"></f:event>
+							<ui:repeat var="exp" value="#{experiencegoldList3.lazyModelDataNoPage}"
+								varStatus="status">
+						<div class="use_cont1 use_ct">
+							<div class="marg6 left">
+								<h1 style="color:#e2547c;">#{exp.projectname}</h1>	
+							</div>
+							<div class="right">
+								<ul class="right_top">
+									<li>
+										<span>¥<a>#{exp.money}</a></span>
+										<i>体验金额</i>
+									</li>
+									<li>
+										<span><a>#{exp.pday}</a>天</span>
+										<i>体验天数</i>
+									</li>
+									<div class="clear_both"></div>
+								</ul>
+								<ul class="right_bottom">
+									<li>
+										<span>¥<a>#{exp.profit}</a></span>
+										<i>体验收益</i>
+									</li>
+									<li>
+										<span><a>#{exp.pinterestrate}</a>%</span>
+										<i>年利率</i>
+									</li>
+									<div class="clear_both"></div>
+								</ul>
+							</div>
+							<div class="clear_both"></div>
+							<h2 class="now">已使用</h2>
+						</div>	
+						</ui:repeat>
+					</div>
+					<div class="use_cont">
+						<!-- <ui:param name="restriction" value="#{'(rmk22!=\''}A1')"></ui:param>
+							<f:event type="preRenderComponent" listener="#{experiencegoldList4.addRestriction(restriction)}"></f:event> -->
+                            <ui:param name="restriction" value="#{'(userid=\''}#{loginUserInfo.loginUserId}')"></ui:param>
+                            <f:event type="preRenderComponent" listener="#{experiencegoldList4.addRestriction(restriction)}"></f:event>
+							<ui:param name="restriction" value="#{'(utype=\''}S#{'\')'}"></ui:param>
+							<f:event type="preRenderComponent" listener="#{experiencegoldList4.addRestriction(restriction)}"></f:event>
+							<f:event type="preRenderComponent"
+								listener="#{investList.addOrder('etime','desc')}"></f:event>
+							<ui:repeat var="exp" value="#{experiencegoldList4.lazyModelDataNoPage}"
+								varStatus="status">
+						<div class="use_cont1">
+							<div class="left marg3">
+								<h1>新手体验金</h1>	
+							</div>
+							<div class="right">
+								<ul class="right_top">
+									<li>
+										<span>¥<a>#{exp.money}</a></span>
+										<i>体验金额</i>
+									</li>
+									<li>
+										<span><a>#{exp.pday}</a>天</span>
+										<i>体验天数</i>
+									</li>
+									<div class="clear_both"></div>
+								</ul>
+								<ul class="right_bottom">
+									<li>
+										<span>¥<a>#{exp.profit}</a></span>
+										<i>体验收益</i>
+									</li>
+									<li>
+										<span><a>#{exp.pinterestrate}</a>%</span>
+										<i>年利率</i>
+									</li>
+									<div class="clear_both"></div>
+								</ul>
+							</div>
+							<div class="clear_both"></div>
+							<p class="date">投资期限：2015-08-07至2015-110-06</p>
+							<h2 class="now past">已过期</h2>
+						</div>	
+						</ui:repeat>
+					</div>
+				</div>
+			</div>
+			
+		</div>
+	
+	
+	
+	<!-- <div class="warp_2">
+	<div class="spe"></div>
+	<div class="top">
+    	<div class="top_inner">
+    	<h:form>
+    	<ui:param name="restriction1" value="#{'(rmk1=\''}A1')"></ui:param>
+		<f:event type="preRenderComponent" listener="#{experienceprojectList.addRestriction(restriction1)}"></f:event>
+    	<ui:fragment rendered="#{experienceprojectList.lazyModelDataNoPage == '[]'}">
+			            	<p style="color:#999;padding:3% 3%;text-align:center; ">没有记录</p>
+			</ui:fragment>
+    		<ui:repeat var="invest" value="#{experienceprojectList.lazyModelDataNoPage}">
+    		<p style="color:#999;padding:3% 3%;text-align:center; "></p>
+    		<div class="c_m_t">
+                            <p class="tit" style="color:#62ba50;">新手体验金</p>
+                            <div class="clear"></div>
+                        </div>
+        	基本信息开始
+            <div class="content">
+            	<div class="c_m" id="xin">
+                	<div class="list_1">
+                        <div class="c_m_t">
+                            <p class="tit" style="color:#62ba50;">#{invest.pname}</p>
+                            <div class="clear"></div>
+                        </div>
+                        <div class="c_m_b">
+                            <div class="b_l">
+                                <div class="b_l_t t">
+                                    <p class="safe_t">
+                                    	<h:outputText value="#{invest.money}">
+											<f:convertNumber type="number" />
+										</h:outputText>
+                                    	<span>元</span>
+                                    </p>
+                                    <p class="safe_b b">投资金额</p>
+                                </div>
+                            </div>
+                            <div class="b_r">
+                                <div class="b_r_t t">
+                                    <p class="li_t">
+                                    	<h:outputText value="#{invest.pinterestrate}">
+											<f:convertNumber minFractionDigits="2" />
+										</h:outputText>
+                                    	<span>%</span>
+                                    </p>
+                                    <p class="li_b b">利率</p>
+                                </div>
+                            </div>
+                            <div class="b_r">
+                                <div class="b_r_t t">
+                                    <p class="li_t">
+                                    	<h:outputText value="#{invest.profit}">
+											<f:convertNumber minFractionDigits="2" />
+										</h:outputText>
+                                    	<span>元</span>
+                                    </p>
+                                    <p class="li_b b">收益</p>
+                                </div>
+                            </div>
+                            <div class="clear"></div>
+                        </div>
+                        <div class="c_m_bt">
+                            <p class="btn_t_2">
+                            	<ui:param name="restriction1" value="#{'(rmk22=\''}A1')"></ui:param>
+                            	<ui:param name="restriction1" value="#{'(userid=\''}#{loginUserInfo.loginUserId}')"></ui:param>
+								<f:event type="preRenderComponent" listener="#{experiencegoldList.addRestriction(restriction1)}"></f:event>
+    							<ui:repeat var="invest2" value="#{experiencegoldList.lazyModelDataNoPage}" varStatus="status">
+	                            	<ui:fragment rendered="#{invest2.utype =='Y' and invest2.money >= invest.money}">
+	                            		<p:commandLink ajax="false" actionListener="#{experienceinvestmentController.save}" value="立即投标" styleClass="tzbtn"></p:commandLink>
+									</ui:fragment> 
+									<ui:fragment rendered="#{invest2.utype =='N'}">
+										<ui:param name="restriction1" value="#{'(userid=\''}#{loginUserInfo.loginUserId}')"></ui:param>
+										<f:event type="preRenderComponent" listener="#{experienceinvestmentList.addRestriction(restriction1)}"></f:event>
+										<ui:repeat var="invest3" value="#{experienceinvestmentList.lazyModelDataNoPage}" varStatus="status">
+											<ui:fragment rendered="#{invest3.etype =='Y'}">
+												<a class="btn_g">已投标</a>
+											</ui:fragment>
+											<ui:fragment rendered="#{invest3.etype =='N'}">
+												<a class="btn_g">已完成</a>
+											</ui:fragment>
+										</ui:repeat>
+									</ui:fragment>
+									<ui:fragment rendered="#{invest2.utype =='S'}">
+										<a class="btn_g">已过期</a>					
+									</ui:fragment>
+								</ui:repeat>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </ui:repeat>
+            </h:form>
+            基本信息结束
+        </div>	
+    </div>
+</div> -->
+<script src="#{tplVars.themeJSPath}/weixinjs/zepto.min.js"></script>
+<script src="#{tplVars.themeJSPath}/weixinjs/shiming.js"></script>
+<ui:include src="../bottom.xhtml"></ui:include> 
+</h:body>  
+</html>

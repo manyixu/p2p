@@ -1,0 +1,86 @@
+@charset "utf-8";
+/* CSS Document */
+
+
+/*
+ * 固有样式
+ */
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,
+dfn,em,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,
+legend,table,caption,tbody,tfoot,thead,tr,th,td,article,aside,canvas,details,embed,figure,figcaption,footer,header,
+hgroup,menu,nav,output,ruby,section,summary,time,mark,audio,video { margin: 0; padding: 0; }
+html { font-size: 3vw}
+body {  min-width: 320px; margin:0 auto; font: 14px/150%  "微软雅黑",Arial, Helvetica, sans-serif; color: #333; background: #fff; }
+.warp {height:100%;background-color:#fff;position:absolute;top:0;left:0;width:100%;overflow-y:hidden;overflow-x:hidden}
+.warp_1 {height:100%;background-color:#f2f2f2;position:absolute;top:0;left:0;width:100%;overflow-x:hidden}
+
+ol,ul,li { list-style: none outside none;}
+h1,h2,h3,h4,h5,h6,em,stone { font-size: 14px; font-weight: normal;}
+img { border: 0 none; max-width: 100%;  }
+input,select { font: 3vw% 'Microsoft YaHei',Helvetica,Tahoma,sans-serif; }
+a { font-size: 14px; text-decoration: none; color: #333;}
+input,textarea { outline: 0; resize: none; border:none;}
+i { font-style: normal;}
+.viewport { min-width: 320px; margin: 0 auto;}
+.fl { float: left;}
+.fr { float: right;}
+.clear { clear: both; line-height: 0; height: 0; font-size: 0;}
+.clearflx:after{ content: "."; display: block; height: 0; clear: both; visibility: hidden; }
+.red-color { color: #ea0000;}/* 红色字体颜色 */
+.orange-color { color: #ff6000; } /* 橘色字体颜色 */
+.orange-bg { background: #ff9600; } /* 浅橘色背景颜色 */
+.gray-color { color: #666;} /* 灰色字体颜色 */
+.ccc-color { background: #ccc;  }/* 灰色背景颜色 */
+.arrow { width: 11px; height: 17px; background: url(../images/icon/icon-back.png) -14px 0 no-repeat; background-size: 25px 20px;}/* 箭头 */
+
+/*
+ * 公用按钮样式
+ */ 
+.sub-btn { display: block; height: 46px; line-height: 46px; text-align: center; letter-spacing: 2px; font-size: 16px; color: #fff;  border-radius: 5px; }
+
+/*
+ * 公用头部样式
+ */ 
+header.header { position: relative;  width: 100%; height: 46px; line-height: 46px; background: #fff; }
+header .header-title { padding: 0 8px; font: 18px/226% 'Microsoft YaHei',Helvetica,Tahoma,sans-serif; text-align: center; letter-spacing: 2px; }
+header .header-back { position: absolute; width: 44px; height: 46px;}
+header .header-back a { display: block; width: 44px; height: 46px;}
+header .header-back span { position: absolute; top: 10px; left: 8px; width: 12px; height: 21px; background: url(../images/icon/icon-back.png) 0 0 no-repeat; background-size: 25px 20px;}
+
+/*
+ * 公用底部样式一
+ */ 
+.bottom{ width:100% ;height:5%;}
+.bian{border-top:1px solid #d1cfcf; width:100%;}
+.zhanghao a,.touzi a{ display:block; width:49.7%; float:left; padding:2% 0;}
+.touzi a{border-right:1px solid  #d1cfcf;}
+.pic_b,.tit_b{ text-align:center; color:#acacac;}
+.pic_b{ padding-bottom:1%;}
+.tit_b{ font-size:3vw;}
+.pic_b img{ display:block; margin-left:45%}
+
+/*
+ * 公用底部样式二
+ */ 
+.bottom_s{width:100%;height:8%;overflow:hidden;}
+.bottom_s_inner{ height:100%; padding-top:3%;}
+.bottom_s_inner p{ text-align:center; color:#a7a7a7;}
+.bottom_s_inner p a{ color:#a7a7a7; font-size:3vw;}
+.bottom_s_inner .b_s{ color:#ff6100;}
+/*
+ * 公用按钮一
+ */
+ .btn_t{ padding-bottom:3%;}
+.btn_t a{ display:block; padding:2.5% 0; background:#41b42a;  box-shadow: 0 4px 1px #3c9f28;border-radius:4px; font-size:5vw; text-align:center; color:#fff;}
+ 
+/*
+ * 公用按钮二
+ */ 
+.btn_t_2 a{ display:block; line-height:2em; background:#41b42a;  border-radius:4px; font-size:4vw; text-align:center; color:#fff;}
+
+
+
+/*
+ * 列表、详情页标基本情况
+ */ 
+

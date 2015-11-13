@@ -1,0 +1,93 @@
+<ui:composition template="../center.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pm="http://primefaces.org/mobile"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+	<!-- 我的配资 -->
+	<ui:param name="activeCenterMenuUrl" value="/user/finthc/myTrades"></ui:param>
+	<ui:define name="center_right">
+	<style>
+		
+.center_box01 {
+height: 90px;
+}
+	</style>
+		<div class="center_right">
+			<div class="center_box01">
+				<ui:include src="../userCenterTop.xhtml"></ui:include>
+			</div>
+			<div class="h20"></div>
+			<h:form>
+				<h:panelGroup id="dataTable">
+					<div class="hd">
+						<ul class="slidings">
+							<li id="four1"><a href="javascript:void(0)">我的配资</a></li>
+						</ul>
+						<div id="con_four_1" class="slidnr">
+							<table width="786" border="0" cellspacing="0" cellpadding="0"
+								class="tab">
+								<tr>
+									<td class="tab01 tab04">编号</td>
+									<td class="tab01 tab04 tab06">申请时间</td>
+									<td class="tab01 tab04 tab06">交易账号<br/>密码</td>
+									<td class="tab01 tab04 tab06">保证金<br/>配资金额</td>
+									<td class="tab01 tab04 tab06">亏损预警线<br/>平仓线</td>
+									<td class="tab01 tab04 tab06">状态</td>
+								</tr>
+								
+<f:event type="preRenderComponent"
+			listener="#{tradeList.addOrder('applyTime', 'desc')}"></f:event>
+		<f:event type="preRenderComponent"
+			listener="#{tradeList.example.trader.setUsername(loginUserInfo.loginUserId)}"></f:event>
+								<ui:repeat var="trade" value="#{tradeList.lazyModelData}"
+									varStatus="status">
+									<tr class="#{status.index%2==0?'tab02':''} bg">
+										<td class="tab02 tab04 tab06" style="width: 200px;">#{trade.id}<br />
+											利率：
+											<h:outputText value="#{trade.rate}">
+												<f:convertNumber type="percent" minFractionDigits="2" />
+											</h:outputText><br/>时长：<h:outputText
+												value="#{trade.deadline}">
+											</h:outputText>#{trade.unit eq 'MONTH'?'个月':'天'}</td>
+										<td class="tab02 tab04 tab06"><h:outputText
+												value="#{trade.applyTime}">
+												<f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss"
+													timeZone="GMT+8" locale="cn" />
+											</h:outputText></td>
+										<td class="tab02 tab04 tab06">#{trade.tradeUsername}<br/>#{trade.tradePassword}</td>
+										<td class="tab02 tab04 tab06"><h:outputText value="#{trade.cashDeposit}">
+												<f:convertNumber maxFractionDigits="2" minIntegerDigits="1" />
+											</h:outputText><br/><h:outputText value="#{trade.tradeMoney}">
+												<f:convertNumber maxFractionDigits="2" minIntegerDigits="1" />
+											</h:outputText></td>
+										<td class="tab02 tab04 tab06"><h:outputText value="#{trade.lossLine}">
+												<f:convertNumber maxFractionDigits="2" minIntegerDigits="1" />
+											</h:outputText><br/><h:outputText value="#{trade.closeOutLine}">
+												<f:convertNumber maxFractionDigits="2" minIntegerDigits="1" />
+											</h:outputText></td>
+										<td class="tab02 tab04 tab06"><h:outputText value="等待审核" rendered="#{trade.status eq 'wait_verify'}"/>
+										<h:outputText value="审核通过" rendered="#{trade.status eq 'passed'}"/>
+										<h:outputText value="等待未通过" rendered="#{trade.status eq 'refused'}"/>
+										<h:outputText value="交易中" rendered="#{trade.status eq 'trading'}"/>
+										<h:outputText value="完成" rendered="#{trade.status eq 'finished'}"/>
+										</td>
+									</tr>
+								</ui:repeat>
+							</table>
+						</div>
+					</div>
+					<div class="page_box">
+						<div class="page_r">
+							<ui:include src="paging_include.xhtml"></ui:include>
+						</div>
+					</div>
+				</h:panelGroup>
+			</h:form>
+		</div>
+		<div class="clear"></div>
+	</ui:define>
+</ui:composition>

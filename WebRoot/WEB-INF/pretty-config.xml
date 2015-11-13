@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pretty-config xmlns="http://ocpsoft.com/prettyfaces/3.3.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://ocpsoft.com/prettyfaces/3.3.0
+               http://ocpsoft.com/xml/ns/prettyfaces/ocpsoft-pretty-faces-3.3.0.xsd">
+	<url-mapping id="spage">
+		<pattern value="/spage/#{/.+/pageName}" />
+		<view-id value="themepath:#{pageName}.htm" />
+	</url-mapping>
+	<!-- 资金托管 --> 
+	<url-mapping id="trusteeshipWebRetrun">
+		<pattern value="/trusteeship_return_web/#{trusteeshipHome.operationType}"></pattern>
+		<view-id value="themepath:user/center.htm"></view-id>
+		<action>#{trusteeshipHome.handleWebReturn}</action>
+	</url-mapping>
+	<url-mapping id="trusteeshipS2SRetrun">
+		<pattern value="/trusteeship_return_s2s/#{trusteeshipHome.operationType}"></pattern>
+		<view-id value="themepath:user/center.htm" />
+		<action>#{trusteeshipHome.handleS2SWebReturn}</action>
+	</url-mapping>
+	
+	<!-- 微信资金托管 --> 
+	<url-mapping id="trusteeshipWeiXinWebRetrun">
+		<pattern value="/trusteeship_return_weixin_web/#{trusteeshipWeiXinHome.operationType}"></pattern>
+		<view-id value="themepath:weixinapp/user/center.htm"></view-id>
+		<action>#{trusteeshipWeiXinHome.handleWebReturn}</action>
+	</url-mapping>
+	<url-mapping id="trusteeshipWeiXinS2SRetrun">
+		<pattern value="/trusteeship_return_weixin_s2s/#{trusteeshipWeiXinHome.operationType}"></pattern>
+		<view-id value="themepath:weixinapp/user/center.htm" />
+		<action>#{trusteeshipWeiXinHome.handleS2SWebReturn}</action>
+	</url-mapping>
+
+</pretty-config>

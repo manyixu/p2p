@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pm="http://primefaces.org/mobile"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:o="http://omnifaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:archer="http://java.sun.com/jsf/archer"
+	xmlns:sec="http://www.springframework.org/security/facelets/tags">
+	<h:head>
+	<title>设置</title>
+	<meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no"/>
+	<meta name="apple-touch-fullscreen" content="yes"/> <!--  一会试验下是否有必要存在 -->
+	<meta name="apple-mobile-web-app-capable" content="yes"/>
+	<meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+	<meta name="format-detection" content="telephone=no"/>
+	<meta http-equiv="x-rim-auto-match" content="none"/>
+	<link href="#{tplVars.themeStylePath}/weixincss/down.css" rel="stylesheet" type="text/css"/>
+    <link href="#{tplVars.themeStylePath}/weixincss/mobilebase.css" rel="stylesheet"/>
+    <script type="text/javascript" src="#{tplVars.themeJSPath}/weixinjs/jquery-1.8.0.min.js"></script>
+    <script type="text/javascript" src="#{tplVars.themeJSPath}/jquery.artDialog.js?skin=idialog"></script>
+	<script type="text/javascript" src="#{tplVars.themeJSPath}/jquery.SuperSlide.2.1.1.js"></script>
+	<script type="text/javascript" src="#{tplVars.themeJSPath}/common.js"></script>
+	<script type="text/javascript" src="#{tplVars.themeJSPath}/timer.js"></script>
+    <script>
+			//如果登录用户没有投资权限，则提示，并跳转页面。
+			function getInvestorPer() {
+				$.dialog
+						.confirm(
+								'您尚未进行实名认证，是否要实名认证？',
+								function() {
+									window.location.href = "#{path}/weixinuser/accountdetails";
+									$.dialog.tips('正在为您跳转到页面');
+								});
+				return false;
+			}
+		</script>
+    </h:head>
+    <h:body  style=" width:100%; height:100%;">
+    <f:event type="preRenderView" listener="#{weixinUserHome.setId(loginUserInfo.loginUserId)}"></f:event>
+<div class="warp_1">
+	<div class="spe"></div>
+	<div class="top">
+	<h:form>
+    	<div class="top_inner">
+             <div class="xiangqing">
+              	<a href="#{path}/weixinuser/updatepassword" class="xiang_t" style="display:block; color:#58b85f;float:none;">
+                   <p style="float:left;">修改密码</p>
+                   <p  style="float:right; padding-right:3%; color:#afafaf">></p>
+                   <div class="clear"></div>
+                </a>  
+              </div>
+              <ui:fragment rendered="#{weixinUserHome.instance.email!=null and weixinUserHome.instance.email!=''}">
+	              <div class="xiangqing">
+	                    <a href="#{path}/weixinuser/updateemail" class="xiang_t" style="display:block; color:#58b85f;float:none;">
+	                       <p style="float:left;">修改邮箱</p>
+	                       <p  style="float:right; padding-right:3%; color:#afafaf">></p>
+	                       <div class="clear"></div>
+	                    </a>  
+	              </div>
+              </ui:fragment>
+              <ui:fragment rendered="#{weixinUserHome.instance.email==null || weixinUserHome.instance.email==''}">
+	              <div class="xiangqing">
+	                    <a href="#{path}/weixinuser/bindemail" class="xiang_t" style="display:block; color:#58b85f;float:none;">
+	                       <p style="float:left;">绑定邮箱</p>
+	                       <p  style="float:right; padding-right:3%; color:#afafaf">></p>
+	                       <div class="clear"></div>
+	                    </a>  
+	              </div>
+              </ui:fragment>
+              <div class="xiangqing">
+              <sec:ifNotGranted roles="INVESTOR">
+					<a class="xiang_t" style="display:block; color:#58b85f;float:none;" href="javascript:void(0)" onclick="getInvestorPer();">
+						修改手机号
+						<p  style="float:right; padding-right:3%; color:#afafaf">></p>
+					</a>
+					
+			</sec:ifNotGranted>
+			  <sec:ifAllGranted roles="INVESTOR">
+              <h:commandLink value="修改手机号" styleClass="xiang_t" style="display:block; color:#58b85f;float:none;" action="#{weixinUserHome.changeBindingMobile}">
+                   <p  style="float:right; padding-right:3%; color:#afafaf">></p>
+              </h:commandLink>
+              </sec:ifAllGranted>
+                  
+              </div>
+              <div class="xiangqing">
+              	<a href="#{request.contextPath}/weixinapp/logout" class="xiang_t" style="display:block; color:#58b85f;float:none;">
+                   <p style="float:left;">注销</p>
+                   <p  style="float:right; padding-right:3%; color:#afafaf">></p>
+                   <div class="clear"></div>
+                </a>  
+              </div>
+        </div>	
+        </h:form>
+    </div>
+   
+</div>
+<ui:include src="../bottom.xhtml"></ui:include>
+    </h:body>
+</html>

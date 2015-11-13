@@ -1,0 +1,84 @@
+<ui:composition template="/admin/templates/ui.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:composite="http://java.sun.com/jsf/composite/primefaces"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:sec="http://www.springframework.org/security/facelets/tags">
+	<f:metadata>
+		<f:viewParam name="id" value="#{coveringHome.id}"></f:viewParam>
+	</f:metadata>
+
+	<o:importConstants
+		type="com.esoft.fintheircing.FinthcConstants.CoveringStatus" />
+
+	<ui:define name="content">
+		<div class="entry">
+			<p:toolbar styleClass="admin-nav-toolbar">
+				<p:toolbarGroup>
+					<h:outputLabel value="#{commonMsg.currentPositionLabel} 补仓编辑"></h:outputLabel>
+				</p:toolbarGroup>
+				<p:toolbarGroup align="right">
+					<p:separator />
+					<p:button outcome="/admin/finthc/coveringList" value="补仓管理"></p:button>
+				</p:toolbarGroup>
+			</p:toolbar>
+			<p:spacer></p:spacer>
+			<h:form id="form">
+				<h:panelGrid columns="2" columnClasses="col1,col2" id="panel">
+
+					<h:outputLabel value="申请时间"></h:outputLabel>
+					<h:outputText value="#{covering.applyTime}">
+						<f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss" timeZone="GMT+8" />
+					</h:outputText>
+
+					<h:outputLabel value="操盘编号"></h:outputLabel>
+					<h:outputText value="#{covering.trade.id}"></h:outputText>
+
+					<h:outputLabel value="操盘人"></h:outputLabel>
+					<h:outputText value="#{covering.trade.trader.username}"></h:outputText>
+
+					<h:outputLabel value="金额"></h:outputLabel>
+					<h:outputText value="#{covering.money}">
+						<f:convertNumber minIntegerDigits="1" maxFractionDigits="0" />
+					</h:outputText>
+
+					<h:outputText value="审核信息"></h:outputText>
+					<p:inputTextarea value="#{covering.verifyMessage}" cols="80"
+						rendered="#{convering.status eq CoveringStatus.WAIT_VERIFY}"
+						rows="3"></p:inputTextarea>
+					<h:outputText value="#{covering.verifyMessage}"
+						rendered="#{convering.status ne CoveringStatus.WAIT_VERIFY}"></h:outputText>
+
+					<h:outputLabel value="补仓金额到账时间"
+						rendered="#{convering.status eq CoveringStatus.PASSED}"></h:outputLabel>
+					<p:calendar pattern="yyyy-MM-dd HH:mm:ss" timeZone="GMT+8"
+						required="true"
+						rendered="#{convering.status eq CoveringStatus.PASSED}"
+						value="#{covering.transferTime}">
+					</p:calendar>
+
+					<h:outputLabel value="#{commonMsg.actionLabel}"></h:outputLabel>
+					<ui:fragment>
+						<p:commandButton ajax="false"
+							rendered="#{convering.status eq CoveringStatus.WAIT_VERIFY}"
+							action="#{coveringHome.passApply}" value="通过申请" id="passBtn"></p:commandButton>
+						<p:commandButton ajax="false"
+							rendered="#{convering.status eq CoveringStatus.WAIT_VERIFY}"
+							action="#{coveringHome.refuseApply}" value="拒绝申请" id="refusedBtn"></p:commandButton>
+						<p:commandButton ajax="false"
+							rendered="#{convering.status eq CoveringStatus.PASSED}"
+							action="#{coveringHome.transfer}" value="补仓到账" id="transferBtn"></p:commandButton>
+						<p:blockUI block="panel"
+							trigger="passBtn, refusedBtn, transferBtn"></p:blockUI>
+					</ui:fragment>
+				</h:panelGrid>
+
+			</h:form>
+		</div>
+	</ui:define>
+</ui:composition>
+

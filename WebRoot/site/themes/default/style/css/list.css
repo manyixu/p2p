@@ -1,0 +1,167 @@
+@charset "utf-8";
+/* CSS Document */
+
+#header{ border-bottom:1px solid #e6e6e6;}
+#main{ width:100%; padding-bottom:34px;}
+.main_inner{ width:100%; margin:0 auto; padding-top:34px;}
+/*筛选*/
+.choice{ background:#fff; margin-bottom:34px;border-bottom: 1px solid #e6e6e6;}
+.tit{ font-size:24px; color:#333; margin-bottom:36px;}
+.shai{ margin-bottom:34px;width:1000px;margin:auto;margin-bottom:30px}
+.project{width:1000px;margin:auto;}
+.choice_1 p,.choice_1 ul,.choice_1 ul li{ float:left; color:#666;}
+.choice_1 ul li{ padding:0 8px}
+.all{background:#3ec226;color:#fff}
+.choice_1 ul li a{ display:block; line-height:24px;padding:0 9px; border-radius:4px; text-align:centercolor:#666;}
+.fengxian a{ font-family:Arial, Helvetica, sans-serif;}
+/*项目*/
+.p_t{ padding:0 15px; background:#eeeeee;border-top:1px solid #e6e6e6;border-bottom:1px solid #e6e6e6;border-left:1px solid #e6e6e6;border-right:1px solid #e6e6e6;}
+.p_b .p_5{font-family: Arial, Helvetica, sans-serif;font-size: 18px;}
+.p_b{padding:0 15px; background:#fff;border-bottom:1px solid #e6e6e6;border-left:1px solid #e6e6e6;border-right:1px solid #e6e6e6;}
+.p_t li,.p_b li{ float:left; color:#666;}
+.p_t li{ line-height:45px;}
+.p_b li{ line-height:88px;}
+.p_1{ width:111px; text-align:left; margin-right:36px;}
+.p_2{ width:58px; text-align:center; margin-right:50px;}
+.p_2 img{ display:block; padding-top:22px; padding-left:8px; text-align:center;}
+.p_3{ width:78px; text-align:center;margin-right:40px;}
+.p_3 span{ color:#ff8426; font-family:Arial, Helvetica, sans-serif; font-size:18px;}
+.p_4 span,.p_5 span{font-family:Arial, Helvetica, sans-serif; font-size:18px;color: #666;}
+
+.project_con ul{padding-left:33px;}
+
+.p_4{ width:118px; text-align:center;margin-right:28px;}
+.p_5{ width:50px; text-align:center;margin-right:60px;}
+.p_6{ width:70px; text-align:center;margin-right:45px;}
+.p_7{ width:98px; margin-right:29px;}
+.p_7 progressbar{ padding-top:42px;}
+.p_8{ width:46px; }
+.zhuangtai{ padding-top:30px; padding-left:62px;}
+.zhuangtai a{width:100px;}
+.p_b:hover{ background:#f1f7f5;}
+/*进度条*/
+.progressbar{
+    position:relative;
+    display:block;
+    width:90px;
+    height:8px;
+
+    border-radius:10px;
+	-webkit-border-radius:10px;
+}
+.progressbar:before{
+    position:absolute;
+    display:block;
+    content:"";
+    width:90px;
+    height:10px;
+
+	-webkit-border-radius:20px;
+    border-radius:10px;
+    background:#dddddd;
+
+}
+.bar {
+	position:absolute;
+	display:block;
+	width:0px;
+	height:8px;
+	top:1px;
+	left:1px;
+	filter:progid:DXImageTransform.Microsoft.gradient( startColorstr='#7eea19', endColorstr='#53ad00',GradientType=0 );
+	-webkit-border-radius:10px;
+	border-radius:10px;
+
+}
+.bar.color2 {
+	background:#3ec226
+}
+.bar:before {
+	position:absolute;
+	display:block;
+	content:"";
+	width:90px;
+	height:150%;
+	top:-25%;
+	left:-25px;
+	background:#3ec226
+	filter:progid:DXImageTransform.Microsoft.gradient( startColorstr='#59ffffff', endColorstr='#00ffffff',GradientType=1 );
+	background:url(../images/jindu_bg.png) no-repeat;
+    -moz-animation:sparkle 1500ms linear infinite;
+    -o-animation:sparkle 1500ms linear infinite;
+	-webkit-animation:sparkle 1500ms linear infinite;
+    animation:sparkle 1500ms linear infinite;
+	opacity:0.2;
+}
+.bar:after {
+	position:absolute;
+	display:block;
+	content:"";
+	width:64px;
+	height:8px;
+	right:0;
+	top:0;
+	-webkit-border-radius:0px 10px 16px 0px;
+	border-radius:0px 10px 16px 0px;
+}
+
+.label {
+	font-family:Arial, Helvetica, sans-serif;
+	position:absolute;
+	display:block;
+	width:40px;
+	height:8px;
+	line-height:30px;
+	top:-8px;
+	right:-48px;
+	font-size:14px;
+	color:#666;
+
+
+}
+@-webkit-keyframes sparkle {
+	from {background-position:0 0;}
+	to {background-position:0 -64px;}
+}
+@-moz-keyframes sparkle {
+	from {background-position:0 0;}
+	to {background-position:0 -64px;}
+}
+@-o-keyframes sparkle {
+	from {background-position:0 0;}
+	to {background-position:0 -64px;}
+}
+@keyframes sparkle {
+	from {background-position:0 0;}
+	to {background-position:0 -64px;}
+}
+
+
+.bnt_3{ display:block; width:80px; height:22px; line-height:22px; border-radius:10px; -webkit-border-radius:10px; }
+.project{ *padding-top:15px; margin-bottom:}
+.project_con table{ border-top:1px solid #e6e6e6;border-bottom:1px solid #e6e6e6; border-left: none;border-right: none; }
+.project_con table tr{ padding:0 24px; background:#fff;border-bottom:1px solid #e6e6e6;}
+.tr_1{  border-bottom:1px solid #e6e6e6;}
+.tr_1 td{ background:#fafafa; line-height:40px; color:#666; }
+.td_1{ width:78px; padding-left:28px; padding-right:20px;}
+.tr_2 td{  line-height:80px; color:#666;}
+.td_2{ width:108px;  padding-right:5px;font-family:Arial, Helvetica, sans-serif;}
+.td_2 span{ color:#fb9e3b; font-size:22px;font-family:Arial, Helvetica, sans-serif;}
+.td_3{ width:86px;  padding-right:10px;}
+.td_3 span,.td_4 span{ font-size:18px; font-family:Arial, Helvetica, sans-serif; color:#666;}
+.td_4{width:30px; text-align:left; padding-left:20px;}
+.td_5{ width:163px; text-align:center;}
+.td_6{ width:76px; text-align:left; padding-right:20px;}
+.td_7{ width:58px; text-align:left; padding-right:24px; }
+.bnt_3{ display:block; width:70px; height:26px; line-height:26px; border-radius:5px; -webkit-border-radius:5px; float:left; margin-right:5px;}
+.jisuanqi_1{ background:url(../images/index_7_07.png) no-repeat; display:block; width:23px; height:23px; margin-top:3px;}
+.jisuanqi_1:hover{ background:url(../images/index_6_03.png) no-repeat;-moz-transition: background .6s; transition: background .6s;}
+.bnt_4{ display:block; width:70px; height:26px; line-height:26px; border-radius:5px; -webkit-border-radius:5px; float:left; margin-right:10px;}
+.bnt_5{ display:block; width:70px; height:24px; line-height:24px; border-radius:15px; -webkit-border-radius:15px; float:left; margin-right:30px;}
+
+.project_con tr:nth-child(n+1):hover{ background:#fafafa;}
+.project_con p{background:#fff;  width:1000px; line-height:70px; padding-top:10px;text-align:center;border-bottom:1px solid #e6e6e6;}
+.project_con p a{font-size:18px; color:#c1c1c1;}
+.project_con p a:hover{ color:#3ec226;-webkit-transition:color .4s; -moz-transition:color .4s; transition:color .4s;}
+
+

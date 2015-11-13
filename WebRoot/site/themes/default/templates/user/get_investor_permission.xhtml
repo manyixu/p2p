@@ -1,0 +1,456 @@
+<ui:composition template="center.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pm="http://primefaces.org/mobile"
+	xmlns:o="http://omnifaces.org/ui"
+	xmlns:archer="http://java.sun.com/jsf/archer"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:sec="http://www.springframework.org/security/facelets/tags"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<ui:param name="activeCenterMenuUrl"
+		value="/user/get_investor_permission"></ui:param>
+	<ui:define name="center_right">
+	<style>
+							.jcxx_tab td{
+								border-bottom:none;
+							}
+							.jcxx_tab tr td{
+								line-height: 50px;
+							}
+						</style>
+	<link href="#{tplVars.themeStylePath}/center.css" type="text/css" rel="stylesheet" />
+		<f:event type="preRenderView"
+			listener="#{borrowerInfoHome.setId(loginUserInfo.loginUserId)}"></f:event>
+		<f:event type="preRenderView"
+			listener="#{userHome.setId(loginUserInfo.loginUserId)}"></f:event>
+		<ui:param name="pnrCorp" value="#{configHome.getConfigValue('pnrpay_corp_account')}"></ui:param>
+		<div class="main_r">
+			<script>
+			//<![CDATA[
+				$(function() {
+					$(".datepicker").datepicker({
+						changeMonth : true,
+						changeYear : true,
+						yearRange : "1920:2020"
+					});
+					
+					//如果是汇付托管则直接提交
+					var pnr_enable = "#{configHome.getConfigValue('pnrpay_enable')}";
+					var pnr_corp = "#{pnrCorp}";
+					if(pnr_enable == '1' && pnr_corp == '0'){
+						//$("body").hide();
+						var pnr_btn = $("#form\\:commit_pnr");
+						var last = 5;
+						var $last = $("#last");
+						var interval = setInterval(function(){
+							last = last - 1;
+							$last.html(last);
+							if(last == 0){
+								clearInterval(interval);
+								if(pnr_btn[0]){
+									pnr_btn.click();
+								}
+							}
+						} , 1000);
+					}
+				});
+				//]]>
+			</script>
+
+			<div class="zhcz_h3 zhcz_h302">个人信息</div>
+			<h:form id="form">
+				<!-- 不是汇付资金托管时显示。 -->
+				<table width="556" border="0" cellspacing="0" cellpadding="0" class="jcxx_tab">
+					<sec:ifAnyGranted roles="INVESTOR,CORP,GUARANTEE,LOANER">
+						<!-- <tr>
+							<td width="135" align="left"><span>*</span>用户名：</td>
+							<td colspan="2">#{userHome.instance.username}</td>
+						</tr> -->
+						<tr>
+							<td align="left"><span>*</span>真实姓名：</td>
+							<td width="280">#{fn:substring(userHome.instance.realname,0,1)}**</td>
+							<td width="85" class="gray"><img
+								src="#{tplVars.themeImagePath}/img71.png" width="16" height="16" />已认证</td>
+						</tr>
+						<tr>
+							<td align="left"><span>*</span>身份证号：</td>
+							<td>#{fn:substring(userHome.instance.idCard,0,6)} **** **** ****
+								</td>
+							<td class="gray"><img
+								src="#{tplVars.themeImagePath}/img71.png" alt="" width="16"
+								height="16" />已认证</td>
+						</tr>
+						<tr>
+							<td align="left"><span>*</span>性别：</td>
+							<td>
+								<h:outputText value="#{dictUtil.getValue('user_sex',userHome.instance.sex)}"/>
+							</td>
+							<td class="gray"><img
+								src="#{tplVars.themeImagePath}/img71.png" alt="" width="16"
+								height="16" />已认证</td>
+						</tr>
+						<tr>
+							<td align="left"><span>*</span>出生日期：</td>
+							<td><h:outputText value="#{userHome.instance.birthday}">
+									<f:convertDateTime pattern="yyyy-MM-dd" timeZone="GMT+8" />
+								</h:outputText></td>
+							<td class="gray"><img
+								src="#{tplVars.themeImagePath}/img71.png" alt="" width="16"
+								height="16" />已认证</td>
+						</tr>
+
+						<ui:fragment
+							rendered="#{not empty borrowerInfoHome.instance.borrowerPersonalInfo}">
+							<tr>
+								<td align="left"><span>*</span>个人基础信息</td>
+								<td></td>
+								<td class="gray"><img
+									src="#{tplVars.themeImagePath}/img71.png" alt="" width="16"
+									height="16" />已认证	</td>
+							</tr>
+						</ui:fragment>
+						<ui:fragment
+							rendered="#{not empty borrowerInfoHome.instance.borrowerAdditionalInfo}">
+							<tr>
+								<td align="left"><span>*</span>工作财务信息</td>
+								<td></td>
+								<td class="gray"><img
+									src="#{tplVars.themeImagePath}/img71.png" alt="" width="16"
+									height="16" />已认证</td>
+							</tr>
+						</ui:fragment>
+						<ui:fragment
+							rendered="#{not empty borrowerInfoHome.instance.borrowerAuthentication}">
+							<tr>
+								<td align="left"><span>*</span>认证资料</td>
+								<td></td>
+								<td class="gray"><img
+									src="#{tplVars.themeImagePath}/img71.png" alt="" width="16"
+									height="16" />已认证</td>
+							</tr>
+						</ui:fragment>
+					</sec:ifAnyGranted>
+					<sec:ifNotGranted roles="INVESTOR,CORP,GUARANTEE,LOANER,WAIT_CONFIRM">
+						<ui:fragment rendered="#{configHome.getConfigValue('pnrpay_enable') ne '2'}">
+							<!-- <tr>
+								<td width="135" align="left"><span>*</span>用户名：</td>
+								<td colspan="2">#{userHome.instance.username}</td>
+							</tr> -->
+							<tr>
+								<td align="left"><span>*</span>真实姓名：</td>
+								<td width="280" colspan="2"><h:inputText label="真实姓名"
+										maxlength="20" styleClass="bdsj_txt" id="realname"
+										required="true" value="#{userHome.instance.realname}">
+										<f:ajax event="blur" render="@this"></f:ajax>
+									</h:inputText> </td>
+							</tr>
+							<tr>
+								<td align="left"><span>*</span>身份证号：</td>
+								<td><h:inputText label="身份证号" styleClass="bdsj_txt"
+										id="idCard" required="true" value="#{userHome.instance.idCard}"
+										maxlength="18">
+										<archer:validateInputRule ruleId="input.idCard"></archer:validateInputRule>
+										<archer:validateIdCardAlreadyExist></archer:validateIdCardAlreadyExist>
+										<f:ajax event="blur" render="@this"></f:ajax>
+									</h:inputText></td>
+							</tr>
+							<tr>
+								<td align="left"><span>*</span>性别：</td>
+								<td>
+									<h:selectOneMenu value="#{userHome.instance.sex}"
+										required="true">
+										<f:selectItem itemLabel="#{userMsg.male}" itemValue="M"></f:selectItem>
+	                            		<f:selectItem itemLabel="#{userMsg.female}" itemValue="F"></f:selectItem>
+									</h:selectOneMenu>
+								</td>
+							</tr>
+							<tr>
+								<td align="left"><span>*</span>出生日期：</td>
+								<td><h:inputText id="ymd" value="#{userHome.instance.birthday}"
+										required="true" label="出生日期" styleClass="bdsj_txt datepicker">
+										<f:convertDateTime pattern="yyyy-MM-dd" timeZone="GMT+8"
+											locale="zh_CN" />
+									</h:inputText></td><script>
+										$("#form\\:idCard").blur(function() {
+											var idcard = $("#form\\:idCard").val();
+											if(idcard!=null) {
+												if(idcard.length==18) {
+													var idcard = $("#form\\:idCard").val();
+													var year = idcard.substring(6,10);
+													var month = idcard.substring(10,12);
+													var day = idcard.substring(12,14);
+													var idstr = year+"-"+month+"-"+day;
+													$("#form\\:ymd").val(idstr);
+												}else {
+													$("#form\\:ymd").val("");
+												}
+											}
+										});
+									</script>
+							</tr>
+							<ui:fragment rendered="#{configHome.getConfigValue('enable_cash_password') eq '1' and empty userHome.instance.cashPassword}">
+								<o:validateEqual id="rePasswordValidator" components="pass repass"
+								showMessageFor="repass" message="两次输入的交易密码不一致"></o:validateEqual>
+								<tr>
+									<td align="left"><span>*</span>交易密码：</td>
+									<td><h:inputSecret id="pass" label="交易密码" required="true"
+										styleClass="bdsj_txt" maxlength="16"
+										value="#{userHome.instance.cashPassword}">
+										<f:ajax event="blur" execute="rePasswordValidator @this repass"></f:ajax>
+										<archer:validateInputRule ruleId="input.password"></archer:validateInputRule>
+									</h:inputSecret></td>
+									<p:watermark value="6至16位字母和数字组合" for="pass"></p:watermark>
+								</tr>
+								<tr>
+									<td align="left"><span>*</span>确认交易密码：</td>
+									<td><h:inputSecret id="repass" label="确认交易密码" required="true"
+										styleClass="bdsj_txt" maxlength="16">
+										<f:ajax event="blur" execute="rePasswordValidator @this pass"></f:ajax>
+									</h:inputSecret>
+									</td>
+									<p:watermark value="再次输入密码" for="repass"></p:watermark>
+								</tr>
+							</ui:fragment>
+							<tr>
+								<td></td>
+								<td class="last">
+								<ui:fragment rendered="#{userHome.getInvestorPermissionCount() != 3}">
+								<h:commandLink
+										onclick="return confirm('请再次核查信息，确认后不可修改')" value="保存"
+										action="#{userHome.getInvestorPermission}">
+									</h:commandLink>
+								</ui:fragment>	
+								<ui:fragment rendered="#{userHome.getInvestorPermissionCount() == 3}">
+									您今天已经操作三次实名认证，请明天再试
+								</ui:fragment>
+								</td>
+							</tr>
+						</ui:fragment>
+						
+					</sec:ifNotGranted>
+				</table>
+			</h:form>
+			<ui:fragment rendered="#{configHome.getConfigValue('yeepay_corp_account') eq '2'}">
+				<div class="pnr-permission">易宝正在审核您的资料，请耐心等待审核......</div>
+			</ui:fragment>
+			<sec:ifNotGranted roles="INVESTOR,GUARANTEE,WAIT_CONFIRM,CORP,LOANER">
+				<ui:fragment rendered="#{configHome.getConfigValue('yeepay_corp_account') eq '2'}">
+					<div class="zhcz_h3">企业开户</div>
+					<h:form id="form_yeepay">
+						<table width="456" border="0" cellspacing="0" cellpadding="0" class="jcxx_tab">
+							<tr>
+								<td align="left"><span>*</span>企业名称：</td>
+								<td width="280" colspan="2">
+									<h:inputText label="企业名称" maxlength="20" styleClass="bdsj_txt" id="enterpriseName"
+										required="true" value="#{userHome.yci.enterpriseName}">
+										<f:ajax event="blur" render="@this"></f:ajax>
+									</h:inputText>
+								</td>
+							</tr>
+							<tr>
+								<td align="left"><span>*</span>开户银行许可证：</td>
+								<td width="280" colspan="2">
+									<h:inputText label="开户银行许可证" maxlength="20" styleClass="bdsj_txt" id="bankLicense" required="true" value="#{userHome.yci.bankLicense}">
+										<f:ajax event="blur" render="@this"></f:ajax>
+									</h:inputText>
+								</td>
+							</tr>
+							<tr>
+								<td align="left"><span>*</span>组织机构代码：</td>
+								<td>
+									<h:inputText label="组织机构代码" styleClass="bdsj_txt" id="orgNo" value="#{userHome.yci.orgNo}" maxlength="9" required="true">
+										<o:validator validatorId="javax.faces.RegularExpression" message="组织机构代码格式不正确(8位数字+1位数字或字母)！" pattern="^([0-9]{8}[0-9a-zA-Z]|)$"></o:validator>
+										<f:ajax event="blur"></f:ajax>
+									</h:inputText>
+								</td>
+							</tr>
+							<tr>
+								<td align="left"><span>*</span>营业执照编号：</td>
+								<td>
+									<h:inputText label="营业执照编号" styleClass="bdsj_txt" id="businessLicense" required="true" value="#{userHome.yci.businessLicense}" maxlength="15">
+										<o:validator validatorId="javax.faces.RegularExpression" message="营业执照编号格式不正确(15位数字)！" pattern="^[0-9]{15}$"></o:validator>
+										<f:ajax event="blur"></f:ajax>
+									</h:inputText>	
+								</td>
+							</tr>
+							<tr>
+								<td align="left"><span>*</span>税务登记号：</td>
+								<td>
+									<h:inputText label="税务登记号" styleClass="bdsj_txt" id="taxNo" value="#{userHome.yci.taxNo}" maxlength="15" required="true">
+										<o:validator validatorId="javax.faces.RegularExpression" message="税务登记号格式不正确(15位数字)！" pattern="^([0-9]{15}|)$"></o:validator>
+										<f:ajax event="blur"></f:ajax>
+									</h:inputText>
+								</td>
+							</tr>
+							<tr>
+								<td align="left"><span>*</span>法人姓名：</td>
+								<td width="280" colspan="2">
+									<h:inputText label="法人姓名" maxlength="20" styleClass="bdsj_txt" id="legal" required="true" value="#{userHome.yci.legal}">
+										<f:ajax event="blur" render="@this"></f:ajax>
+									</h:inputText>
+								</td>
+							</tr>
+							<tr>
+								<td align="left"><span>*</span>法人身份证号：</td>
+								<td><h:inputText label="法人身份证号" styleClass="bdsj_txt" id="legalIdNo" required="true" value="#{userHome.yci.legalIdNo}" maxlength="50">
+										<archer:validateInputRule ruleId="input.idCard"></archer:validateInputRule>
+										<f:ajax event="blur" render="@this"></f:ajax>
+									</h:inputText></td>
+							</tr>
+							<tr>
+								<td align="left"><span>*</span>企业联系人：</td>
+								<td width="280" colspan="2">
+									<h:inputText label="企业联系人" maxlength="20" styleClass="bdsj_txt" id="contact" required="true" value="#{userHome.yci.contact}">
+										<f:ajax event="blur" render="@this"></f:ajax>
+									</h:inputText>
+								</td>
+							</tr>
+							<tr>
+								<td align="left"><span>*</span>联系人手机号：</td>
+								<td width="280" colspan="2">
+									<h:inputText label="联系人手机号" maxlength="11" styleClass="bdsj_txt" id="contactPhone" required="true" value="#{userHome.yci.contactPhone}">
+										<archer:validateInputRule ruleId="input.mobile"></archer:validateInputRule>
+										<f:ajax event="blur" render="@this"></f:ajax>
+									</h:inputText>
+								</td>
+							</tr>
+							<tr>
+								<td align="left"><span>*</span>联系人邮箱：</td>
+								<td width="280" colspan="2">
+									<h:inputText label="联系人邮箱" maxlength="50" styleClass="bdsj_txt" id="contactEmail" required="true" value="#{userHome.yci.email}">
+										<archer:validateInputRule ruleId="input.email"></archer:validateInputRule>
+										<f:ajax event="blur" render="@this"></f:ajax>
+									</h:inputText>
+								</td>
+							</tr>
+							<tr>
+								<td></td>
+								<td class="last"><h:commandLink
+										onclick="return confirm('请再次核查信息，确认后不可修改')" value="保存"
+										action="#{userHome.openCorpAccount}">
+									</h:commandLink></td>
+							</tr>
+						</table>
+						<!-- 用户类型暂时写死为企业借款人 -->
+						<f:event type="preRenderComponent" listener="#{userHome.yci.setMemberClassType('ENTERPRISE')}"></f:event>
+						<f:event type="preRenderComponent" listener="#{userHome.yci.setUser(userHome.instance)}"></f:event>
+					</h:form>
+				</ui:fragment>
+			</sec:ifNotGranted>
+			<!-- 汇付天下开户 -->
+			<ui:fragment rendered="#{configHome.getConfigValue('pnrpay_enable') eq '1'}">
+				<sec:ifNotGranted roles="INVESTOR,GUARANTEE,WAIT_CONFIRM,CORP,LOANER">
+					<!-- 仅个人开户 -->
+					<ui:fragment rendered="#{pnrCorp eq '0'}">
+						<div class="pnr-permission">实名认证需要跳转至汇付天下页面，<span id="last">5</span>秒后自动跳转...<br/>
+							<div class="pnr-permission-btn-div">
+								<h:form>
+									<h:commandLink value="立刻前往" id="commit_pnr" action="#{userHome.getInvestorPermission}" target="_blank"> </h:commandLink>
+									<a href="#{path}/user/center">取消</a>
+								</h:form>
+							</div>
+						</div>
+					</ui:fragment>
+					<!-- 个人开户及企业开户 -->
+					<ui:fragment rendered="#{pnrCorp ne '0'}">
+						<div class="pnr-permission">
+							请选择开户类型进行开户：
+						</div>
+						<div class="pnr-permission">
+							个人用户开户成功后，可进行投资、个人借款、绑卡（个人银行卡）、充值、提现等操作。
+							<table width="456" border="0" cellspacing="0" cellpadding="0" class="jcxx_tab">
+							<tr><td colspan="2">
+							<div class="pnr-permission-btn-div">
+								<h:form>
+									<h:commandLink value="个人开户" id="commit_pnr_" action="#{userHome.getInvestorPermission}" target="_blank"> </h:commandLink>
+								</h:form>
+							</div>
+							</td></tr>
+							</table>
+						</div>
+						<div class="pnr-permission">
+							<ui:fragment rendered="#{pnrCorp eq '1'}">
+								企业用户开户成功后，可作为担保公司，享受所担保借款部分收益。
+								<f:event type="preRenderComponent" listener="#{userHome.corpInfo.setGuarType('Y')}"></f:event>
+							</ui:fragment>
+							<ui:fragment rendered="#{pnrCorp eq '2'}">
+								企业用户开户成功后，可进行企业借款、绑卡（企业银行卡）、提现等操作。
+								<f:event type="preRenderComponent" listener="#{userHome.corpInfo.setGuarType('N')}"></f:event>
+							</ui:fragment>
+							<ui:fragment rendered="#{pnrCorp eq '3'}">
+								企业用户可分为担保用户及非担保用户，其中：<br/>
+								1.&#160;担保用户开户成功后，可作为担保公司，享受所担保借款部分收益。<br/>
+								2.&#160;非担保用户开户成功后，可进行企业借款、绑卡（企业银行卡）、提现等操作。
+							</ui:fragment>
+							<h:form>
+								<table width="456" border="0" cellspacing="0" cellpadding="0" class="jcxx_tab">
+									<tr>
+										<td align="right"><span>*</span>营业执照编号：</td>
+										<td>
+											<h:inputText label="营业执照编号" styleClass="bdsj_txt" id="busiCode" required="true" value="#{userHome.corpInfo.busiCode}" maxlength="15">
+												<o:validator validatorId="javax.faces.RegularExpression" message="营业执照编号格式不正确(15位数字)！" pattern="^[0-9]{15}$"></o:validator>
+												<archer:validateAlreadyExist></archer:validateAlreadyExist>
+												<f:ajax event="blur"></f:ajax>
+											</h:inputText>	
+										</td>
+									</tr>
+									<ui:fragment rendered="#{pnrCorp eq '3'}">
+										<tr>
+											<td align="right"><span>*</span>担保类型：</td>
+											<td>
+												<h:selectOneRadio required="true" requiredMessage="请选择担保类型" value="#{userHome.corpInfo.guarType}">
+													<f:selectItem itemLabel="担保用户" itemValue="Y"/>
+													<f:selectItem itemLabel="非担保用户" itemValue="N"/>
+												</h:selectOneRadio>
+											</td>
+										</tr>
+									</ui:fragment>
+									<tr>
+										<td align="right">组织机构代码：</td>
+										<td>
+											<h:inputText label="组织机构代码" styleClass="bdsj_txt" id="instuCode" value="#{userHome.corpInfo.instuCode}" maxlength="9">
+												<o:validator validatorId="javax.faces.RegularExpression" message="组织机构代码格式不正确(8位数字+1位数字或字母)！" pattern="^([0-9]{8}[0-9a-zA-Z]|)$"></o:validator>
+												<f:ajax event="blur"></f:ajax>
+											</h:inputText>
+										</td>
+									</tr>
+									<tr>
+										<td align="right">税务登记号：</td>
+										<td>
+											<h:inputText label="税务登记号" styleClass="bdsj_txt" id="taxCode" value="#{userHome.corpInfo.taxCode}" maxlength="15">
+												<o:validator validatorId="javax.faces.RegularExpression" message="税务登记号格式不正确(15位数字)！" pattern="^([0-9]{15}|)$"></o:validator>
+												<f:ajax event="blur"></f:ajax>
+											</h:inputText>
+										</td>
+									</tr>
+									<tr>
+										<td colspan="2">
+											<div class="pnr-permission-btn-div">
+												<h:commandLink value="企业开户" id="corp_submit" action="#{userHome.openCorpAccount}"> </h:commandLink>
+											</div>
+										</td>
+									</tr>
+								</table>
+							</h:form>
+						</div>
+					</ui:fragment>
+				</sec:ifNotGranted>
+				<sec:ifAllGranted roles="WAIT_CONFIRM">
+					<div class="pnr-permission">汇付天下正在审核您的资料，请耐心等待审核......</div>
+				</sec:ifAllGranted>
+			</ui:fragment>
+			<!-- 汇付天下开户结束 -->
+			<DIV style="padding: 40px 0 0 90px;color: red;">
+			温馨提示：<br/>
+			1、全利网为您每天提供三次认证机会，请谨慎填写<br/>
+			2、请核实所填信息的真实性，一旦认证成功将无法修改
+			</DIV>
+		</div>
+		<div class="clear"></div>
+
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,73 @@
+<ui:composition template="/admin/templates/ui.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:composite="http://java.sun.com/jsf/composite/primefaces"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+    xmlns:c="http://java.sun.com/jsp/jstl/core"
+    xmlns:sec="http://www.springframework.org/security/facelets/tags">
+
+    <ui:define name="content">
+    
+    <div class="entry">
+    	<p:toolbar>
+            <p:toolbarGroup>
+	            <h:outputLabel style="padding-left: 15px;" value="#{commonMsg.currentPositionLabel}用户体验金日志查询"></h:outputLabel>
+            </p:toolbarGroup>
+           
+        </p:toolbar>
+        <!-- 用户体验金日志查询 -->
+        <h:form id="form"> 
+        	<p:spacer></p:spacer> 
+                <p:panel id="filters">
+					<p:inputText id="userid" value="#{userExperienceLogList.example.userid}"></p:inputText>	  
+                    <p:calendar id="loginTimeStart" value="#{userExperienceLogList.loginTimeStart}" 
+                    	pattern="yyyy-MM-dd HH:mm:ss" navigator="true" showButtonPanel="true"></p:calendar>
+                    <p:calendar id="loginTimeEnd" value="#{userExperienceLogList.loginTimeEnd}"
+                    	pattern="yyyy-MM-dd HH:mm:ss" navigator="true" showButtonPanel="true"></p:calendar>
+                    <h:selectOneMenu id="etype" value="#{userExperienceLogList.example.etype}">
+                    	<f:selectItem itemValue="" itemLabel="状态"/>
+                    	<f:selectItem itemValue="Y" itemLabel="使用中"/>
+                    	<f:selectItem itemValue="N" itemLabel="已结束"/>
+                    </h:selectOneMenu>
+                    <p:commandButton update="dataTable" process="filters"
+                        value="#{commonMsg.searchLabel}"></p:commandButton>
+                    <p:button value="#{commonMsg.resetLabel}" onclick="location.reload();"></p:button>
+                </p:panel>
+                <p:watermark for="userid" value="用户名"></p:watermark>
+                <p:watermark for="loginTimeStart" value="投资时间&gt;="></p:watermark>
+                <p:watermark for="loginTimeEnd" value="=&lt;投资时间"></p:watermark>
+            <p:spacer></p:spacer> 
+
+            <p:dataTable lazy="true" id="dataTable" value="#{userExperienceLogList.lazyModel}" var="log" 
+                paginator="true" paginatorPosition="bottom" rows="15" rowsPerPageTemplate="15,50,100"
+                sortBy="startdate" sortOrder="descending"
+                currentPageReportTemplate="#{commonMsg.pageReportTemplate}"
+                paginatorTemplate="#{commonMsg.paginatorTemplate}"
+                emptyMessage="#{commonMsg.noResultMsg}" >
+                 
+                <p:column headerText="用户名">
+                    <h:outputText  value="#{log.userid}"></h:outputText>
+                </p:column>
+                <p:column headerText="利息">
+                    <h:outputText  value="#{log.profit}"></h:outputText>
+                </p:column>
+                <p:column headerText="投资时间" sortBy="startdate">
+                    <h:outputText  value="#{log.startdate}">
+                        <f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss" timeZone="GMT+8"/>
+                    </h:outputText>
+                </p:column>
+                <p:column headerText="状态">
+                    <h:outputText value="使用中" rendered="#{log.etype == 'Y'}"></h:outputText>
+                    <h:outputText style="color:red;" value="已结束" rendered="#{log.etype == 'N'}"></h:outputText>
+                </p:column>
+                
+                
+            </p:dataTable>
+
+            </h:form>
+      </div>
+    </ui:define>
+</ui:composition>

@@ -1,0 +1,87 @@
+<ui:composition template="/admin/templates/ui.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:composite="http://java.sun.com/jsf/composite/primefaces"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+    xmlns:c="http://java.sun.com/jsp/jstl/core"
+    xmlns:sec="http://www.springframework.org/security/facelets/tags">
+
+    <ui:define name="content">
+    
+    <div class="entry">
+    	<p:toolbar>
+            <p:toolbarGroup>
+	            <h:outputLabel style="padding-left: 15px;" value="#{commonMsg.currentPositionLabel}用户操作日志查询"></h:outputLabel>
+            </p:toolbarGroup>
+           
+        </p:toolbar>
+        
+        <h:form id="form"> 
+        	<p:spacer></p:spacer> 
+                <p:panel id="filters">
+					<p:inputText id="operationUser" value="#{userOperationLogList.example.operationUser}"></p:inputText>	  
+					<p:inputText id="operationName" value="#{userOperationLogList.example.operationName}"></p:inputText>
+                    <p:calendar id="operationTimeStart" value="#{userOperationLogList.operationTimeStart}" 
+                    	pattern="yyyy-MM-dd HH:mm:ss" navigator="true" showButtonPanel="true"></p:calendar>
+                    <p:calendar id="operationTimeEnd" value="#{userOperationLogList.operationTimeEnd}"
+                    	pattern="yyyy-MM-dd HH:mm:ss" navigator="true" showButtonPanel="true"></p:calendar>
+                    <!-- <p:inputText id="loginIp" value="#{userLoginLogList.example.loginIp}"></p:inputText> -->
+                    <!-- <h:selectOneMenu id="isSuccess" value="#{userLoginLogList.example.isSuccess}">
+                    	<f:selectItem itemValue="" itemLabel="登录状态"/>
+                    	<f:selectItem itemValue="1" itemLabel="成功"/>
+                    	<f:selectItem itemValue="0" itemLabel="失败"/>
+                    </h:selectOneMenu> -->
+                    <p:commandButton update="dataTable" process="filters"
+                        value="#{commonMsg.searchLabel}"></p:commandButton>
+                    <p:button value="#{commonMsg.resetLabel}" onclick="location.reload();"></p:button>
+                </p:panel>
+                <p:watermark for="operationUser" value="操作人"></p:watermark>
+                <p:watermark for="operationName" value="操作项目名称"></p:watermark>
+                <p:watermark for="operationTimeStart" value="操作时间&gt;="></p:watermark>
+                <p:watermark for="operationTimeEnd" value="=&lt;操作时间"></p:watermark>
+                <!-- <p:watermark for="loginIp" value="登录IP"></p:watermark> -->
+            
+            <p:spacer></p:spacer> 
+
+            <p:dataTable lazy="true" id="dataTable" value="#{userOperationLogList.lazyModel}" var="log" 
+                paginator="true" paginatorPosition="bottom" rows="15" rowsPerPageTemplate="15,50,100"
+                sortBy="operationDate" sortOrder="descending"
+                currentPageReportTemplate="#{commonMsg.pageReportTemplate}"
+                paginatorTemplate="#{commonMsg.paginatorTemplate}"
+                emptyMessage="#{commonMsg.noResultMsg}" >
+                 
+                <p:column headerText="操作人">
+                    <h:outputText  value="#{log.operationUser}"></h:outputText>
+                </p:column>
+                <p:column headerText="操作类型">
+                    <h:outputText  value="#{log.operationType}"></h:outputText>
+                </p:column>
+                <p:column headerText="操作项目编号">
+                    <h:outputText  value="#{log.operationId}"></h:outputText>
+                </p:column>
+                <p:column headerText="操作项目名称">
+                    <h:outputText  value="#{log.operationName}"></h:outputText>
+                </p:column>
+                <p:column headerText="操作IP">
+                    <h:outputText  value="#{log.operationIp}"></h:outputText>
+                </p:column>
+                <p:column headerText="操作动作">
+                    <h:outputText  value="#{log.operationAction}"></h:outputText>
+                </p:column>
+                <p:column headerText="操作时间" sortBy="operationDate">
+                    <h:outputText  value="#{log.operationDate}">
+                        <f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss" timeZone="GMT+8"/>
+                    </h:outputText>
+                </p:column>
+                
+                
+                
+            </p:dataTable>
+
+            </h:form>
+      </div>
+    </ui:define>
+</ui:composition>

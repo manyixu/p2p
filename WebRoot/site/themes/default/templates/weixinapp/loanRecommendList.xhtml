@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pm="http://primefaces.org/mobile"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:o="http://omnifaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:sec="http://www.springframework.org/security/facelets/tags">
+	<h:head>
+	<title>推荐项目</title>
+	<meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no"/>
+	<meta name="apple-touch-fullscreen" content="yes"/> <!--  一会试验下是否有必要存在 -->
+	<meta name="apple-mobile-web-app-capable" content="yes"/>
+	<meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+	<meta name="format-detection" content="telephone=no"/>
+	<meta http-equiv="x-rim-auto-match" content="none"/>
+    <link href="#{tplVars.themeStylePath}/weixincss/list.css" rel="stylesheet" type="text/css"/>
+    <link href="#{tplVars.themeStylePath}/weixincss/mobilebase.css" rel="stylesheet"/>
+    <script type="text/javascript" src="#{tplVars.themeJSPath}/weixinjs/jquery-1.8.0.min.js"></script>
+    <o:importConstants type="com.esoft.jdp2p.loan.LoanConstants.LoanStatus" />
+    <script type="text/javascript">
+	$(document).ready(function() {
+		$(".nav ul li a ").hover(function(){
+		$(".nav ul li a").css("color","#50b33c");
+		$(".nav ul li a ").css("background","#f2f2f2");
+		$(this).css("color","#fff");
+		$(this).css("background","#50b33c");
+		},function(){
+		});
+		});	
+	</script>
+    </h:head>
+    <h:body>
+    <h:form>
+	<div class="warp_2">
+	<div class="spe"></div>
+	<div class="top">
+    	<div class="top_inner">
+        	<div class="nav">
+                <ul>
+                    <li>
+                    	<h:commandLink styleClass="chlid"  title="新手专项" value="新手专项">
+								<f:ajax render="dataTable"
+									listener="#{loanList.example.setRecommend('freshman')}">
+								</f:ajax>
+							</h:commandLink>
+                   </li>
+                    <li>
+                    	<h:commandLink  styleClass="chlid bak"  title="推荐项目" value="推荐项目">
+								<f:ajax render="dataTable"
+									listener="#{loanList.example.setRecommend('recommend')}">
+								</f:ajax>
+							</h:commandLink>
+                   </li>
+                   <li>
+                    	<h:commandLink style="border:none;" styleClass="chlid"  title="项目专区" value="项目专区">
+								<f:ajax render="dataTable"
+									listener="#{loanList.example.setRecommend('')}">
+								</f:ajax>
+							</h:commandLink>
+                   </li>
+                    <div  class="clear"></div>
+                </ul>
+            </div>
+            <div class="content" style="padding-bottom:20%;">
+            	<div class="c_m">
+					<ui:param name="restriction" value="#{'(loan.status=\''}#{LoanStatus.RAISING}#{'\' or loan.status=\''}#{LoanStatus.COMPLETE}#{''}#{'\' or loan.status=\''}#{LoanStatus.RECHECK}#{'\' or loan.status=\''}#{LoanStatus.REPAYING}#{'\')'}"></ui:param>
+					<f:event type="preRenderComponent" listener="#{loanList.addRestriction(restriction)}"></f:event>
+					<f:event type="preRenderComponent" listener="#{loanList.example.setBusinessType('个人借款')}"></f:event>
+					<f:event type="preRenderComponent" listener="#{loanList.example.setRecommend('recommend')}"></f:event>
+					<ui:param name="orderColumn" value="#{'(case loan.status when \''}#{LoanStatus.RAISING}#{'\' then 1 when \''}#{LoanStatus.RECHECK}#{'\' then 2 when \''}#{LoanStatus.REPAYING}#{'\' then 3 else 4 end)'}"></ui:param>
+				    <f:event type="preRenderComponent" listener="#{loanList.addOrder(orderColumn, 'asc')}"></f:event>
+				    <f:event type="preRenderComponent" listener="#{loanList.addOrder('loan.seqNum','desc')}"></f:event>
+					<f:event type="preRenderComponent" listener="#{loanList.addOrder('loan.commitTime','desc')}"></f:event>
+		            <h:panelGroup id="dataTable">
+					<ui:repeat var="loan" value="#{loanList.lazyModelDataNoPage}" varStatus="index">
+	                	<div class="list_1">
+	                        <div class="c_m_t">
+	                        	<a href="#{path}/weixinapp/loanDetail/#{loan.id}">
+		                            <p class="tit">#{loan.name}</p>
+		                            <p class="xiang" style="float:right;color: #afafaf">详情</p>
+		                            <div class="clear"></div>
+	                            </a>
+	                        </div>
+	                        <div class="c_m_b">
+	                            <div class="b_l">
+	                                <div class="b_l_t t">
+	                                    <p class="safe_t">#{loan.riskLevel}</p>
+	                                    <p class="safe_b b">风险等级</p>
+	                                </div>
+	                                <div class="b_l_b t">
+	                                    <p class="mon_t">
+	                                    	<h:outputText value="#{loan.loanMoney}">
+												<f:convertNumber type="number" />
+											</h:outputText>
+											<span>元</span>
+										</p>
+	                                    <p class="mon_b b">金额</p>
+	                                </div>
+	                            </div>
+	                            <div class="b_m">
+	                                <div class="jindu du" >
+	                                    <!-- <img src="#{tplVars.themeImagePath}/weixinappimages/list_1_03.png"/>
+	                                    <div class="jindu_m">
+	                                        <p>
+	                                        	<h:outputText value="#{loan.ratePercent}">
+													<f:convertNumber minFractionDigits="2" />
+												</h:outputText>
+	                                        	<span>%</span>
+	                                        </p>
+	                                    </div> -->
+	                                    <div class="jqm-round-wrap">
+                                        	<div class="jqm-round-bg"></div>
+                                        	<canvas id="jqm-round-sector#{index.index}" class="jqm-round-sector"></canvas>
+	                                        <div class="jqm-round-circle">
+		                                        <p>
+		                                        	<h:outputText value="#{loanCalculator.calculateRaiseCompletedRate(loan.id)}">
+														<f:convertNumber type="number"/>
+													</h:outputText>%</p>
+	                                        </div>
+                                    	</div>
+	                                    
+	                                </div>
+	                            </div>
+	                            <div class="b_r">
+	                                <div class="b_r_t t">
+	                                    <p class="li_t">
+	                                    	<h:outputText value="#{loan.ratePercent}">
+												<f:convertNumber minFractionDigits="2" />
+											</h:outputText>
+	                                    	<span>%</span>
+	                                    </p>
+	                                    <p class="li_b b">年利率</p>
+	                                </div>
+	                                <div class="b_r_b t">
+	                                    <p class="ti_t">#{loan.deadline*loan.type.repayTimePeriod}<span>#{dictUtil.getValue('repay_unit',loan.type.repayTimeUnit)}</span></p>
+	                                    <p class="ti_b b">期限</p>
+	                                </div>
+	                            </div>
+	                            <div class="clear"></div>
+	                        </div>
+	                        <div class="c_m_bt">
+	                            <p class="btn_t_2">
+	                            		<ui:fragment
+											rendered="#{loan.status ==LoanStatus.RAISING}">
+											<a href="#{path}/weixinuser/pay/#{loan.id}" class="tzbtn">立即投标</a>
+										</ui:fragment> 
+										<ui:fragment rendered="#{loan.status !=LoanStatus.RAISING}">
+											<a href="#{path}/weixinapp/loanDetail/#{loan.id}" class="btn_g">#{dictUtil.getValue('loan',loan.status)}</a>
+										</ui:fragment>
+	                            </p>
+	                        </div>
+	                    </div>
+             		 </ui:repeat>
+             		 <script type="text/javascript" src="#{tplVars.themeJSPath}/weixinjs/circle.js"></script>
+             		 <script type="text/javascript">
+						$(document).ready(function() {
+							$(".du").each(function(){
+							var yW = $(this).width();
+							$(this).height(yW);
+							$(this).find(".jqm-round-wrap,.jqm-round-sector,.jqm-round-bg").width(yW);
+							$(this).find(".jqm-round-wrap,.jqm-round-sector,.jqm-round-bg").height(yW);
+							$(this).find(".jqm-round-circle").width(yW*0.94);
+							$(this).find(".jqm-round-circle").height(yW*0.94);
+							$(this).find(".jqm-round-circle p").css("line-height",yW*0.94+"px");
+							});
+							});	
+					</script>
+		            </h:panelGroup>
+                </div>
+            </div>
+        </div>	
+    </div>
+   </div>
+   </h:form>  
+   <ui:include src="bottomnologin.xhtml"></ui:include>
+   </h:body> 
+</html>

@@ -1,0 +1,215 @@
+<ui:composition template="page.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pm="http://primefaces.org/mobile"
+	xmlns:archer="http://java.sun.com/jsf/archer"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:o="http://omnifaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:sec="http://www.springframework.org/security/facelets/tags">
+	<!-- 	投资计算器 -->
+	
+	<ui:define name="content">
+		<script type="text/javascript">
+			$(function(){
+				$('#form\\:money').val('#{param.money}');
+				$('#form\\:type').val('#{param.type}');
+				$('#form\\:rate').val('#{param.rate}');
+				$('#form\\:deadline').val('#{param.deadline}');
+			});
+			
+		</script>
+	    
+    	<link href="#{tplVars.themeStylePath}/css/tool.css" rel="stylesheet"
+			type="text/css" />
+		<script type="text/javascript"
+			src="#{tplVars.themeJSPath}/jquery-1.8.0.min.js"></script>
+		<script type="text/javascript"
+			src="#{tplVars.themeJSPath}/jQuery.hhShare.min.js"></script>
+		<script type="text/javascript"
+			src="#{tplVars.themeJSPath}/common_1.js"></script>
+	<h:body style="position:relative;">		
+		<div id="main">
+	    	<div class="main_inner">
+	        	<!-- <p style=" padding-bottom:34px;"><a href="#" style="color:#666666">首页</a>&#160;>&#160;<a href="#" style="color:#666666">理财工具</a></p> -->
+	        	<div class="main_con">
+	        		<div class="main_l">
+                    <ul>
+                        <li><a href="#{path}/invest-calculator" class="ji_1" style="color: rgb(255, 255, 255); background: rgb(62, 194, 38);">收益计算器
+                            <div class="sanjiao"><img src="#{tplVars.themeImagePath}/img/list_2_03.jpg"/></div>
+                        </a></li>
+                        <!-- <li><a href="#">公积金计算器
+                        </a></li>
+                        <li><a href="#" style=" border-bottom:none;">身价计算器
+                        </a></li> -->
+                    </ul>	
+                </div>
+                <div class="main_r">
+             <div class="m_t">
+				<p>收益计算器</p>
+			</div>
+			 <div class="m_m">
+				<h:form id="form">
+					<ul>
+						<li style="margin-right:58px;">
+                            	<div class="form-item">
+                                    <div class="item-label">
+                                        <label>投资金额&#160;：</label>
+                                    </div>
+                                    <div class="item-cont">
+                                        <h:inputText id="money" styleClass="txt sm" label="投资金额" style="width:174px; height:40px;"
+											required="true" value="#{loanHome.instance.loanMoney}">
+											<f:validateDoubleRange minimum="1"></f:validateDoubleRange>
+											<archer:validateNumber precision="0" cardinalNumber="100"></archer:validateNumber>
+											<f:ajax event="blur"></f:ajax>
+										</h:inputText>
+                                    </div>
+                                    <span>元</span>
+                                    <div class="clear"></div>
+                            	</div>
+                            </li>
+						
+						
+						<li>
+                            	<div class="form-item">
+                                     <div class="item-label">
+                                        <label>标的类型&#160;：</label>
+                                    </div>
+                                    <div class="item-cont">
+                                        <h:selectOneMenu id="type" value="#{loanHome.instance.type}" style="width:174px; height:40px; padding-left:2px;"
+											styleClass="txt" required="true"
+											converter="archer.EntityConverter" label="标的类型">
+											<f:selectItem itemLabel="请选择" noSelectionOption="true" />
+											<f:selectItems value="#{loanTypeList.allResultList}" var="type"
+												itemLabel="#{type.name}" itemValue="#{type}" />
+											
+										</h:selectOneMenu>
+                                    </div>
+                                    <div class="clear"></div>
+                            	</div>
+                            </li>
+						
+						
+						<li style="margin-right:58px;">
+                            	<div class="form-item">
+                                    <div class="item-label">
+                                        <label>年化收益&#160;：</label>
+                                    </div>
+                                    <div class="item-cont">
+                                        <h:inputText id="rate" label="年化收益" required="true"
+											styleClass="txt sm" style="width:174px; height:40px;"
+											value="#{loanHome.instance.ratePercent}">
+											<archer:validateNumber precision="2"></archer:validateNumber>
+											<f:validateDoubleRange minimum="0.01"></f:validateDoubleRange>
+											<f:ajax event="blur" render="@this"></f:ajax>
+										</h:inputText>
+                                    </div>
+                                    <span>%</span>
+                                    <div class="clear"></div>
+                            	</div>
+                            </li>
+						
+						
+						
+						
+						<li>
+                            	<div class="form-item">
+                                    <div class="item-label">
+                                        <label>投资期限&#160;：</label>
+                                    </div>
+                                    <div class="item-cont">
+                                        <h:inputText id="deadline" value="#{loanHome.instance.deadline}" label="投资期限" style="width:174px; height:40px;"
+										required="true" styleClass="txt sm">
+										<f:ajax event="blur" render="@this"></f:ajax>
+										<f:validateLongRange minimum="1"></f:validateLongRange>
+									</h:inputText>
+                                    </div>
+                                    <span>期</span>
+                                    <div class="clear"></div>
+                            	</div>
+                            </li>
+                            <div class="clear"></div>
+						
+					</ul>
+					
+					
+					<div class="m_btn">
+                        	<input  type="button" class="bnt_1" value="重置" style="width:72px; cursor:pointer"/>
+                            
+                            <h:commandButton styleClass="bnt_2" value="开始计算" style="width:72px; cursor:pointer">
+								<f:setPropertyActionListener value="#{now}"
+									target="#{loanHome.instance.interestBeginTime}" />
+								<f:ajax render=":result" execute="@form"></f:ajax>
+							</h:commandButton>
+                        </div>
+                        <div class="clear"></div>
+					
+				</h:form>
+			</div>
+			
+			<h:panelGroup id="result">
+				<ui:param name="loan" value="#{loanHome.instance}"></ui:param>
+				
+				<div class="m_b">
+                    	<p>计算结果</p>
+                        <ul class="m_b_t">
+                        	<li style=" width:240px; text-align:center; color:#666; line-height:46px;">
+                        		投资金额： <h:outputText
+										value="#{loanHome.instance.loanMoney}">
+										<f:convertNumber minIntegerDigits="1" maxFractionDigits="0" />
+									</h:outputText>元</li>
+                            <li style=" width:200px; text-align:center; color:#666; line-height:46px; padding:0 15px;">计息时长： #{loan.deadline*loan.type.repayTimePeriod}#{dictUtil.getValue('repay_unit',loan.type.repayTimeUnit)}</li>
+                            <li style=" text-align:center; color:#666; line-height:46px; padding:0 15px;">
+                            	投资到期可获得总收益： <em class="ffA strong"><h:outputText
+										value="#{loanCalculator.calculateAnticipatedInterest(loanHome.instance)}">
+										<f:convertNumber minIntegerDigits="1" maxFractionDigits="2" />
+									</h:outputText> </em>元</li>
+                            <div class="clear"></div>
+                        </ul>
+                         <ul class="m_b_b">
+                        	<li>还款日期</li>
+                            <li>应收本息（元）</li>
+                            <li>应收利息（元）</li>
+                            <li style="border-right:none;">应收本金（元）</li>
+                            <div class="clear"></div>
+                        </ul>
+                        <ui:repeat var="ir" value="#{loanCalculator.calculateAnticipatedRepays(loanHome.instance)}">
+                        	<ul class="m_b_b">
+	                        	<li><h:outputText
+										value="#{ir.repayDay}">
+										<f:convertDateTime pattern="yyyy-MM-dd" timeZone="GMT+8" />
+									</h:outputText></li>
+	                            <li><h:outputText value="#{ir.corpus+ir.interest}">
+										<f:convertNumber minIntegerDigits="1" maxFractionDigits="2"
+											minFractionDigits="2" />
+									</h:outputText></li>
+	                            <li><h:outputText value="#{ir.interest}">
+										<f:convertNumber minIntegerDigits="1" maxFractionDigits="2"
+											minFractionDigits="2" />
+									</h:outputText></li>
+	                            <li><h:outputText value="#{ir.corpus}">
+										<f:convertNumber minIntegerDigits="1" maxFractionDigits="2"
+											minFractionDigits="2" />
+									</h:outputText></li>
+	                            <div class="clear"></div>
+                        </ul>
+						</ui:repeat>
+                    </div>
+				
+				
+				
+			</h:panelGroup>
+		</div>
+		 <div class="clear"></div>
+				</div>
+			</div>
+		</div>
+		
+			
+		
+	</h:body>
+	</ui:define>
+</ui:composition>

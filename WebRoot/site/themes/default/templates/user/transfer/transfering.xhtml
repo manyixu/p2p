@@ -1,0 +1,168 @@
+<ui:composition template="../center.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pm="http://primefaces.org/mobile"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+	<!-- 转让中的债权 -->
+	<ui:param name="activeCenterMenuUrl" value="/user/transfer/purchased"></ui:param>
+	<ui:define name="center_right">
+		<div class="main_r">
+			<div class="m_t">
+				<ui:include src="../userCenterTop.xhtml"></ui:include>
+<!-- 				<ui:include src="top_include1.xhtml"></ui:include> -->
+			</div>
+			<div class="m_m">
+				<ui:include src="top_include2.xhtml"></ui:include>
+			</div>
+			<div class="m_b">
+			<h:form>
+				<h:panelGroup id="dataTable">
+				<script type="text/javascript" src="#{tplVars.themeJSPath}/usercenter.js"></script>
+						<script type="text/javascript">	
+								$(document).ready(function() {
+									$(".ma").hide()
+									$(".weixin").hover(function(){
+									$(".ma").show()
+									},function(){
+									$(".ma").hide()
+										});
+									$(".all").css("background","#3ec226")
+									$(".all").css("color","#fff")
+									$(".t a").click(function(){
+									$(".t a").css("background","#fff")
+									$(".t a").css("color","#666");
+									$(this).css("background","#3ec226");
+									$(this).css("color","#fff");
+									});
+									$(".m a").click(function(){
+									$(".m a").css("background","#fff")
+									$(".m a").css("color","#666");
+									$(this).css("background","#3ec226");
+									$(this).css("color","#fff");
+									});
+									$(".b a").click(function(){
+									$(".b a").css("background","#fff")
+									$(".b a").css("color","#666");
+									$(this).css("background","#3ec226");
+									$(this).css("color","#fff");
+									});
+									$(".on").css("background","#3ec226");
+									$(".on").css("color","#fff")
+									$(".on").css("border","1px solid #3ec226;");
+									$(".page a").click(function(){
+									$(".page a").css("background","#fff");
+									$(".page a").css("color","#5a5a5a");
+									$(".page a").css("border","1px solid #dddddd;");
+									$(this).css("background","#3ec226");
+									$(this).css("color","#fff");
+									$(this).css("border","1px solid #dddddd;");
+									});
+									/* $('.progressbar').each(function(){
+									var t = $(this),
+									dataperc = t.attr('data-perc'),
+									barperc = Math.round(dataperc*0.88);
+									t.find('.bar').animate({width:barperc}, dataperc*25);
+									t.find('.label').append('<div class="perc"></div>');
+									function perc(){
+										var length = t.find('.bar').css('width'),
+										perc = Math.round(parseInt(length)/0.88),
+										labelpos = (parseInt(length)-2);
+										t.find('.perc').text(perc+'%');
+									}
+									perc();
+									setInterval(perc, 0); 
+								}); */
+								});
+							</script>
+						<ul>
+							<li><a href="#{path}/user/transfer/purchased">已转入的债权</a></li>
+							<li><a href="#{path}/user/transfer/can-transfer">可转出的债权</a></li>
+							<li><a class="sub_m1" href="#{path}/user/transfer/transfering">转让中的债权</a></li>
+							<li><a class="liubiao" href="#{path}/user/transfer/turned-out">已转出的债权</a></li>
+							 <div class="clear"></div>
+						</ul>
+						<div class="m_b_inf">
+						<div id="con_four_1" class="slidnr inf1">
+							<table width="764" border="1" bordercolor="black" cellspacing="0" >
+								<tr class="tr_1">
+										<!-- 									<td class="tab01 tab04">债权编号</td> -->
+										<td class="td_1">投资编号</td>
+										<td class="td_2">发起时间</td>
+										<td class="td_3">到期时间</td>
+										<td class="td_4">剩余期数</td>
+										<td class="td_5">利率</td>
+										<td class="td_6">债权价值</td>
+										<td class="td_7">转让价格</td>
+										<td class="td_8">剩余本金</td>
+										<td class="td_9"></td>
+									</tr>
+
+									<f:event type="preRenderComponent"
+										listener="#{transferApplyList.example.invest.user.setUsername(loginUserInfo.loginUserId)}"></f:event>
+									<ui:param name="restriction"
+										value="#{'(transferApply.status=\''}#{TransferStatus.TRANSFERING}#{'\' or transferApply.status=\''}#{TransferStatus.WAITCONFIRM}#{'\')'}"></ui:param>
+									<f:event type="preRenderComponent"
+										listener="#{transferApplyList.addRestriction(restriction)}"></f:event>
+									<f:event type="preRenderComponent"
+										listener="#{transferApplyList.setPageSize(7)}"></f:event>
+									<f:event type="preRenderComponent"
+										listener="#{transferApplyList.addOrder('applyTime','desc')}"></f:event>
+									<ui:repeat var="ta" value="#{transferApplyList.lazyModelData}"
+										varStatus="status">
+										<tr class="tr_2">
+											<!-- 										<td class="tab02 tab04 tab06" style="width: 200px;">#{ta.id}</td> -->
+											<td class="td_1">#{ta.invest.id}</td>
+											<td class="td_1"><h:outputText
+													value="#{ta.applyTime}">
+													<f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss"
+														timeZone="GMT+8" locale="cn" />
+												</h:outputText></td>
+											<td class="td_1"><h:outputText
+													value="#{ta.deadline}">
+													<f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss"
+														timeZone="GMT+8" locale="cn" />
+												</h:outputText></td>
+											<td class="td_1">#{ta.invest.repayRoadmap.unPaidPeriod}期</td>
+											<td class="td_1"><h:outputText
+													value="#{ta.invest.rate}">
+													<f:convertNumber type="percent" maxFractionDigits="2" />
+												</h:outputText></td>
+											<td class="td_1"><h:outputText
+													value="#{transferService.calculateWorth(ta.invest.id, ta.corpus)}">
+													<f:convertNumber maxFractionDigits="2" minIntegerDigits="1" />
+												</h:outputText></td>
+											<td class="td_1"><h:outputText
+													value="#{transferService.calculateWorth(ta.invest.id, ta.corpus) - ta.premium}">
+													<f:convertNumber maxFractionDigits="2" minIntegerDigits="1" />
+												</h:outputText></td>
+											<td class="td_1"><h:outputText
+													value="#{transferService.calculateRemainCorpus(ta.id)}">
+													<f:convertNumber maxFractionDigits="2" minIntegerDigits="1" />
+												</h:outputText></td>
+
+											<td class="td_5">
+												<div class="zhuangtaii">   
+													<p:commandLink value="取消" onstart="return confirm('您确定要取消么？')"
+													actionListener="#{transferApplyHome.cancel(ta.id)}"
+													update="@form"></p:commandLink>
+												</div>	
+											</td>
+										</tr>
+									</ui:repeat>
+								</table>
+								<div class="pagebar">
+							<ui:include src="paging_include.xhtml"></ui:include>
+						</div>
+						</div>
+						</div>
+				</h:panelGroup>
+			</h:form>
+			</div>
+		</div>
+		<div class="clear"></div>
+	</ui:define>
+</ui:composition>

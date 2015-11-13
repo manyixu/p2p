@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pm="http://primefaces.org/mobile"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:o="http://omnifaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:archer="http://java.sun.com/jsf/archer"
+	xmlns:sec="http://www.springframework.org/security/facelets/tags">
+	<h:head>
+	<title>资金管理</title>
+	<meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no"/>
+	<meta name="apple-touch-fullscreen" content="yes"/> <!--  一会试验下是否有必要存在 -->
+	<meta name="apple-mobile-web-app-capable" content="yes"/>
+	<meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+	<meta name="format-detection" content="telephone=no"/>
+	<meta http-equiv="x-rim-auto-match" content="none"/>
+    <link href="#{tplVars.themeStylePath}/weixincss/zhanghao.css" rel="stylesheet" type="text/css"/>
+    <link href="#{tplVars.themeStylePath}/weixincss/shiming.css" rel="stylesheet" type="text/css"/>
+	<link href="#{tplVars.themeStylePath}/weixincss/pay.css" rel="stylesheet" type="text/css"/>
+    <link href="#{tplVars.themeStylePath}/weixincss/mobilebase.css" rel="stylesheet"/>
+    </h:head>
+    <h:body  style=" width:100%; height:100%;">
+    <div class="top">
+    	<div class="top_bg_1" >
+        	
+        	<div class="bg_1 m">
+            	<p><h:outputText value="#{investStatistics.getReceivableCorpus(loginUserInfo.loginUserId)}">
+										<f:convertNumber type="currency" />
+									</h:outputText></p>
+                <p>待收本金</p>
+            </div>
+            <div class="bg_2 m">+</div>
+            <div class="bg_1 m">
+            	<p><h:outputText value="#{investStatistics.getReceivableInterest(loginUserInfo.loginUserId)}">
+										<f:convertNumber type="currency" />
+									</h:outputText></p>
+                <p>待收利息</p>
+            </div>
+            <div class="bg_2 m">=</div>
+            <div class="bg_1 m">
+            	<p><h:outputText value="#{investStatistics.getReceivableCorpus(loginUserInfo.loginUserId)+investStatistics.getReceivableInterest(loginUserInfo.loginUserId)}">
+										<f:convertNumber type="currency" />
+									</h:outputText></p>
+                <p>待收本金</p>
+            </div>
+            <div class="clear"></div>
+        </div>
+    </div>
+   
+    <div class="main">
+    	<div class="main_inner">
+        	<section>
+                	<div class="pay_m">	
+                        <p class="pwd ft" style="float:left;">账户余额</p>
+                       	<p style="float:right; color:#41b42a;"><h:outputLabel
+						value="#{billStatistics.getBalanceByUserId(loginUserInfo.loginUserId)}">
+						<f:convertNumber type="currency" currencySymbol="￥" />
+					</h:outputLabel></p>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="pay_m">	
+                        <p class="pwd ft" style="float:left;">冻结金额</p>
+                       	<p style="float:right; color:#41b42a;"><h:outputLabel
+						value="#{billStatistics.getFrozenMoneyByUserId(loginUserInfo.loginUserId)}">
+						<f:convertNumber type="currency" currencySymbol="￥" />
+					</h:outputLabel></p>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="pay_m">	
+                        <p class="pwd ft" style="float:left;">资产总额</p>
+                        <p style="float:right;color:#41b42a;"><h:outputText
+										value="#{billStatistics.getBalanceByUserId(loginUserInfo.loginUserId)+billStatistics.getFrozenMoneyByUserId(loginUserInfo.loginUserId)+investStatistics.getReceivableCorpus(loginUserInfo.loginUserId)+investStatistics.getReceivableInterest(loginUserInfo.loginUserId)}">
+										<f:convertNumber type="currency" />
+									</h:outputText></p>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="pay_m">	
+                        <p class="pwd ft" style="float:left;">可用金额</p>
+                        <p style="float:right;color:#41b42a;"><h:outputText
+										value="#{billStatistics.getBalanceByUserId(loginUserInfo.loginUserId)}">
+										<f:convertNumber type="currency" />
+									</h:outputText></p>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="pay_m">	
+                        <p class="pwd ft" style="float:left;">已收本金</p>
+                        <p style="float:right;color:#41b42a;"><h:outputText
+										value="#{investStatistics.getReceivedCorpus(loginUserInfo.loginUserId)}">
+										<f:convertNumber type="currency" />
+									</h:outputText></p>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="pay_m">	
+                        <p class="pwd ft" style="float:left;">已收利息</p>
+                        <p style="float:right;color:#41b42a;"><h:outputText
+										value="#{investStatistics.getReceivedInterest(loginUserInfo.loginUserId)}">
+										<f:convertNumber type="currency" />
+									</h:outputText></p>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="pay_m">	
+                        <p class="pwd ft" style="float:left;">累计投资金额</p>
+                        <p style="float:right;color:#41b42a;"><h:outputText
+										value="#{investStatistics.getReceivedCorpus(loginUserInfo.loginUserId)+investStatistics.getReceivableCorpus(loginUserInfo.loginUserId)}">
+										<f:convertNumber type="currency" />
+									</h:outputText></p>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="pay_m">	
+                        <p class="pwd ft" style="float:left;">预期总收益</p>
+                        <p style="float:right;color:#41b42a;"><h:outputText
+										value="#{investStatistics.getReceivedInterest(loginUserInfo.loginUserId)+investStatistics.getReceivableInterest(loginUserInfo.loginUserId)}">
+										<f:convertNumber type="currency" />
+									</h:outputText></p>
+                        <div class="clear"></div>
+                    </div>
+            </section>                
+        </div>
+    </div>
+    <ui:include src="../bottom.xhtml"></ui:include>
+    </h:body>
+</html>

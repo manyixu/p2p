@@ -1,0 +1,327 @@
+@charset "utf-8";
+.mod{padding-bottom:50px;}
+.page1{padding:50px 0;}
+.page1-in{
+	width: 126px;
+	float: left;
+	text-align:center;
+	line-height:24px;
+	padding-right:50px;
+}
+.page1-in i{
+	width:126px;
+	height:126px;
+	background:url(../images/page1-bg.png);
+	text-align: center;
+	line-height:126px;
+	font-size:60px;
+	font-family: "汉仪菱心体简";
+	color:#fff;
+}
+.page1-in span{
+	display:block;
+	font-size:18px;
+	color:#1c8c02;
+	padding-top:15px;
+}
+
+.num{
+	width:274px;
+	height:220px;
+	border:1px solid #dcdcdc;
+}
+.num-hd{
+	font-size:16px;
+	line-height:40px;
+	border-bottom:1px solid #dcdcdc;
+}
+.num-hd i{
+	width:30px;
+	height:31px;
+	background:url(../images/page1-num.png); 
+	margin:0 10px;
+}
+.num-in{
+	padding-top:15px;
+	border-bottom:1px solid #dcdcdc;
+}
+.num-in2{border:0;}
+.num-in p{line-height:30px;padding-left:15px;}
+.num-in span{
+	display: block;
+	line-height:44px;
+	color:#1c8c02;
+	padding-left:15px;
+	font-size:22px;
+}
+.news{
+	width:712px;
+	height:194px;
+	float: left; 
+	background-color:#fff;
+}
+.hd{
+	font-size:20px; 
+	line-height:50px;
+	border-bottom:1px solid #dcdcdc;
+}
+.hd span{
+	position: relative;
+	padding:0 20px;
+	border-bottom:1px solid #1c8c02;
+	bottom:-1px;
+	display:inline-block;
+	color:#333;
+}
+.news_bd{/* padding:20px 0 30px; */}
+/* 本例子css */
+.slideBox{ 
+	width:100%;
+	height:92px;
+	overflow:hidden; 
+	position:relative;
+}
+
+.slideBox .bd{ 
+	position:relative; 
+	height:100%; 
+	z-index:0;
+}
+.slideBox .bd li{ 
+	zoom:1; 
+	vertical-align:middle;
+	padding:0 50px;
+	}
+
+/* 下面是前/后按钮代码，如果不需要删除即可 */
+.slideBox .prev,
+.slideBox .next{ 
+	position:absolute; 
+	bottom:25%;  
+	display:block; 
+	width:25px; 
+	height:40px; 
+}
+.slideBox .next{
+ 	left:10px;
+ 	background:url(../images/arr-l.png) no-repeat;
+}
+.slideBox .prev{
+	right:10px;
+	background:url(../images/arr-r.png) no-repeat;
+}
+.bd h3{
+	line-height:50px;
+}
+.bd h3 a{
+	display:block;
+	float: left;
+	font-size:18px;
+	color:#1c8c02;
+}
+
+.li-bd-in{float:left;line-height:40px;}
+.li-bd1{width:162px;}
+.li-bd2{width:104px;}
+.li-bd3{width:122px;}
+.li-bd4{width:95px;line-height:30px;text-align:center;}
+.btn{
+	margin-left:25px;
+	width:97px;
+	background:url(../images/btn-bg.png) no-repeat;
+	text-align: center;
+	font-size:16px;
+	color:#fff;
+	height:40px;
+}
+.li-bd-in span{
+	font-size:26px;
+	color:#333;
+	margin:0 3px;
+}
+.li-bd2 span{color:#1c8c02;}
+.bar{
+	width:94px;
+	height:7px;
+	background-color:#DDD;
+	border-radius:2px; 
+}
+.bar-in{
+	border-radius:2px; 
+	display:block;
+	height:7px;
+	background-color:#1c8c02;
+}
+
+.strat{
+	width:276px;
+	height:194px;
+	background-color:#fff;
+	line-height:26px;
+}
+.strat h4{
+	font-size:14px;
+	padding-top:5px;
+	padding-left:20px;
+}
+.strat p{font-size:12px;color:#999;padding-left:20px;}
+
+.reco{
+	width:712px;
+	height:218px;
+	background-color: #fff;
+}
+.page3-in-h{
+	padding:20px 0 10px 20px;
+	line-height:40px;
+	font-size:18px;
+	color:#333;
+}
+.page3 .strat{height:218px;}
+.page3-in-m li{
+	line-height:30px;
+	float:left;
+	padding:0 30px;
+	background:url(../images/tuijian-bg.png) no-repeat left center;
+}
+.page3-in-m .page3-in-1{padding-left:30px;background:none;}
+.page3-in-m li span{font-size:16px;}
+.page3-in-m li span em{/* font-size:20px; */}
+.page3-in-1 span em{color:#e76c26;}
+.page3-in-b{
+	width:122px;
+}
+.page3-in-b ins{display:block;text-align: center;line-height:30px;}
+.jd_bar{
+	display:block;
+	width:122px;
+	height:7px;
+	background-color:#DDD;
+	border-radius:2px; 
+
+}
+.jd_bar b{
+	border-radius:2px; 
+	display:block;
+	height:7px;
+	background-color:#1c8c02;
+}
+.page3-in-m .btn{height:40px;margin:15px 20px;}
+
+.page4 .main_w{background-color:#fff;}
+.item_con{
+	padding:0 10px; 
+	text-align: center;
+	width:100%;
+	font-size:16px;
+}
+.item_con td{height:100px;}
+.item-in td{border-bottom:1px solid #dcdcdc;}
+.item_con .jd_bar{margin-top:10px;text-align: left;}
+.item-in-last td{border:0;}
+.item-in1 .btn{background-position:top}
+.item-in td{color:#333;}
+.item-in .jd{color:#666;font-size:14px;}
+.item-in .first{color:#666;}
+.page5 .main_w{background-color: #fff;}
+.page5 .main_w ul{padding:38px 0;overflow:hidden;}
+.page5-in{
+	float:left;
+	width:250px;
+	text-align: center;
+}
+.page5-in i{
+	width:138px;
+	height:138px;
+	background:url(../images/page2-icon.png) no-repeat;
+}
+.page5-in2 i{background-position:0 -138px;}
+.page5-in3 i{background-position:0 -276px;}
+.page5-in4 i{background-position:0 -414px;}
+.page5-in span{
+	display:block;
+	font-size:20px;
+	color:#1c8c02;
+	line-height:40px;
+	padding-top:20px;
+}
+.page5-in p{line-height:30px;}
+.page6 .main_w{
+	background-color:#fff;
+}
+
+.report,.recent-new{
+	width:340px;
+	padding-right:30px;
+}
+.page6-l{
+	padding-top:30px;
+}
+.page6-l-in{
+	height:75px;
+	padding-bottom:30px;
+	overflow: hidden;
+}
+.page6-l-in .strat-in{padding-left:10px;}
+.peiwen{width:215px;}
+.page6-l-in h4{color:#333;line-height:30px;}
+.page6-l-in p{font-size:12px;line-height:24px;}
+.report .page6-l{padding-left:10px;}
+.notice .hd span{padding:0 10px;font-size:18px;}
+.notice .hd a{padding-left:20px;}
+.notice{width:260px;}
+.hd .cur1{border:none;}
+.tab-bd{padding:10px 0;}
+.tab-bd li{line-height:30px;}
+.tab-bd ul{display:none;}
+
+.link .main_w{background-color:#fff;}
+.link li{float: left;padding:22px 22px 0 22px;}
+.link p a{
+	display:block;
+	width:100%;
+	line-height:40px;
+	text-align: center;
+	height:40px;
+	padding-top:10px;
+}
+.now{background-color:#1C8C02;padding:20px 0 40px;}
+.now h3{
+	font-size:36px;
+	line-height:116px;
+	text-align:center;
+	color: #fff;
+}
+.now i{
+	width:39px;
+	height: 61px;
+	background:url(../images/ft-bg.png);
+	line-height:61px;
+	font-size:36px;
+	text-align:center;
+	margin:0 10px;
+	font-weight:700;
+}
+.now em{
+	display:inline-block;
+	width:7px;
+	height:15px;
+	background:url(../images/ft-dou.png);
+	position: relative;
+	bottom:-20px;
+}
+.now-in{text-align: center;}
+.now p a{
+	display: block;
+	width:263px;
+	height: 63px;
+	line-height: 63px;
+	font-size:30px;
+	text-align: center;
+	color:#1c8c02; 
+	background:url(../images/now.png);
+	margin-top:50px;
+	position:relative;
+	left:50%;
+	margin-left:-131px;
+}

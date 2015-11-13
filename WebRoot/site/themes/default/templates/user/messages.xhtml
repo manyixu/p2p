@@ -1,0 +1,163 @@
+<ui:composition template="center.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pm="http://primefaces.org/mobile"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:o="http://omnifaces.org/ui"
+	xmlns:sec="http://www.springframework.org/security/facelets/tags"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<ui:param name="activeCenterMenuUrl" value="/user/message"></ui:param>
+	<ui:define name="center_right">
+<link href="#{tplVars.themeStylePath}/center.css" type="text/css" rel="stylesheet" />
+		<div class="main_r">
+			<div class="zhcz_h3 zhcz_h302">站内信息</div>
+			<h:form id="form">
+				<!-- 				清除筛选对分页的影响 -->
+				<p:remoteCommand process="@this" immediate="true" name="clearPage"
+						actionListener="#{inBoxList.setCurrentPage(1)}"></p:remoteCommand>
+				<div class="zt">
+					<p>状态</p>
+					<div class="zt01">
+						<h:commandLink styleClass="hover" title="全部" value="全部">
+							<f:ajax render="dataTable "
+								listener="#{inBoxList.example.setStatus('')}"></f:ajax>
+						</h:commandLink>
+						<h:commandLink title="未读" value="未读">
+							<f:ajax render="dataTable"
+								listener="#{inBoxList.example.setStatus(InBoxConstants.NOREAD)}"></f:ajax>
+						</h:commandLink>
+						<h:commandLink title="已读" value="已读">
+							<f:ajax render="dataTable"
+								listener="#{inBoxList.example.setStatus(InBoxConstants.ISREAD)}"></f:ajax>
+						</h:commandLink>
+					</div>
+					<div class="clear"></div>
+				</div>
+				<h:panelGroup id="dataTable">
+				<script type="text/javascript" src="#{tplVars.themeJSPath}/usercenter.js"></script>
+						<script type="text/javascript">	
+								$(document).ready(function() {
+									$(".ma").hide()
+									$(".weixin").hover(function(){
+									$(".ma").show()
+									},function(){
+									$(".ma").hide()
+										});
+									$(".all").css("background","#3ec226")
+									$(".all").css("color","#fff")
+									$(".t a").click(function(){
+									$(".t a").css("background","#fff")
+									$(".t a").css("color","#666");
+									$(this).css("background","#3ec226");
+									$(this).css("color","#fff");
+									});
+									$(".m a").click(function(){
+									$(".m a").css("background","#fff")
+									$(".m a").css("color","#666");
+									$(this).css("background","#3ec226");
+									$(this).css("color","#fff");
+									});
+									$(".b a").click(function(){
+									$(".b a").css("background","#fff")
+									$(".b a").css("color","#666");
+									$(this).css("background","#3ec226");
+									$(this).css("color","#fff");
+									});
+									$(".on").css("background","#3ec226");
+									$(".on").css("color","#fff")
+									$(".on").css("border","1px solid #3ec226;");
+									$(".page a").click(function(){
+									$(".page a").css("background","#fff");
+									$(".page a").css("color","#5a5a5a");
+									$(".page a").css("border","1px solid #dddddd;");
+									$(this).css("background","#3ec226");
+									$(this).css("color","#fff");
+									$(this).css("border","1px solid #dddddd;");
+									});
+									/* $('.progressbar').each(function(){
+									var t = $(this),
+									dataperc = t.attr('data-perc'),
+									barperc = Math.round(dataperc*0.88);
+									t.find('.bar').animate({width:barperc}, dataperc*25);
+									t.find('.label').append('<div class="perc"></div>');
+									function perc(){
+										var length = t.find('.bar').css('width'),
+										perc = Math.round(parseInt(length)/0.88),
+										labelpos = (parseInt(length)-2);
+										t.find('.perc').text(perc+'%');
+									}
+									perc();
+									setInterval(perc, 0); 
+								}); */
+								});
+							</script>
+					<ul class="znx">
+						<f:event type="preRenderComponent"
+							listener="#{inBoxList.setPageSize(5)}"></f:event>
+						<f:event type="preRenderComponent"
+							listener="#{inBoxList.example.recevier.setId(loginUserInfo.loginUserId)}"></f:event>
+						<f:event type="preRenderComponent"
+							listener="#{inBoxList.addOrder('ib.receiveTime', 'desc')}"></f:event>
+						<ui:repeat var="inBox" value="#{inBoxList.lazyModelData}">
+							<li>
+								<h3>
+									#{inBox.title}
+									<ui:fragment rendered="#{inBox.status ==InBoxConstants.NOREAD}">
+										<img src="#{tplVars.themeImagePath}/img47.png" />
+									</ui:fragment>
+								</h3>
+								<p style="word-wrap: break-word;">
+									<h:outputText escape="false" value="#{inBox.content}">
+									</h:outputText>
+									<br /> <span><ui:fragment
+											rendered="#{inBox.sender.username == 'admin'}">
+											<h:outputText value="系统消息" />
+										</ui:fragment> <ui:fragment rendered="#{inBox.sender.username != 'admin'}">
+											<h:outputText value="#{inBox.sender.username}" />
+										</ui:fragment> <h:outputText value="#{inBox.receiveTime}">
+											<f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss"
+												timeZone="GMT+8" />
+										</h:outputText> <ui:fragment
+											rendered="#{inBox.status ==InBoxConstants.NOREAD}">
+											<h:commandLink value="阅读">
+												<p:ajax update=":form:dataTable"
+													listener="#{inBoxHome.setLetterReaded(inBox.id)}"></p:ajax>
+											</h:commandLink> | </ui:fragment> <h:commandLink onclick="return confirm('您确定要删除吗？');"
+											value="删除">
+											<p:ajax update=":form:dataTable"
+												listener="#{inBoxHome.delete(inBox.id)}"></p:ajax>
+										</h:commandLink></span>
+								</p>
+								<div class="clear"></div>
+							</li>
+						</ui:repeat>
+					</ul>
+					
+					<div class="pagebar">
+							<ui:include src="#{tplVars.componentsPath}/messagePaging.xhtml"></ui:include>
+						</div>
+				</h:panelGroup>
+			</h:form>
+		</div>
+		<div class="clear"></div>
+		<script type="text/javascript">
+			$(
+					function() {
+						$(".zt01 a").click(
+								function() {
+									$(this).closest(".zt01").find(".hover")
+											.removeClass("hover");
+									$(this).addClass("hover");
+									//清除筛选对分页的影响
+									clearPage();
+								});
+					})
+		</script>
+	</ui:define>
+</ui:composition>
+
+

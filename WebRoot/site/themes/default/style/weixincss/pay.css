@@ -1,0 +1,34 @@
+@charset "utf-8";
+/* CSS Document */
+
+.top { position:relative; width:100%;height:24%;overflow:hidden;}
+.top_bg{ width:100%; height:100%;  display:block;}
+.benxi{ position:absolute; top:4%; left:3.8%;}
+.benxi img,.benxi p{ float:left;}
+.benxi img{ padding-top:3.4%; max-width:100%; border:none; display:block;}
+.benxi p{ margin-left:6px; font-size:3vw; color:#fff;}
+.number{ position:absolute; top:40%; left:center; width:100%;}
+.number p{font-size:14vw; color:#fff; font-family:Arial, Helvetica, sans-serif; text-align:left; padding-left:4%;}
+.header{ width:100%;height:4%; padding:2% 2%;  border-bottom:1px solid #d1cfcf;overflow:hidden;}
+.header p{ font-size:3vw;text-align:center; color:#999;}
+.header .shu{ font-size:4vw; color:#999; font-family:Arial, Helvetica, sans-serif;}
+.lixi,.chengben{ float:left; width:49.7%; padding:0 0.1px;}
+.lixi{ border-right:1px solid  #d1cfcf;}
+.main{ width:100%; }
+.main_inner{ height:100%; padding:8% 4% 0 4%;}
+
+.pay_tb{ line-height:50px; height:50px; border:1px solid #5bd577; border-radius:30px; color:#58b85f; padding:0 4%; font-size:14px;}
+.pay_bb{ padding:3% 3% 0 3%; color:#999}
+.pay_te{ padding:3% 3% 3% 3%; background:#fff;  border-radius:8px; color:#999;}
+
+.pay_bb a{ color:#58b85f;}
+.kuang{ margin-left:2%; width:70%;font-size:16px;}
+.kuang_1{ margin-left:2%; width:60%;font-size:16px;}
+.kuang_2{ margin-left:2%; width:97%;font-size:16px;}
+
+.fr{ float:left; }
+.btn_t{ padding-top:25%;}
+@media screen and (max-width:320px){
+	.kuang{width:60%;font-size: 14px;}
+}
+

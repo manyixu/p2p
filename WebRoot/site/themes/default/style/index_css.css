@@ -1,0 +1,95 @@
+@charset "utf-8";
+/* CSS Document */
+
+body{font-family:"微软雅黑"; font-size:14px; padding:0; border:0; margin:0; background:#f0f1f2;}
+img,h1,h2,h3,ul,li,dl,dt,dd,p,a{margin:0; padding:0; border:0; list-style:none; text-decoration:none;}/* CSS Document */
+.clear{clear:both;}
+
+/*动态新闻*/
+.news{width:100%; height:60px; line-height:60px; border-bottom:1px solid #eeeeee; background:#fff;}
+.txtMarquee-top{ width:1000px; height:60px; line-height:60px; margin:0 auto; overflow:hidden; }
+.txtMarquee-top .bd img{ display:inline; padding-top:22px; padding-right:40px; float:left;}
+.infoList li{color:#595959; font-size:16px;}
+.infoList li p{ display:inline-block; padding-right:20%;}
+.infoList li span{color:#0076ad; font-size:22px;}
+
+.btn{width:130px; height:35px; line-height:35px; background:#008cd6; font-size:16px; color:#fff; text-align:center; border:0; cursor:pointer; float:right; font-family:"微软雅黑"; margin-top:50px;}
+.tab{line-height:80px; color:#6f6f6f; font-size:16px; background:#fff; margin:0 auto;}
+.tab a{color:#3e3e3e;}
+.tab a:hover{color:#008cd6;}
+.tab tr:hover{ background:#fafbfb;}
+.tab_tr{color:#848484; font-size:14px;}
+.btn02{float:none; margin:0; width:90px; height:35px; line-height:35px; }
+.tab_span01{font-size:14px; background:#009ce5; padding:2px 5px; border-radius:4px; margin-right:5px; color:#fff;}
+.tab td{border-bottom:1px dashed #d2d2d2;}
+.tab .tab_tr td,.tab .last td{border:0;}
+.tab .tab_tr:hover{background:none;}
+.percentBox{ width:40px; height:40px; position:relative;}
+.pertxt{width:53px;height:53px;line-height:53px;position:absolute;margin-top:-51px;text-align:center;color:#3e3e3e;font-size:12px;font-family:Arial;}
+.tab_span02{background:#008cd6;}
+.btn03{background:#a7a7a7; cursor:text;}
+.btn03:hover{background:#a7a7a7;}
+
+.merit{width:100%; padding:35px 0; background:#fff;}
+.merit_box{width:1000px; margin:0 auto;}
+.merit_box li{width:275px; float:left; margin-left:80px; padding-top:78px; background:url(../images/index2/img07.png) no-repeat;}
+.merit_box li:first-child{margin:0;}
+.merit_box li:hover{background:url(../images/index2/img15.png) no-repeat;}
+.merit_box li:hover a{color:#009ce5;}
+.merit_box li span a{line-height:60px; font-size:20px; color:#3c3c3c;}
+.merit_box li p a{line-height:25px; color:#7f7f7f;}
+.merit_box li.two{background:url(../images/index2/img08.png) no-repeat;}
+.merit_box li.two:hover{background:url(../images/index2/img16.png) no-repeat;}
+.merit_box li.three{background:url(../images/index2/img09.png) no-repeat;}
+.merit_box li.three:hover{background:url(../images/index2/img17.png) no-repeat;}
+.merit_box li p em{font-style:normal; color:#009ce5;}
+
+.con{width:1000px; margin:0 auto;}
+.title{height:77px; line-height:73px; padding-top:10px;}
+.title p{float:left; font-size:20px; color:#3a3a3a;}
+.title a{float:right; font-size:14px; color:#00224c;}
+.title a:hover{color:#009ce5;}
+.box{width:100%; background:#fff; }
+.news_ul{width:100%; background:#fff; padding:30px 0; margin-bottom:50px;}
+.news_ul li{width:95%; margin:0 auto; height:56px; line-height:56px; border-bottom:1px solid #dbdbdb;}
+.news_ul li a{ display:block;font-size:16px; height:56px; color:#707070; margin-left:10px; padding-left:25px; background:url(../images/index2/img10.png) left center no-repeat;}
+.news_ul li a p{float:left;}
+.news_ul li a span{float:right; padding-right:10px; }
+.news_ul li a:hover{color:#009ce5; background:url(../images/index2/img11.png) left center no-repeat;}
+
+
+.title span{font-size:14px; color:#6e6e6e; padding-left:10px;}
+.box02{width:1000px; height:232px; background:url(../images/index2/bg.png) no-repeat;}
+.box02_ul{padding-left:16px;}
+.box02_ul li{width:272px; padding:0px 26px 0 26px; position:relative; float:left; height:232px;}
+.box02_img{ position:absolute; left:26px; top:60px;}
+.box02_p01{font-size:18px; color:#009ce5; position:absolute; left:72px; top:60px;}
+.box02_p01 span{font-size:14px; color:#616263; padding-top:15px;}
+.box02_p01 span em{font-style:normal; color:#009ce5;}
+.box02_btn{width:125px; height:34px; line-height:30px; text-align:center; font-size:14px; border:1px solid #009ce5; color:#009ce5; cursor:pointer; background:#fff; position:absolute; left:26px; top:126px;}
+.box02_p02{color:#454545; font-size:37px; position:absolute; top:60px; right:26px;}
+.box02_p03{color:#454545; font-size:14px; position:absolute; right:26px; top:100px;}
+.box02_p04{ color:#2fa8e1; font-size:120px; width:120px; text-align:center; position:absolute; right:70px; top:60px; line-height:90px; letter-spacing:-21px;}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pm="http://primefaces.org/mobile"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:o="http://omnifaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:archer="http://java.sun.com/jsf/archer"
+	xmlns:sec="http://www.springframework.org/security/facelets/tags">
+	<h:head>
+	<title>注册</title>
+	<meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no"/>
+	<meta name="apple-touch-fullscreen" content="yes"/> <!--  一会试验下是否有必要存在 -->
+	<meta name="apple-mobile-web-app-capable" content="yes"/>
+	<meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+	<meta name="format-detection" content="telephone=no"/>
+	<meta http-equiv="x-rim-auto-match" content="none"/>
+	<link href="#{tplVars.themeStylePath}/weixincss/zhanghao.css" rel="stylesheet" type="text/css"/>
+    <link href="#{tplVars.themeStylePath}/weixincss/shiming.css" rel="stylesheet" type="text/css"/>
+	<link href="#{tplVars.themeStylePath}/weixincss/pay.css" rel="stylesheet" type="text/css"/>
+    <link href="#{tplVars.themeStylePath}/weixincss/mobilebase.css" rel="stylesheet"/>
+    <h:outputScript library="primefaces" name="jquery/jquery.js" target="head" />
+	<script type="text/javascript" src="#{tplVars.themeJSPath}/jquery.artDialog.js?skin=idialog"></script>
+	<script type="text/javascript" src="#{tplVars.themeJSPath}/jquery.SuperSlide.2.1.1.js"></script>
+	<script type="text/javascript" src="#{tplVars.themeJSPath}/common.js"></script>
+	<script type="text/javascript" src="#{tplVars.themeJSPath}/timer.js"></script>
+    </h:head>
+    <h:body>
+    <archer:archerWeiXinMessages focus="false" showGlobalMessages="true"
+			severity="0,2"></archer:archerWeiXinMessages>
+    <div class="main" style="margin-bottom: 15%">
+    	<div class="main_inner">
+            	<h:form id="form">
+        	<section>
+            	<archer:validateEqual id="rePasswordValidator" components="pass repass"
+						showMessageFor="@all" message="两次输入密码不一致"></archer:validateEqual>
+                	<!-- <div class="pay_tb">	
+                        <label class="pwd ft"><img src="#{tplVars.themeImagePath}/weixinappimages/register_1_06.png"  width="4%"/></label>
+                        <h:inputText id="username" label="用户名" required="true"
+								styleClass="kuang ft" maxlength="16"
+								value="#{userHome.instance.username}">
+								<archer:validateInputRule ruleId="weixin_username"></archer:validateInputRule>
+								<archer:validateInputRule ruleId="weixin_username_length"></archer:validateInputRule>
+								<archer:validateInputRule ruleId="weixin_username_photo"></archer:validateInputRule>
+								<f:ajax event="blur"></f:ajax>
+								<archer:validateAlreadyExist />
+							</h:inputText>
+							<p:watermark value="请输入用户名" for="username"></p:watermark>
+                        <div class="clear"></div>
+                    </div> -->
+                    <div class="pay_tb">	
+                        <label class="pwd ft"><img src="#{tplVars.themeImagePath}/weixinappimages/register_4.png"  width="3%"/></label>
+                        <h:inputText id="mobileNumber" maxlength="11" label="手机号"
+								value="#{userHome.instance.mobileNumber}"
+								styleClass="kuang_1 ft" required="true">
+								<archer:validateInputRule ruleId="input.mobile"></archer:validateInputRule>
+								<archer:validateAlreadyExist />
+								<f:ajax event="blur"></f:ajax>
+							</h:inputText>
+							<p:watermark value="请输入手机号码" for="mobileNumber"></p:watermark>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="pay_tb">	
+                        <label class="pwd ft"><img src="#{tplVars.themeImagePath}/weixinappimages/register_5.png"  width="4%"/></label>
+							<h:inputText id="captcha" label="验证码" maxlength="6"
+								required="true" styleClass="kuang_1 ft"
+								value="#{userHome.authCode}">
+								<f:ajax event="blur"></f:ajax>
+							</h:inputText>
+							<p:watermark value="请输入验证码" for="captcha"></p:watermark>
+							<h:commandLink value="获取验证码" id="sendAuthCodeBtn" onclick="$(this).attr('disabled','disabled')" styleClass="yanzhen">
+								<f:ajax execute="mobileNumber" onevent="enableBtn('form\\\\:sendAuthCodeBtn')"
+									listener="#{userHome.sendRegisterAuthCodeToMobile(userHome.instance.mobileNumber, 'timerCountB(\'form\\\\:sendAuthCodeBtn\')')}"></f:ajax>
+<!-- 								<p:ajax process="@this,mobileNumber" -->
+<!-- 									oncomplete="timerCount(xhr, status, args, 'form\\\\:sendAuthCodeBtn')" -->
+<!-- 									listener="#{userHome.sendRegisterAuthCodeToMobile(userHome.instance.mobileNumber)}"></p:ajax> -->
+							</h:commandLink>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="pay_tb">	
+                        <label class="pwd ft"><img src="#{tplVars.themeImagePath}/weixinappimages/register_2_07.png"  width="4%"/></label>
+                        <h:inputSecret id="pass" label="密码" required="true"
+								styleClass="kuang ft" maxlength="16"
+								value="#{userHome.instance.password}">
+								<f:ajax event="blur" execute="@this rePasswordValidator"></f:ajax>
+								<archer:validateInputRule ruleId="weixin_password"></archer:validateInputRule>
+								<archer:validateInputRule ruleId="weixin_password_length"></archer:validateInputRule>
+							</h:inputSecret>
+							<p:watermark value="请输入密码" for="pass"></p:watermark>
+                        <div class="clear"></div>
+                    </div>
+                     <div class="pay_tb">	
+                        <label class="pwd ft"><img src="#{tplVars.themeImagePath}/weixinappimages/register_2_07.png"  width="4%"/></label>
+                        <h:inputSecret id="repass" required="true" maxlength="16"
+								styleClass="kuang ft" label="确认密码">
+								<f:ajax event="blur" execute="@this pass rePasswordValidator"></f:ajax>
+							</h:inputSecret>
+							<p:watermark value="请再次输入密码" for="repass"></p:watermark>
+                        <div class="clear"></div>
+                    </div>
+                    <!-- <div class="pay_tb">	
+                        <label class="pwd ft"><img src="#{tplVars.themeImagePath}/weixinappimages/register_3_10.png"  width="4%"/></label>
+                        	<h:inputText id="email1"  label="邮箱" 
+								styleClass="kuang ft" maxlength="100"
+								value="#{userHome.instance.email}" required="true">
+								<archer:validateInputRule ruleId="input.email"></archer:validateInputRule>
+								<archer:validateAlreadyExist />
+								<f:ajax event="blur"></f:ajax>
+							</h:inputText>
+							<p:watermark value="请输入真实邮箱" for="email1"></p:watermark>
+                        <div class="clear"></div>
+                    </div> -->
+                    
+                    <div class="pay_tb">	
+                        <label class="pwd ft"><img src="#{tplVars.themeImagePath}/weixinappimages/register_1_06.png"  width="4%"/></label>
+                        <h:inputText id="referrer" label="推荐人"
+								styleClass="kuang_1 ft" maxlength="16"
+								value="#{userHome.instance.referrer}">
+								<archer:validateRule ruleId="input.referrer" fieldName="referrer"></archer:validateRule>
+								<f:ajax event="blur"></f:ajax>
+								<archer:validateAlreadyNotExist />
+							</h:inputText>
+							<p:watermark value="请输入推荐人手机号" for="referrer"></p:watermark>
+                        <div class="clear"></div>
+                    </div>
+                     <div class="pay_bb">
+                        <h:selectBooleanCheckbox id="agree" selected="true"
+									requiredMessage="请阅读并同意《网站服务协议》!">
+									<f:validator validatorId="omnifaces.RequiredCheckboxValidator" />
+									<f:ajax event="click"></f:ajax>
+								</h:selectBooleanCheckbox>
+								我已经阅读并同意 
+						<a href="#{path}/node_app/registerService" style="padding:0; display:inline;">《网站服务协议》</a>
+                        <div class="clear"></div>
+                    </div>
+            </section>               
+          	<div class="btn_t shi">
+          		<p:commandLink value="立即注册" styleClass="login_btn"
+								action="#{userHome.registerByWeiXin}"></p:commandLink>
+          	</div>
+                </h:form>           
+             <div class="bb">
+                <p style=" padding:4% 0;"><img src="#{tplVars.themeImagePath}/weixinappimages/register_4_14.png" width="100%"/></p>
+                <div class="clear"></div>
+            </div>
+            <div class="r_btn_b" style=" padding-bottom:4%;">
+            	<p>已有账号?    <a href="#{path}/weixinapp/loginweixin">立即登录</a></p>
+            </div>
+        </div>
+    </div>
+    <ui:include src="bottomno.xhtml"></ui:include>
+    </h:body>
+</html>

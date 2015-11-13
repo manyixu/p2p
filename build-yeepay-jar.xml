@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<project name="com.esoft.jdp2p" default="jar" basedir=".">
+	<target name="clean">
+		<delete dir="build" />
+	</target>
+	<path id="classpath">
+		<fileset dir="lib">
+			<include name="*.jar" />
+		</fileset>
+		<fileset dir="dist/jar">
+			<include name="*.jar" />
+		</fileset>
+	</path>
+
+	<target name="init">
+		<mkdir dir="build" />
+	</target>
+
+	<target name="copyResources">
+		<copy todir="build">
+			<fileset dir="yeepay">
+				<exclude name="com*/**" />
+			</fileset>
+		</copy>
+		<rename src="build/spring-config/applicationContext-yeepay.xml_default" dest="build/spring-config/applicationContext-yeepay.xml"/>
+	</target>
+
+
+	<target name="compile" depends="clean,init,copyResources">
+
+		<javac srcdir="yeepay" destdir="build" encoding="utf-8" target="1.6" includeantruntime="false" failonerror="true" debug="true" debuglevel="source,lines,vars" nowarn="true" deprecation="true" depend="false">
+			<compilerarg line="-Xlint:unchecked" />
+			<classpath refid="classpath" />
+		</javac>
+
+	</target>
+	
+
+	<target name="jar" depends="compile">
+		<jar destfile="dist/jar/yeepay.jar" basedir="build">
+		</jar>
+		<delete dir="build"/>
+	</target>
+</project>

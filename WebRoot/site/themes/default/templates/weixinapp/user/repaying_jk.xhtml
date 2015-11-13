@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pm="http://primefaces.org/mobile"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:o="http://omnifaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:archer="http://java.sun.com/jsf/archer"
+	xmlns:sec="http://www.springframework.org/security/facelets/tags">
+	<h:head>
+	<title>借款记录</title>
+	<meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no"/>
+	<meta name="apple-touch-fullscreen" content="yes"/> <!--  一会试验下是否有必要存在 -->
+	<meta name="apple-mobile-web-app-capable" content="yes"/>
+	<meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+	<meta name="format-detection" content="telephone=no"/>
+	<meta http-equiv="x-rim-auto-match" content="none"/>
+	<link href="#{tplVars.themeStylePath}/weixincss/down.css" rel="stylesheet" type="text/css"/>
+    <link href="#{tplVars.themeStylePath}/weixincss/mobilebase.css" rel="stylesheet"/>
+	<script>
+			/**清除筛选条件*/
+			function clearFilters() {
+				$(".datepicker").val('');
+				$("#dataTable\\:typeInfoFilter").val('');
+			}
+		</script>
+	<o:importConstants type="com.esoft.jdp2p.loan.LoanConstants.LoanStatus" />
+    </h:head>
+    <h:body style="background:#f2f2f2;">
+    <h:form>
+   <div class="warp_2">
+	<div class="spe"></div>
+	<div class="top">
+    	<div class="top_inner">
+        	<!--标状态nav开始-->
+            <div class="nav">
+                <ul>
+                    <li>
+                    	<h:commandLink  styleClass="chlid bak"  title="还款中" value="还款中">
+								<f:ajax render="dataTable"
+									listener="#{loanList.setFlag('repaying')}">
+								</f:ajax>
+							</h:commandLink>
+                    </li>
+                    <li>
+							<h:commandLink  styleClass="chlid"  title="募集中" value="募集中">
+								<f:ajax render="dataTable"
+									listener="#{loanList.setFlag('raising')}">
+								</f:ajax>
+							</h:commandLink>
+                    </li>
+                    <li>
+                    	<h:commandLink  styleClass="chlid"  title="已结清" value="已结清">
+								<f:ajax render="dataTable"
+									listener="#{loanList.setFlag('complete')}">
+								</f:ajax>
+							</h:commandLink>
+                    </li>
+                    <li>
+                    	<h:commandLink style="border:none;" styleClass="chlid"  title="流标" value="流标">
+								<f:ajax render="dataTable"
+									listener="#{loanList.setFlag('cancel')}">
+								</f:ajax>
+							</h:commandLink>
+                    </li>
+                    <div  class="clear"></div>
+                </ul>
+            </div>
+            <!--标状态nav结束-->
+			<f:event type="preRenderComponent" listener="#{loanList.example.user.setUsername(loginUserInfo.loginUserId)}"></f:event>
+			<f:event type="preRenderComponent" listener="#{loanList.addOrder('loan.commitTime','desc')}"></f:event>
+			<h:panelGroup id="dataTable">
+			
+			<ui:param name="restriction1" value="#{'(loan.status=\''}#{LoanStatus.REPAYING}#{'\' or loan.status=\''}#{LoanStatus.OVERDUE}#{'\' or loan.status=\''}#{LoanStatus.BAD_DEBT}#{''}')"></ui:param>
+			<f:event type="preRenderComponent" listener="#{loanList.removeRestriction(restriction1)}"></f:event>
+			<ui:param name="restriction2" value="#{'(loan.status=\''}#{LoanStatus.RAISING}#{'\' or loan.status=\''}#{LoanStatus.RECHECK}#{''}')"></ui:param>
+			<f:event type="preRenderComponent" listener="#{loanList.removeRestriction(restriction2)}"></f:event>
+			<ui:param name="restriction3" value="#{'(loan.status=\''}#{LoanStatus.COMPLETE}#{''}')"></ui:param>
+			<f:event type="preRenderComponent" listener="#{loanList.removeRestriction(restriction3)}"></f:event>
+			<ui:param name="restriction4" value="#{'(loan.status=\''}#{LoanStatus.CANCEL}#{''}')"></ui:param>
+			<f:event type="preRenderComponent" listener="#{loanList.removeRestriction(restriction4)}"></f:event>
+			
+			<ui:fragment rendered="#{loanList.getFlag() == LoanStatus.REPAYING||loanList.getFlag() == null}">
+				<ui:param name="restriction1" value="#{'(loan.status=\''}#{LoanStatus.REPAYING}#{'\' or loan.status=\''}#{LoanStatus.OVERDUE}#{'\' or loan.status=\''}#{LoanStatus.BAD_DEBT}#{''}')"></ui:param>
+				<f:event type="preRenderComponent" listener="#{loanList.addRestriction(restriction1)}"></f:event>
+			</ui:fragment>
+			<ui:fragment rendered="#{loanList.getFlag() == LoanStatus.RAISING}">
+				<ui:param name="restriction2" value="#{'(loan.status=\''}#{LoanStatus.RAISING}#{'\' or loan.status=\''}#{LoanStatus.RECHECK}#{''}')"></ui:param>
+				<f:event type="preRenderComponent" listener="#{loanList.addRestriction(restriction2)}"></f:event>
+			</ui:fragment>
+			<ui:fragment rendered="#{loanList.getFlag() == LoanStatus.COMPLETE}">
+				<ui:param name="restriction3" value="#{'(loan.status=\''}#{LoanStatus.COMPLETE}#{''}')"></ui:param>
+				<f:event type="preRenderComponent" listener="#{loanList.addRestriction(restriction3)}"></f:event>
+			</ui:fragment>
+			<ui:fragment rendered="#{loanList.getFlag() == LoanStatus.CANCEL}">
+				<ui:param name="restriction4" value="#{'(loan.status=\''}#{LoanStatus.CANCEL}#{''}')"></ui:param>
+				<f:event type="preRenderComponent" listener="#{loanList.addRestriction(restriction4)}"></f:event>
+			</ui:fragment>
+			
+			
+			
+			
+			<script type="text/javascript" src="#{tplVars.themeJSPath}/weixinjs/jquery-1.8.0.min.js"></script>
+			<script type="text/javascript" src="#{tplVars.themeJSPath}/weixinjs/base.js"></script>
+			 <ui:fragment rendered="#{loanList.lazyModelDataNoPage == '[]'}">
+            	<p style="color:#999;padding:3% 3%;text-align:center; ">没有记录</p>
+            </ui:fragment>
+            <div class="down_bt"  style="padding-bottom:20%;">
+			<ui:repeat var="loan" value="#{loanList.lazyModelDataNoPage}" varStatus="status">
+            <div class="xiangqing">
+            	<div class="xiang_t">
+                    <p style="color:#58b85f"><a href="#{path}/weixinapp/loanDetail/#{loan.id}">#{stringHome.ellipsis(loan.name,15)}</a></p>  
+                    <p class="toggle xiangmu js_btn_chakan" style="float:right; padding-right:3%; color:#afafaf">查看</p>
+                    <div class="clear"></div>
+                </div>
+                <div class="inf xiang_con js_zhankai">
+                    <div class="inf_l_jilu">
+                   	 	<!-- 还款中 -->
+                    	<ui:fragment rendered="#{loanList.getFlag() == LoanStatus.REPAYING||loanList.getFlag() == null}">
+	                    	<ul>
+	                        	<li>借款标题：<span class="star"><a href="#{path}/weixinapp/loanDetail/#{loan.id}" style=" font-size:3vw; color:#afafaf;">#{stringHome.ellipsis(loan.name,10)}</a></span><br/> 利       率：<i style="color:#afafaf;"><h:outputText value="#{loan.rate}">
+													<f:convertNumber type="percent" minFractionDigits="2" />
+												</h:outputText> </i><br/> 期     数：<i style="color:#afafaf;">#{loan.repayRoadmap.paidPeriod}/#{loan.repayRoadmap.repayPeriod}</i></li>
+	                            <li>放款时间：<span>
+									<h:outputText
+												value="#{loan.giveMoneyTime}">
+												<f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss" timeZone="GMT+8"
+													locale="cn" />
+											</h:outputText>
+								</span></li>
+	                            <li>借款金额/待还总额：<span class="end">
+	                            	<h:outputText
+												value="#{loan.money}">
+												<f:convertNumber maxFractionDigits="2" />
+											</h:outputText>/<h:outputText value="#{loan.repayRoadmap.unPaidMoney}">
+												<f:convertNumber maxFractionDigits="2" />
+											</h:outputText>
+	                            </span></li>
+	                            <li>下次还款日期：<span>
+	                            	<h:outputText
+												value="#{loan.repayRoadmap.nextRepayDate}">
+												<f:convertDateTime pattern="yyyy-MM-dd" timeZone="GMT+8"
+													locale="cn" />
+											</h:outputText>
+	                            </span></li>
+	                            <li>本期应还金额：<span>
+	                            	<h:outputText
+												value="#{loan.repayRoadmap.nextRepayMoney}">
+												<f:convertNumber maxFractionDigits="2" />
+											</h:outputText>元
+	                            </span></li>
+	                            <li>状态：<span>#{dictUtil.getValue('loan',loan.status)}</span></li>
+	                            <li>
+	                            	<a href="#{path}/weixinuser/repaymentschedule_jk/#{loan.id}" style=" color:#62ba50; font-size:3vw; ">还款计划</a>
+	                            	 | <a href="#{path}/user/loan-contract/#{loan.id}" style=" color:#62ba50; font-size:3vw; ">合同</a>
+	                            </li>
+	                        </ul>
+                        </ui:fragment>
+                        <!-- 筹集中 -->
+                    	<ui:fragment rendered="#{loanList.getFlag() == LoanStatus.RAISING}">
+	                    	<ul>
+	                        	<li>借款标题：<span class="star"><a href="#{path}/weixinapp/loanDetail/#{loan.id}" style=" font-size:3vw; color:#afafaf;">#{stringHome.ellipsis(loan.name,10)}</a></span><br/> 利       率：<i style="color:#afafaf;"><h:outputText value="#{loan.rate}">
+													<f:convertNumber type="percent" minFractionDigits="2" />
+												</h:outputText> </i><br/> 期     数：<i style="color:#afafaf;">#{loan.deadline*loan.type.repayTimePeriod}(#{dictUtil.getValue('repay_unit',loan.type.repayTimeUnit)})</i></li>
+	                            <li>发布时间：<span>
+	                            	<h:outputText
+												value="#{loan.verifyTime}">
+												<f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss" timeZone="GMT+8"
+													locale="cn" />
+											</h:outputText>
+	                            </span></li>
+	                            <li>借款金额：<span class="end">
+	                            	<h:outputText value="#{loan.loanMoney}">
+												<f:convertNumber maxFractionDigits="2" />
+											</h:outputText>
+									</span></li>
+	                            <li>预计利息：<span>#{loanCalculator.calculateLoanInterest(loan.id)}元</span></li>
+	                            <li>剩余时间：<span>#{loanCalculator.calculateRemainTime(loan.id)}</span></li>
+	                            <li>进度：<span>#{loanCalculator.calculateRaiseCompletedRate(loan.id)}%</span></li>
+	                            <li>状态：<span>#{dictUtil.getValue('loan',loan.status)}</span></li>
+	                        </ul>
+                        </ui:fragment>
+                        <!-- 已结清 -->
+                    	<ui:fragment rendered="#{loanList.getFlag() == LoanStatus.COMPLETE}">
+	                    	<ul>
+	                        	<li>借款标题：<span class="star"><a href="#{path}/weixinapp/loanDetail/#{loan.id}" style=" font-size:3vw; color:#afafaf;">#{stringHome.ellipsis(loan.name,10)}</a></span><br/> 利       率：<i style="color:#afafaf;"><h:outputText value="#{loan.rate}">
+													<f:convertNumber type="percent" minFractionDigits="2" />
+												</h:outputText> </i><br/> 期     数：<i style="color:#afafaf;">#{loan.repayRoadmap.paidPeriod}/#{loan.repayRoadmap.repayPeriod}</i></li>
+	                            <li>放款时间：<span>
+	                            	<h:outputText
+												value="#{loan.giveMoneyTime}">
+												<f:convertDateTime pattern="yyyy-MM-dd" timeZone="GMT+8"
+													locale="cn" />
+											</h:outputText><br /> <h:outputText value="#{loan.giveMoneyTime}">
+												<f:convertDateTime pattern="HH:mm:ss" timeZone="GMT+8"
+													locale="cn" />
+											</h:outputText>
+	                            </span></li>
+	                            <li>还款总额：<span class="end">
+	                            	<h:outputText value="#{loan.repayRoadmap.repayMoney}">
+												<f:convertNumber maxFractionDigits="2" />
+											</h:outputText>
+	                            </span></li>
+	                            <li>还清日期：<span>
+	                            	<h:outputText
+												value="#{loan.completeTime}">
+												<f:convertDateTime pattern="yyyy-MM-dd" timeZone="GMT+8"
+													locale="cn" />
+											</h:outputText>
+	                            </span></li>
+	                            <li>
+	                            	<a style=" color:#62ba50; font-size:3vw;" href="#{path}/weixinuser/collectiondetails/#{loan.id}">收款详情</a>
+	                            	 | <a href="#{path}/user/loan-contract/#{loan.id}" style=" color:#62ba50; font-size:3vw; ">合同</a>
+	                            </li>
+	                        </ul>
+                        </ui:fragment>
+                        <!-- 流标 -->
+                    	<ui:fragment rendered="#{loanList.getFlag() == LoanStatus.CANCEL}">
+	                    	<ul>
+	                        	<li>借款标题：<span class="star"><a href="#{path}/weixinapp/loanDetail/#{loan.id}" style=" font-size:3vw; color:#afafaf;">#{stringHome.ellipsis(loan.name,10)}</a></span><br/> 利       率：<i style="color:#afafaf;"><h:outputText value="#{loan.rate}">
+													<f:convertNumber type="percent" minFractionDigits="2" />
+												</h:outputText> </i><br/> 期     数：<i style="color:#afafaf;">#{loan.repayRoadmap.paidPeriod}/#{loan.repayRoadmap.repayPeriod}</i></li>
+	                            <li>放款时间：<span>
+	                            	<h:outputText
+												value="#{loan.giveMoneyTime}">
+												<f:convertDateTime pattern="yyyy-MM-dd" timeZone="GMT+8"
+													locale="cn" />
+											</h:outputText><br /> <h:outputText value="#{loan.giveMoneyTime}">
+												<f:convertDateTime pattern="HH:mm:ss" timeZone="GMT+8"
+													locale="cn" />
+											</h:outputText>
+	                            </span></li>
+	                            <li>借款类型：<span><LABEL title="#{loan.type.name}">#{stringHome.ellipsis(loan.type.name,10)}</LABEL></span></li>
+	                            <li>借款金额：<span class="end">
+	                            	<h:outputText
+												value="#{loan.loanMoney}">
+												<f:convertNumber maxFractionDigits="2" />
+											</h:outputText>
+	                            </span></li>
+	                            <li>流标时间：<span>
+	                            	<h:outputText
+												value="#{loan.cancelTime}">
+												<f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss" timeZone="GMT+8"
+													locale="cn" />
+											</h:outputText>
+	                            </span></li>
+	                            <li>状态：<span>#{dictUtil.getValue('loan',loan.status)}</span></li>
+	                            <li>备注：<span>#{loan.verifyMessage}</span></li>
+	                        </ul>
+                        </ui:fragment>
+                    </div>
+
+                </div>
+            </div>
+            </ui:repeat>
+            </div>
+            </h:panelGroup>
+    </div>
+</div>   
+</div>
+</h:form>
+<ui:include src="../bottom.xhtml"></ui:include>
+    </h:body>
+</html>

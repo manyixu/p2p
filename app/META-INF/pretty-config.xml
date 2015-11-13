@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pretty-config xmlns="http://ocpsoft.com/prettyfaces/3.3.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://ocpsoft.com/prettyfaces/3.3.0
+               http://ocpsoft.com/xml/ns/prettyfaces/ocpsoft-pretty-faces-3.3.0.xsd">
+
+	<!-- app -->
+	<url-mapping id="appRequest">
+		<pattern value="/app/publicRequest"></pattern>
+		<view-id value="themepath:user/center.htm"></view-id>
+		<action>#{requestHome.handleRequest}</action>
+	</url-mapping>
+	<url-mapping id="testAppRequest">
+		<pattern value="/app/test"></pattern>
+		<view-id value="themepath:user/center.htm"></view-id>
+		<action>#{testRequestHome.handleRequest}</action>
+	</url-mapping>
+</pretty-config>

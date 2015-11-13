@@ -1,0 +1,34 @@
+img{list-style: none;border: none;}
+.zes_wrap{width: 100%;min-width:1000px;height: 100%;margin: auto;}
+.zes_wrap div{
+	width: 100%;
+	margin: 0;
+	padding: 0;border: none;
+}
+	
+.zes_wrap div img{
+	display: block;
+	width: 100%;
+	border: none;
+}
+.zes_bt1,.zes_bt2{
+	position: relative;
+}
+.btn_tz1,.btn_tz2{
+	display: inline-block;
+	width: 11.4%;
+	position: absolute;
+}
+.btn_tz1{
+	top: 77%;
+    left: 45%;
+}
+.btn_tz2{
+	top: 77%;
+    left: 45%;
+}
+/*.btn_tz1 img{
+	display: inline-block;
+	width: 100%;
+}
+*/

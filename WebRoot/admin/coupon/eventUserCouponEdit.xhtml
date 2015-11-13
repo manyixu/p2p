@@ -1,0 +1,61 @@
+<ui:composition template="/admin/templates/ui.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:composite="http://java.sun.com/jsf/composite/primefaces"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:archer="http://java.sun.com/jsf/archer"
+	xmlns:sec="http://www.springframework.org/security/facelets/tags">
+
+	<ui:define name="content">
+		<div class="entry">
+			<p:toolbar styleClass="admin-nav-toolbar">
+				<p:toolbarGroup>
+					<h:outputLabel value="#{commonMsg.currentPositionLabel} 添加红包事件"></h:outputLabel>
+				</p:toolbarGroup>
+				<p:toolbarGroup align="right">
+					<p:separator />
+					<p:button outcome="/admin/coupon/eventUserCouponList" value="红包事件管理"></p:button>
+				</p:toolbarGroup>
+			</p:toolbar>
+			<p:spacer></p:spacer>
+			<h:form id="form">
+				<h:panelGrid columns="2" columnClasses="col1,col2" id="panel">
+
+					<h:outputLabel value="事件编号"></h:outputLabel>
+					<h:selectOneMenu required="true" label="类型"
+						value="#{eventUserCouponHome.instance.eventId}">
+						<f:selectItems value="#{eventUserCouponList.couponEventIds}" var="uc"
+							itemLabel="#{uc}" itemValue="#{uc}" />
+					</h:selectOneMenu>
+
+					<h:outputLabel value="红包"></h:outputLabel>
+					<h:selectOneMenu required="true" label="红包"
+						value="#{eventUserCouponHome.instance.coupon}"
+						converter="archer.EntityConverter">
+						<f:selectItems value="#{couponList.usableCoupons}" var="uc"
+							itemLabel="#{uc.name}" itemValue="#{uc}" />
+					</h:selectOneMenu>
+
+					<h:outputLabel value="描述"></h:outputLabel>
+					<h:inputTextarea label="描述"
+						value="#{eventUserCouponHome.instance.description}">
+					</h:inputTextarea>
+
+					<h:outputLabel value="#{commonMsg.actionLabel}"></h:outputLabel>
+					<ui:fragment>
+						<p:commandButton action="#{eventUserCouponHome.save}"
+							value="#{commonMsg.saveLabel}" id="saveBtn"></p:commandButton>
+						<p:commandButton type="reset" value="#{commonMsg.resetLabel}"></p:commandButton>
+						<p:blockUI block="panel" trigger="saveBtn"></p:blockUI>
+					</ui:fragment>
+				</h:panelGrid>
+
+			</h:form>
+		</div>
+	</ui:define>
+</ui:composition>
+

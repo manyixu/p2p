@@ -1,0 +1,16 @@
+@charset "utf-8";
+/* CSS Document */
+
+.m_m_tj{ padding:34px 24px ;}
+
+.m_m_tj ul li{ float:left;}
+.item-label_tj,.item-cont_tj{ float:left;}
+.form-item_tj {margin-bottom: 16px;}
+.form-item_tj::after {clear: both; display: table; content: " ";}
+.item-label_tj {width: 78px; text-align: right; line-height: 40px; float: left; min-height: 1em; color:#666;}
+.item-cont_tj {text-align: left;line-height: 40px;margin-left: 13px;margin-right: 13px;min-height: 1em;}
+.item-cont_tj .note img {left: 0px; top: -1px; margin-right: 4px; position: relative;}
+.item-cont_tj > label {margin-right: 20px; display: inline-block;}
+.form-item_tj span{ line-height:40px; margin-left:8px; color:#666;}
+.txt{ border-radius:5px; border:1px solid #e6e6e6;width:174px; height:32px;}
+.chongzhi_tj a{ display:block; width:72px; line-height:32px; background:rgb(62, 194, 38); margin-bottom:8px;text-align:center; color:#fff; border-radius:5px;-webkit-border-radius:5px;float:left}

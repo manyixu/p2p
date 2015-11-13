@@ -1,0 +1,152 @@
+<ui:composition template="../center.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pm="http://primefaces.org/mobile"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+	<!-- 投标中的投资 -->
+	<ui:param name="activeCenterMenuUrl" value="/user/invest/repaying"></ui:param>
+	<ui:define name="center_right">
+		<div class="main_r">
+				<div class="m_t">
+					<ui:include src="../userCenterTop.xhtml"></ui:include>
+				</div>
+				<div class="m_m">
+					<ui:include src="top_include.xhtml"></ui:include>
+				</div>
+			<div class="m_b">
+			<h:form>
+				<h:panelGroup id="dataTable">
+				<script type="text/javascript">	
+								$(document).ready(function() {
+									$(".ma").hide()
+									$(".weixin").hover(function(){
+									$(".ma").show()
+									},function(){
+									$(".ma").hide()
+										});
+									$(".all").css("background","#3ec226")
+									$(".all").css("color","#fff")
+									$(".t a").click(function(){
+									$(".t a").css("background","#fff")
+									$(".t a").css("color","#666");
+									$(this).css("background","#3ec226");
+									$(this).css("color","#fff");
+									});
+									$(".m a").click(function(){
+									$(".m a").css("background","#fff")
+									$(".m a").css("color","#666");
+									$(this).css("background","#3ec226");
+									$(this).css("color","#fff");
+									});
+									$(".b a").click(function(){
+									$(".b a").css("background","#fff")
+									$(".b a").css("color","#666");
+									$(this).css("background","#3ec226");
+									$(this).css("color","#fff");
+									});
+									$(".on").css("background","#3ec226");
+									$(".on").css("color","#fff")
+									$(".on").css("border","1px solid #3ec226;");
+									$(".page a").click(function(){
+									$(".page a").css("background","#fff");
+									$(".page a").css("color","#5a5a5a");
+									$(".page a").css("border","1px solid #dddddd;");
+									$(this).css("background","#3ec226");
+									$(this).css("color","#fff");
+									$(this).css("border","1px solid #dddddd;");
+									});
+									/* $('.progressbar').each(function(){
+									var t = $(this),
+									dataperc = t.attr('data-perc'),
+									barperc = Math.round(dataperc*0.88);
+									t.find('.bar').animate({width:barperc}, dataperc*25);
+									t.find('.label').append('<div class="perc"></div>');
+									function perc(){
+										var length = t.find('.bar').css('width'),
+										perc = Math.round(parseInt(length)/0.88),
+										labelpos = (parseInt(length)-2);
+										t.find('.perc').text(perc+'%');
+									}
+									perc();
+									setInterval(perc, 0); 
+								}); */
+								});
+							</script>
+						<ul>
+                        	<li><h:link outcome="pretty:user_invest_repaying" value="还款中"></h:link></li>
+                            <li><h:link outcome="pretty:user_invest_finished" value="已结清"></h:link></li>
+                            <li><h:link outcome="pretty:user_invest_bidding" styleClass="sub_m1" value="投标中"></h:link></li>
+                            <li><h:link outcome="pretty:user_invest_fail" styleClass="liubiao" value="未成功"></h:link></li>
+                            <div class="clear"></div>
+                        </ul>
+						<div class="m_b_inf">
+						<div id="con_four_1" class="slidnr inf1">
+							<table width="764" border="1" bordercolor="black" cellspacing="0" >
+								<tr class="tr_1">
+									<td class="td_1">项目名称</td>
+									<td class="td_2">投资时间</td>
+									<td class="td_3">投资金额</td>
+									<td class="td_4">剩余时间</td>
+									<td class="td_5">投标进度</td>
+									<td class="td_6">投资状态</td>
+								</tr>
+								<f:event type="preRenderComponent"
+									listener="#{investList.example.user.setUsername(loginUserInfo.loginUserId)}"></f:event>
+
+								<ui:param name="restriction"
+									value="#{'(invest.status=\''}#{InvestStatus.BID_SUCCESS}#{'\' or invest.status=\''}#{InvestStatus.WAIT_AFFIRM}#{''}')"></ui:param>
+								<f:event type="preRenderComponent"
+									listener="#{investList.addRestriction(restriction)}"></f:event>
+
+								<f:event type="preRenderComponent"
+									listener="#{investList.setPageSize(7)}"></f:event>
+								<f:event type="preRenderComponent"
+									listener="#{investList.addOrder('time','desc')}"></f:event>
+								<ui:repeat var="invest" value="#{investList.lazyModelData}"
+									varStatus="status">
+									<tr class="tr_2">
+										<td class="td_1"><a target="_blank"
+											href="#{path}/loan/#{invest.loan.id}" title="#{invest.loan.name}(#{invest.id})">#{stringHome.ellipsis(invest.loan.name,10)}</a><br />
+											利率：
+											<h:outputText value="#{invest.rate}">
+												<f:convertNumber type="percent" minFractionDigits="2" />
+											</h:outputText> 期数：<h:outputText
+												value="#{invest.loan.deadline/invest.loan.type.repayTimePeriod}">
+												<f:convertNumber maxFractionDigits="0" />
+											</h:outputText></td>
+										<td class="td_2"><h:outputText
+												value="#{invest.time}">
+												<f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss"
+													timeZone="GMT+8" locale="cn" />
+											</h:outputText></td>
+										<td class="td_3"><h:outputText value="#{invest.money}">
+												<f:convertNumber />
+											</h:outputText></td>
+										<td class="td_4">#{loanCalculator.calculateRemainTime(invest.loan.id)}</td>
+										<ui:param name="cr"
+											value="#{loanCalculator.calculateRaiseCompletedRate(invest.loan.id)}"></ui:param>
+										<td class="td_7">#{cr}%</td>
+										<td class="td_5">
+											<div class="zhuangtai">   
+												<a class="bnt3 wancheng">#{dictUtil.getValue('invest_status',invest.status)}</a>
+											</div>
+										</td>
+									</tr>
+								</ui:repeat>
+							</table>
+							<div class="pagebar">
+							<ui:include src="paging_include.xhtml"></ui:include>
+						</div>
+						</div>
+						</div>
+				</h:panelGroup>
+			</h:form>
+			</div>
+		</div>
+		<div class="clear"></div>
+	</ui:define>
+</ui:composition>

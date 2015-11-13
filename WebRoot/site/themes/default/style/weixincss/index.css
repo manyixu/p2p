@@ -1,0 +1,134 @@
+@charset "utf-8";
+/* CSS Document */
+
+.top { position:relative; width:100%;height:48%;overflow:hidden;}
+.top_bg{ width:100%;  display:block;height:100%}
+.benxi{ position:absolute; top:0%; ; width:94%; padding:2% 3% 2% 3%;}
+.benxi img,.benxi_m{ float:left;}
+.benxi_r{ float:right;}
+.benxi_r a{color:#fff; font-size:3vw;}
+.benxi img{ padding-top:2%; max-width:100%; border:none; display:block;}
+.benxi p{ margin-left:6px; font-size:3vw; color:#fff;}
+.number{ position:absolute; top:40%; left:center; width:100%;}
+.number p{font-size:18vw; color:#fff; text-align:center; text-shadow:0 2px 2px #3c7145;}
+.header{ position:absolute;width:96%; padding:2% 2%;  border-bottom:1px solid #e5e5e5;overflow:hidden; bottom:0; background:rgba(12,79,23,0.1);box-shadow:0 1px 3px #3c7145}
+.header p{ text-align:center;  font-size:2vw;}
+.header .shu{ font-size:5vw; color:rgba(255,255,255,0.9); line-height:1.6em}
+.lixi,.chengben{ float:left; width:49.7%; padding:0 0.1px;}
+.lixi{border-right:1px solid #e5e5e5;}
+.biao{color:rgba(255,255,255,0.9)}
+.main{ width:100%; height:44%;overflow:hidden;}
+.main_inner{ height:100%;}
+.main a{  display:block;padding:17% 11% 17% 11%; }
+.main_t,.main_b{ height:50%; overflow:hidden;}
+/*.main_t{ border-bottom:1px solid #e5e5e5;}
+.main_t_1 a,.main_t_2 a,.main_b_1 a,.main_b_2 a{ border-right:1px solid #e5e5e5;}  
+*/
+
+.main_t_1,.main_t_2,.main_t_3,.main_b_1,.main_b_2,.main_b_3{ float:left; width:33.3%; height:33.3%; }
+.tit{ font-size:3.6vw; color:#acacac; line-height:30px;}
+.main p{ text-align:center; }
+.g a{ background:#f7f8f8;}
+
+@media screen and (max-width:736px){
+  .benxi_m,.benxi_r{ padding-top:2.3%;}
+  .warp {background-color:#fff;position:absolute;top:0;left:0;width:100%;overflow-y:hidden;overflow-x:hidden; height:auto;}
+}
+
+.top_login{ position:relative; width:100%;height:48%;overflow:hidden;}
+.top_inner{ position:relative; width:100%; height:100%;}
+.top_inner_login{width:100%; height:100%;}
+.logn{ width:100%; position:absolute; top:20%; text-align:center;}
+.logn_t{ display:block; font-size:20px; color:#fff; padding-top:3%;}
+.logn_b{ font-size:16px; color:#fff; padding-top:3%;}
+.logn_t{
+	animation: warning 1s 1 ease-in;
+	-webkit-animation: warning 1s 1 ease-in;
+    -moz-animation:warning 1s 1 ease-in;
+    -ms-animation:warning 1s 1 ease-in;
+    -o-animation:warning 1s 1 ease-in;
+}
+.logn_t:hover{
+	animation: hove 1s infinite ease-in;
+	-webkit-animation: hove 1s infinite ease-in;
+    -moz-animation:hove 1s infinite ease-in;
+    -ms-animation:hove 1s infinite ease-in;
+    -o-animation:hove 1s infinite ease-in;
+}
+.logn_b{
+	animation: warn 1s 1 1s ease;
+	-webkit-animation: warn 1s 1 1s ease;
+    -moz-animation:warn 1s 1 1s ease;
+    -ms-animation:warn 1s 1 1s ease;
+    -o-animation:warn 1s 1 1s ease;;
+}
+@keyframes warning {
+from {
+padding-top:30%
+}
+to {
+top:0%
+}
+}
+@-webkit-keyframes warning {
+from {
+padding-top:30%
+}
+to {
+top:0%
+}
+}
+
+
+@keyframes hove {
+from {
+text-shadow: 0px 0px 4px #000000;
+}
+50%{text-shadow: 0 0 40px #000000;}
+to {
+text-shadow: 0 0 4px #000000;
+}
+}
+@-webkit-keyframes hove {
+from {
+text-shadow: 0px 0px 4px #000000;
+}
+50%{text-shadow: 0 0 40px #000000;}
+to {
+text-shadow: 0 0 4px #000000;
+}
+}
+@keyframes warn {
+from {
+font-size:18px
+}
+50%{font-size:14px}
+to {
+font-size:18px
+}
+}
+@-webkit-keyframes warn {
+from {
+font-size:18px
+}
+50%{font-size:14px}
+to {
+font-size:18px
+}
+}
+
+@media screen and (max-width:320px){
+    .main img{
+       width:40%;
+    }
+	.zhanghao a,.touzi a{
+		padding:0.5% 0 0 0;
+	}
+	.pic_b{ 
+		padding-bottom:0;
+		padding-top:2px
+	}
+	.logn img{width:20%;}
+	.bottom .zhanghao a, .bottom .touzi a{padding:0 0 ;}
+
+}

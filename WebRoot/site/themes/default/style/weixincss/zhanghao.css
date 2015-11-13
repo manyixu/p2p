@@ -1,0 +1,53 @@
+@charset "utf-8";
+/* CSS Document */
+
+.top { position:relative; width:100%;height:40%;overflow:hidden; }
+.top_bg{ width:100%; height:100%;padding:4% 0 15% 0;
+	background: #46c0ab; 
+	background: -moz-linear-gradient(top, #46c0ab 0%, #7ecb6b 100%); 
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#746c0ab), color-stop(100%,#7ecb6b)); 
+	background: -webkit-linear-gradient(top, #746c0ab 0%,#7ecb6b 100%); 
+	background: -o-linear-gradient(top, #46c0ab 0%,#7ecb6b 100%); 
+	background: -ms-linear-gradient(top, #46c0ab 0%,#7ecb6b 100%);
+	background: linear-gradient(to bottom, #46c0ab 0%,#7ecb6b 100%);	
+}
+.top_bg_1{ width:100%; height:100%;padding:4% 0 0% 0;
+	background: #46c0ab; 
+	background: -moz-linear-gradient(top, #46c0ab 0%, #7ecb6b 100%); 
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#746c0ab), color-stop(100%,#7ecb6b)); 
+	background: -webkit-linear-gradient(top, #746c0ab 0%,#7ecb6b 100%); 
+	background: -o-linear-gradient(top, #46c0ab 0%,#7ecb6b 100%); 
+	background: -ms-linear-gradient(top, #46c0ab 0%,#7ecb6b 100%);
+	background: linear-gradient(to bottom, #46c0ab 0%,#7ecb6b 100%);	
+}
+
+.top_bg p,.top_bg_1 p{ text-align:center;}
+.touxiang{ }
+.number{  }
+.tel{ font-size:4vw;color:#fff; padding-bottom:6%;}
+.mo{font-size:10vw; color:#fff; font-family:Arial, Helvetica, sans-serif; text-align:center;}
+
+.main{ width:100%; height:44%;overflow:hidden;}
+.main_inner{ height:100%;}
+.main a{  display:block;padding:13% 11% 15% 11%; }
+.main_t,.main_b{ height:50%; overflow:hidden;}
+.pic{ padding-bottom:2%}
+.main_t_1,.main_t_2,.main_t_3,.main_b_1,.main_b_2,.main_b_3{ float:left; width:33.3%; height:33.3%; }
+.tit{ font-size:3.6vw; color:#acacac; line-height:30px;}
+.main p{ text-align:center; }
+.g a{ background:#f7f8f8;}
+
+@media screen and (max-height:480px){
+    .main_t img,.main_b img{
+       width:40%;
+    }
+	.zhanghao a,.touzi a{
+		padding:0.5% 0 0 0;
+	}
+	.pic_b{ 
+		padding-bottom:0;
+		padding-top:2px
+	}
+
+}
+.primary{-webkit-appearance: none; width:100%; display:block; padding:2.5% 0; background:#41b42a;  box-shadow: 0 4px 1px #3c9f28;border-radius:4px; font-size:5vw; text-align:center; color:#fff;outline:none;-webkit-appearance: none;}

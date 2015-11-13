@@ -1,0 +1,132 @@
+<ui:component xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pm="http://primefaces.org/mobile"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:sec="http://www.springframework.org/security/facelets/tags"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+	<link rel="stylesheet" type="text/css"
+		href="#{appInfo.contextPath}/include/css/fileupload.less.css" />
+	<script type="text/javascript" charset="utf-8"
+		src="#{appInfo.contextPath}/include/js/fileupload.less.js"></script>
+	<style>
+		
+		.tiyan{ position:absolute;top: -50px;left: 80px;}
+	
+		.m1{
+			position: relative;
+		}
+		.m1 .ui-fileupload-buttonbar .ui-button{
+			height: 71px;
+		}
+		.m1 .ui-fileupload-buttonbar .ui-fileupload-choose input{
+			height: 71px;
+			filter: alpha(opacity = 0); opacity: 0;
+		}
+		.m1 .ui-widget{
+			position:absolute;
+			height:73px;
+			width:71px;
+			top:0;
+			filter: alpha(opacity = 0); opacity: 0;
+		}
+	</style>
+
+	<f:event type="preRenderComponent"
+		listener="#{userHome.setId(loginUserInfo.loginUserId)}"></f:event>
+		
+	
+		
+		
+		<div class="m1">
+			<div class="touxiang">
+				<h:form id="userPhotoUploadForm">
+					<h:panelGroup id="photo">
+						<p:graphicImage id="photoImage" style="width:50px" value="#{userHome.instance.photo}" rendered="#{not empty userHome.instance.photo}"  />
+						<p:graphicImage value="/site/themes/default/images/img/rentou.png" rendered="#{empty userHome.instance.photo}" style="width:90px;height:90px;"/>
+						<p:fileUpload dragDropSupport="true" update="photo" id="pu"
+							invalidFileMessage="#{commonMsg.invalidFileMessage}"
+							invalidSizeMessage="#{commonMsg['validator.SizeValidator.MAXIMUM500k']}"
+							label="上传" fileLimit="1"
+							fileUploadListener="#{userHome.uploadPhoto}" mode="advanced"
+							auto="true" sizeLimit="500000"
+							allowTypes="/(\.|\/)(gif|jpe?g|png|JPG|JPEG|GIF)$/" />
+					</h:panelGroup>
+				</h:form>
+			</div>
+		</div>
+		<div class="m2">
+            <p class="na">#{fn:substring(userService.getUserById(loginUserInfo.loginUserId).mobileNumber ,0,3)}****#{fn:substring(userService.getUserById(loginUserInfo.loginUserId).mobileNumber ,7,11)}
+            	<ui:fragment rendered="#{configHome.getConfigValue('pnrpay_enable') eq '1'}">
+					<sec:ifAnyGranted roles="INVESTOR,LOANER,GUARANTEE">
+						<h:form style="display:inline;">
+							&#160;<h:commandLink action="#{userHome.toPnrAccount()}" target="_blank">汇付账户</h:commandLink>
+						</h:form>
+					</sec:ifAnyGranted>
+				</ui:fragment>
+            </p>
+            <p class="yue">账户余额：<span class="yu2"><h:outputLabel
+						value="#{billStatistics.getBalanceByUserId(loginUserInfo.loginUserId)}">
+						<f:convertNumber type="currency" />
+					</h:outputLabel>元</span></p>
+         </div>
+         <div class="m3">
+               <p class="renzheng">
+                  <sec:ifAllGranted roles="INVESTOR">
+					<a  title="实名认证-已认证"> <img
+						src="#{tplVars.themeImagePath}/img/center_1.png" />
+					</a>
+				</sec:ifAllGranted>
+				<sec:ifNotGranted roles="INVESTOR">
+					<a href="#{path}/user/get_investor_permission" title="实名认证">
+						<img src="#{tplVars.themeImagePath}/realname-icon.png" />
+					</a>
+				</sec:ifNotGranted>
+				<a href="#{path}/user/accountSafe" title="修改绑定手机"> <img
+					src="#{tplVars.themeImagePath}/img/center_2.png" />
+				</a> <a href="#{path}/user/accountSafe" title="修改登录密码"> <img
+					src="#{tplVars.themeImagePath}/img/center_3.png" />
+				</a>
+				<ui:fragment rendered="#{not empty userHome.instance.email}">
+					<a href="#{path}/user/accountSafe" title="修改绑定邮箱"> <img
+						src="#{tplVars.themeImagePath}/img/center_4.png" />
+					</a>
+				</ui:fragment>
+				<ui:fragment rendered="#{empty userHome.instance.email}">
+					<a href="#{path}/user/accountSafe" title="绑定邮箱"> <img
+						src="#{tplVars.themeImagePath}/email-icon.png" />
+					</a>
+				</ui:fragment>
+              </p>
+              <div class="safe">
+                 <p class="s_l">安全等级</p>
+             <div class="s_m">
+                 <div class="s_m_in"></div>
+             </div>
+              <p class="s_r">高</p>
+              <div class="clear"></div>
+              </div>
+         </div>
+         <div class="m4">
+             <div class="chongzhi"><a href="#{path}/user/recharge">充值</a></div>
+             <div class="tixian"><a href="#{path}/user/withdraw">提现</a></div>
+         </div>
+		<div class="clear"></div>
+		<!-- 查询人的体验金 -->
+			<ui:param name="restriction1" value="#{'(rmk22=\''}A1')"></ui:param>
+               <ui:param name="restriction1" value="#{'(userid=\''}#{loginUserInfo.loginUserId}')"></ui:param>
+				<f:event type="preRenderComponent" listener="#{experiencegoldList.addRestriction(restriction1)}"></f:event>
+				<ui:repeat var="invest2" value="#{experiencegoldList.lazyModelDataNoPage}" varStatus="status">
+				<!-- 判断是否可用和钱可用 -->
+				<ui:fragment rendered="#{invest2.utype =='Y'}">
+					<div class="tiyan">
+					<a href="#{path}/user/activity/experience">
+							<p class="tishi">亲！请尽快参加体验金投标活动哦！</p>
+			            	<!-- <img src="#{path}/site/themes/default/templates/user/images/tiyan_03.png"  style="width:142px; height:63px;" /> -->
+			          </a> 
+		            </div>
+				</ui:fragment>
+			</ui:repeat>
+</ui:component>

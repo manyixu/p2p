@@ -1,0 +1,232 @@
+ *{ margin:0; padding:0;}
+ body { font-family: "微软雅黑";font-size: 14px; }
+ .tab { width:100%;}
+ a,input[type="button"],button{cursor:pointer;}
+ .tab_menu ul{
+ 	width: 100%;
+ 	height: 44px;
+ 	border:1px solid #e6e6e6;
+ 	display: -webkit-box;
+ }
+ .tyj_btn1{
+	width: 129px;
+	height: 32px;
+	line-height: 32px;
+	text-align: center;
+	border: none;
+	position: absolute;
+	top: 35px;
+	font-family: '微软雅黑';
+	font-size: 14px;
+	text-decoration:none;
+}
+ .tab_menu li {
+ 	-webkit-box-flex: 1;
+ 	line-height: 44px;
+ 	font-size: 18px;
+ 	color: #bfbfbf; 
+ 	text-align:center; 
+ 	cursor:pointer;
+ 	list-style:none;
+ }
+ .tab_menu li.hover {border-bottom: 2px solid #3ec226; }
+ .tab_menu li.selected { color:#000; }
+ .hide{display:none}
+ .tab_cont{width: 100%;}
+ .tab_cont tr{ width: 98%; }
+.tab_cont tr td{
+	width: 1%;
+	height: 45px;
+	line-height: 45px;
+	text-align: center;
+}
+.tab_cont .tab_a{color: #666666;}
+.tab_cont .tab_a td{ width: 5.5%; }
+.tab_cont .tab_b{
+	width: 99.5%;
+	height:65px;
+	background: #f0f0f0;
+	border: 1px solid #e6e6e6;
+	color: #333333;
+	text-align: left;
+	margin: auto;
+}
+.tab_cont .tab_b td{ line-height:65px;}
+.tab_guize{
+	width: 94%;
+	margin: auto;
+	margin-top: 15px;
+	background: #fffbe3;
+	padding-left: 2%;
+	padding-bottom: 5px;
+	border: 1px solid #fedd98;
+}
+.tab_guize h2{font-size: 16px;margin: 20px 0 8px 0;font-weight: normal;}
+.tab_guize p{
+	font-size: 13px;
+	color: #ff974e;
+	line-height: 29px;
+}
+.tab_btn{
+	width: 70px;
+	height: 28px;
+	line-height: 28px;
+	background: #3ec226;
+	font-size: 12px;
+	color: #FFFFFF;
+	border: none;
+	text-align: center;
+	margin: 0 -23px 0 15px;
+}
+.not .tab_a{width: 92%;}
+.tab_way{ padding-right: 3%;margin-right:51px; }
+/*兑换码*/
+.main_r{
+	width:764px;
+	margin: 50px auto;
+    border: 1px solid #e6e6e6;
+    border-top: 1px solid #3ec226;
+    border-radius: 5px;
+    padding-bottom: 15px;
+}
+.tyj_convert{
+	width: 96%;
+	margin: auto;
+	margin-bottom: 31px;
+	position: relative;
+}
+.tyj_convert h2{
+	font-size: 20px;
+	font-weight: bold;
+	color: #333333;
+	padding: 17px 0 11px 0;
+	border-bottom: 1px solid #e6e6e6;
+}
+.tyj_cont{
+	color: #c1c1c1;
+	position: relative;
+	
+}
+.tyj_cont p:nth-of-type(1){
+	margin: 25px 0 18px 0;
+}
+.tyj_cont p input{
+	height: 32px;		
+	border-radius: 5px;
+	
+	border: 1px solid #e6e6e6;
+}
+.tyj_cont p:nth-of-type(1) input{
+	width: 237px;
+}
+.tyj_cont p:nth-of-type(2) input{
+	width: 145px;
+}
+.tyj_cont p span{
+	display: inline-block;
+	width: 70px;
+	line-height: 37px;
+	background: pink;
+	text-align: center;
+	margin-left: 18px;
+}
+.tyj_cont input[type="submit"]{
+	width: 129px;
+	height: 32px;
+	line-height: 32px;
+	text-align: center;
+	border: none;
+	position: absolute;
+	top: 35px;
+	font-family: '微软雅黑';
+	font-size: 14px;
+}
+.tyj_cont .tyj_btn1{
+	background: #3ec226;
+	color: #FFFFFF;	
+	right: 27%;
+}
+.tyj_cont .tyj_btn2{
+	background: #cacaca;
+	right: 7%;
+}
+/*邀请返利*/
+.tyj_convert{
+	color: #666666;
+}
+#content{
+	display: inline-block;
+	width: 54%;
+	height: 20px;
+	color: red;		
+	margin-left: 2%;	
+	background: #FFFFFF;	
+	outline:none;
+	font-size: 15px;
+}
+.btn_copy{
+	width: 153px;
+	height: 38px;
+	background: #0697da;
+	border: none;
+	font-size: 16px;
+	border-radius: 4px;	
+	color: #FFFFFF;
+	font-weight: bold;
+	box-shadow: 2px 2px 2px #bdd2dc;
+	position: absolute;
+	right: 35.4%;
+	top: 128px;
+}
+.tyj_href{
+	margin: 35px 0 23px 0;
+}
+.tyj_share{
+	margin-top: 95px;
+	padding-left: 8%;
+	position: relative;
+}
+.tyj_share span{
+	position: absolute;
+	top: 3px;
+	left: 0;
+}
+.tyj_share img{
+	display: inline-block;
+	margin-left: 1%;
+}
+.tyj_wx{
+	position: absolute;
+	right: 3%;
+	top: 88px;
+}
+.tyj_wx p{
+	text-align: center;
+	color: #808080;
+	line-height: 24px;
+}
+.fanli{
+	margin-top: 0px;
+}
+.tyj_mout{
+	width: 96%;
+	height: 35px;
+	margin: auto;
+	margin-bottom: 20px;
+	line-height: 35px;
+	background: #f0f0f0;
+	border: 1px solid #e6e6e6;
+}
+.tyj_mout a{
+	display: inline-block;
+	width: 32%;
+	text-align: center;
+	border-right: 1px solid #e6e6e6;
+}
+.tyj_mout a span{
+	font-size: 18px;
+	padding: 0 2%;
+	font-weight: bold;
+}
+
+

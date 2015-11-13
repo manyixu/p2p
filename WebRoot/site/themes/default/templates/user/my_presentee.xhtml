@@ -1,0 +1,194 @@
+<ui:composition template="center.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pm="http://primefaces.org/mobile"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<ui:param name="activeCenterMenuUrl" value="/user/my-presentee"></ui:param>
+	<ui:define name="center_right">
+	<link href="#{tplVars.themeStylePath}/center.css" type="text/css" rel="stylesheet" />
+		<script type="text/javascript"
+			src="#{tplVars.themeJSPath}/ZeroClipboard.min.js"></script>
+		<script>
+			/**初始化时间选择控件*/
+			function initDatepicker() {
+				$(".datepicker").datepicker({
+					changeMonth : true,
+					changeYear : true
+				});
+			}
+			/**清除筛选条件*/
+			function clearFilters() {
+				$(".datepicker").val('');
+				$("#dataTable\\:typeInfoFilter").val('');
+			}
+			$(function() {
+				initDatepicker();
+			});
+		</script>
+
+		<f:event type="preRenderComponent"
+			listener="#{investList.example.user.setReferrer(loginUserInfo.loginUserId)}"></f:event>
+		<f:event type="preRenderComponent"
+			listener="#{investList.addOrder('invest.time','desc')}"></f:event>
+
+		<div class="main_r">
+			<div class="m_t">
+				<ui:include src="userCenterTop.xhtml"></ui:include>
+				<div class="tj01">
+					<p>
+						<ui:param name="referrerLink"
+							value="#{facesUtil.getCurrentAppUrl()}/register?referrer=#{userService.getUserById(loginUserInfo.loginUserId).mobileNumber}"></ui:param>
+						推荐链接：<a class="link copy" data-clipboard-text="#{referrerLink}"
+							id="copyLink" href="javascript:void(0)">#{referrerLink}</a> <a
+							class="fz copy" id="copyBtn"
+							data-clipboard-text="#{referrerLink}" style="background:rgb(62, 194, 38);border-radius:5px;" href="javascript:void(0)">复制</a>
+						<!-- 							&#160;<a href="#" class="fx">分享</a> -->
+					</p>
+					<!-- span>我推荐的人数和这些人投资总额，获得的可用积分奖励</span> -->
+				</div>
+			</div>
+			<h:form id="dataTable">
+				<script type="text/javascript" src="#{tplVars.themeJSPath}/usercenter.js"></script>
+						<script type="text/javascript">	
+								$(document).ready(function() {
+									$(".ma").hide()
+									$(".weixin").hover(function(){
+									$(".ma").show()
+									},function(){
+									$(".ma").hide()
+										});
+									$(".all").css("background","#3ec226")
+									$(".all").css("color","#fff")
+									$(".t a").click(function(){
+									$(".t a").css("background","#fff")
+									$(".t a").css("color","#666");
+									$(this).css("background","#3ec226");
+									$(this).css("color","#fff");
+									});
+									$(".m a").click(function(){
+									$(".m a").css("background","#fff")
+									$(".m a").css("color","#666");
+									$(this).css("background","#3ec226");
+									$(this).css("color","#fff");
+									});
+									$(".b a").click(function(){
+									$(".b a").css("background","#fff")
+									$(".b a").css("color","#666");
+									$(this).css("background","#3ec226");
+									$(this).css("color","#fff");
+									});
+									$(".on").css("background","#3ec226");
+									$(".on").css("color","#fff")
+									$(".on").css("border","1px solid #3ec226;");
+									$(".page a").click(function(){
+									$(".page a").css("background","#fff");
+									$(".page a").css("color","#5a5a5a");
+									$(".page a").css("border","1px solid #dddddd;");
+									$(this).css("background","#3ec226");
+									$(this).css("color","#fff");
+									$(this).css("border","1px solid #dddddd;");
+									});
+									/* $('.progressbar').each(function(){
+									var t = $(this),
+									dataperc = t.attr('data-perc'),
+									barperc = Math.round(dataperc*0.88);
+									t.find('.bar').animate({width:barperc}, dataperc*25);
+									t.find('.label').append('<div class="perc"></div>');
+									function perc(){
+										var length = t.find('.bar').css('width'),
+										perc = Math.round(parseInt(length)/0.88),
+										labelpos = (parseInt(length)-2);
+										t.find('.perc').text(perc+'%');
+									}
+									perc();
+									setInterval(perc, 0); 
+								}); */
+								});
+							</script>
+				<div class="date" style="margin-left: 0px;">
+					<span>时间：</span>
+					<h:inputText value="#{investList.searchcommitMinTime}" style="width: 75px;"
+						label="起止日期" styleClass="date_txt date_txt02 datepicker"
+						id="startDate">
+						<f:convertDateTime pattern="yyyy-MM-dd" timeZone="GMT+8"
+							locale="zh_CN" />
+					</h:inputText>
+					<span class="date_span">-</span>
+					<h:inputText value="#{investList.searchcommitMaxTime}" style="width: 75px;"
+						label="结束日期" styleClass="date_txt date_txt02 datepicker"
+						id="endDate">
+						<f:convertDateTime pattern="yyyy-MM-dd" timeZone="GMT+8"
+							locale="zh_CN" />
+					</h:inputText>
+					<span>推荐用户名：</span>
+					<h:inputText style="width: 90px;" value="#{investList.example.user.username}"
+						styleClass="bdsj_txt">
+					</h:inputText>
+					<div class="grzx_r02">
+						<h:commandLink styleClass="cx" style="background:rgb(62, 194, 38)" value="查询">
+							<p:ajax process="@form" update="dataTable"
+								oncomplete="initDatepicker()"></p:ajax>
+							<f:setPropertyActionListener value="1"
+								target="#{investList.currentPage}" />
+						</h:commandLink>
+						<a href="javascript:void(0)" style="background:rgb(62, 194, 38)" onclick="location.reload();"
+							class="cx cx02">重置</a>
+					</div>
+				</div>
+				<p class="jf">我的推荐列表</p>
+				<div class="m_b_inf">
+						<div id="con_four_1" class="slidnr inf1">
+							<table width="764" border="1" bordercolor="black" cellspacing="0" >
+								<tr class="tr_1">
+						<td class="td_1">时间</td>
+						<td class="td_1">被推荐人</td>
+						<td class="td_1">投资金额</td>
+						<!-- 					<td class="tab01">奖励积分</td> -->
+					</tr>
+					<ui:repeat var="invest" value="#{investList.lazyModelData}"
+						varStatus="status">
+						<tr class="tr_2">
+							<td class="td_1"><h:outputText
+									value="#{invest.time}">
+									<f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss"
+										timeZone="GMT+8" />
+								</h:outputText></td>
+							<td class="td_1"><h:outputText
+									value="#{invest.user.username}"></h:outputText></td>
+							<td class="td_1"><h:outputText
+									value="#{invest.money}">
+									<f:convertNumber minIntegerDigits="1" minFractionDigits="2"></f:convertNumber>
+								</h:outputText>元</td>
+						</tr>
+					</ui:repeat>
+				</table>
+				</div>
+				</div>
+				<div class="pagebar">
+							<ui:include src="invest/paging_include.xhtml"></ui:include>
+						</div>
+			</h:form>
+		</div>
+		<div class="clear"></div>
+
+		<script>
+			//复制
+			ZeroClipboard.config({
+				swfPath : "#{tplVars.themeJSPath}/ZeroClipboard.swf"
+			});
+			var client = new ZeroClipboard($(".copy"));
+
+			client.on("ready", function(readyEvent) {
+				client.on("aftercopy", function(event) {
+					$.dialog.alert('复制成功！', function() {
+					});
+				});
+			});
+		</script>
+	</ui:define>
+</ui:composition>

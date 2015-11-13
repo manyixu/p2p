@@ -1,0 +1,51 @@
+@charset "utf-8";
+/* CSS Document */
+*{	margin:0; padding:0; font-size:14px; color:#666; line-height:24px; font-family:"微软雅黑",Arial, Helvetica, sans-serif; color:#4e4c4c;} 
+a img{ border:0;}
+
+br,.clear{ clear:both; font-size:0; line-height:0; cursor:pointer; vertical-align:middle}
+li{ list-style:none;}
+.clear{ clear:both;}
+a{ text-decoration:none; outline:none; text-align:}
+body{ background:#2e0531; }
+#top{ position:relative; margin:0 auto;}
+.pic1{  position:absolute; top:0;left:50%;margin-left: -960px;}
+.pic2{  position:absolute; top:0;left:50%;margin-left: -960px;}
+
+/**/
+#header{ height:806px;}
+#main{ width:100% }
+.main_inner{ width:1000px; margin:0 auto; position:relative; background:#3a0f3d;}
+.pic3{ position:absolute; top:0;  z-index:999;}
+.pic4{ height:236px; padding-bottom:40px;}
+.btn{ padding:0 0 0 92px; margin-bottom:30px;}
+.btn a{  padding-right:20px;}
+.main_inner p{ text-align:center; padding-bottom:40px;}
+#footer{ background:#2e0531;}
+.footer_inner{ width:1000px; margin:0 auto;}
+.footer_inner p{ padding:28px 0; text-align:center; color:#86018d;}
+
+.pic1 img{
+	animation:warning 12s ease-out forwards infinite   }
+
+@keyframes warning{
+0%{transform:scale(1);opacity:1}50%{transform:scale(1.2);opacity:1}100%{transform:scale(1);}}
+/*ie6-7*/
+#ie6-warning{
+background:#3ec226 url("����ͼƬ��ַ") no-repeat scroll 3px center;
+position:absolute;
+top:0;
+left:0;
+font-size:16px;
+color:#fff;
+width:100%;
+height:980px;
+padding: 2px 15px 2px 23px;
+text-align: center;
+ line-height: 800px;
+z-index:999999;
+}
+#ie6-warning a {
+text-decoration:none;
+color:#fff;
+}

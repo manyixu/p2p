@@ -1,0 +1,105 @@
+<ui:composition template="/admin/templates/ui.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:composite="http://java.sun.com/jsf/composite/primefaces"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:sec="http://www.springframework.org/security/facelets/tags">
+	<f:metadata>
+		<f:viewParam name="id" value="#{tradeHome.id}"></f:viewParam>
+	</f:metadata>
+
+	<ui:define name="content">
+		<o:importConstants
+			type="com.esoft.fintheircing.FinthcConstants.TradeStatus" />
+		<div class="entry">
+			<p:toolbar styleClass="admin-nav-toolbar">
+				<p:toolbarGroup>
+					<h:outputLabel value="#{commonMsg.currentPositionLabel} 配资交易编辑"></h:outputLabel>
+				</p:toolbarGroup>
+				<p:toolbarGroup align="right">
+					<p:separator />
+					<p:button outcome="/admin/finthc/tradeList" value="配资交易管理"></p:button>
+				</p:toolbarGroup>
+			</p:toolbar>
+			<p:spacer></p:spacer>
+			<h:form id="form">
+				<h:panelGrid columns="2" columnClasses="col1,col2" id="panel">
+
+					<h:outputLabel value="编号"></h:outputLabel>
+					<h:outputText value="#{trade.id}"></h:outputText>
+
+					<h:outputLabel value="申请时间"></h:outputLabel>
+					<h:outputText value="#{tradeHome.instance.applyTime}">
+						<f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss" timeZone="GMT+8" />
+					</h:outputText>
+
+					<h:outputLabel value="配资名称"></h:outputLabel>
+					<h:outputText value="#{tradeHome.instance.finthc.name}"></h:outputText>
+
+					<h:outputLabel value="操盘人"></h:outputLabel>
+					<h:outputText value="#{tradeHome.instance.trader.username}"></h:outputText>
+
+					<h:outputLabel value="时长"></h:outputLabel>
+					<h:outputText
+						value="#{tradeHome.instance.deadline}#{tradeHome.instance.unit}"></h:outputText>
+
+					<h:outputLabel value="保证金"></h:outputLabel>
+					<h:outputText value="#{tradeHome.instance.cashDeposit}"></h:outputText>
+
+					<h:outputLabel value="配资金额"></h:outputLabel>
+					<h:outputText value="#{tradeHome.instance.tradeMoney}"></h:outputText>
+
+					<h:outputLabel value="亏损预警线"></h:outputLabel>
+					<h:outputText value="#{tradeHome.instance.lossLine}"></h:outputText>
+
+					<h:outputLabel value="亏损平仓线"></h:outputLabel>
+					<h:outputText value="#{tradeHome.instance.closeOutLine}"></h:outputText>
+
+					<h:outputLabel value="利率"></h:outputLabel>
+					<h:outputText value="#{tradeHome.instance.rate}"></h:outputText>
+
+					<h:outputLabel value="交易账号"
+						rendered="#{tradeHome.instance.status eq TradeStatus.PASSED}"></h:outputLabel>
+					<h:inputText value="#{tradeHome.instance.tradeUsername}"
+						required="true" label="交易账号"
+						rendered="#{tradeHome.instance.status eq TradeStatus.PASSED}"></h:inputText>
+
+					<h:outputLabel value="交易密码"
+						rendered="#{tradeHome.instance.status eq TradeStatus.PASSED}"></h:outputLabel>
+					<h:inputText value="#{tradeHome.instance.tradePassword}"
+						required="true" label="交易密码"
+						rendered="#{tradeHome.instance.status eq TradeStatus.PASSED}"></h:inputText>
+
+					<h:outputText value="审核信息"
+						rendered="#{tradeHome.instance.status eq TradeStatus.WAIT_VERIFY}"></h:outputText>
+					<p:inputTextarea value="#{tradeHome.instance.verifyMessage}"
+						cols="80"
+						rendered="#{tradeHome.instance.status eq TradeStatus.WAIT_VERIFY}"
+						rows="3"></p:inputTextarea>
+
+					<h:outputLabel value="#{commonMsg.actionLabel}"></h:outputLabel>
+					<ui:fragment>
+						<p:commandButton ajax="false"
+							rendered="#{tradeHome.instance.status eq TradeStatus.WAIT_VERIFY}"
+							action="#{tradeHome.passApply}" value="通过申请" id="passBtn"></p:commandButton>
+						<p:commandButton ajax="false"
+							rendered="#{tradeHome.instance.status eq TradeStatus.WAIT_VERIFY}"
+							action="#{tradeHome.refuseApply}" value="拒绝申请"></p:commandButton>
+						<p:commandButton ajax="false"
+							rendered="#{tradeHome.instance.status eq TradeStatus.PASSED}"
+							action="#{tradeHome.startTrade}" value="开始交易"></p:commandButton>
+						<p:commandButton ajax="false"
+							rendered="#{tradeHome.instance.status eq TradeStatus.TRADING}"
+							action="#{tradeHome.finishTrade}" value="结束交易"></p:commandButton>
+					</ui:fragment>
+				</h:panelGrid>
+
+			</h:form>
+		</div>
+	</ui:define>
+</ui:composition>
+

@@ -1,0 +1,9 @@
+@charset "utf-8";
+/* CSS Document */
+
+
+.m_m ul li{ float:left; width:22%; line-height:36px; padding-right:18px; color:#666;}
+.m_m ul li img{ margin-right:8px; }
+.r{ color:#39bd21; font-size:18px;}
+.num{ font-family:Arial, Helvetica, sans-serif; color:#39bd21; font-size:18px;}
+

@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pm="http://primefaces.org/mobile"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:o="http://omnifaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:archer="http://java.sun.com/jsf/archer"
+	xmlns:sec="http://www.springframework.org/security/facelets/tags">
+	<h:head>
+	<title>实名认证</title>
+	<meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no"/>
+	<meta name="apple-touch-fullscreen" content="yes"/> <!--  一会试验下是否有必要存在 -->
+	<meta name="apple-mobile-web-app-capable" content="yes"/>
+	<meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+	<meta name="format-detection" content="telephone=no"/>
+	<meta http-equiv="x-rim-auto-match" content="none"/>
+    <link href="#{tplVars.themeStylePath}/weixincss/zhanghao.css" rel="stylesheet" type="text/css"/>
+    <link href="#{tplVars.themeStylePath}/weixincss/shiming.css" rel="stylesheet" type="text/css"/>
+	<link href="#{tplVars.themeStylePath}/weixincss/pay.css" rel="stylesheet" type="text/css"/>
+    <link href="#{tplVars.themeStylePath}/weixincss/mobilebase.css" rel="stylesheet"/>
+	<h:outputScript library="primefaces" name="jquery/jquery.js" target="head" />
+	<script type="text/javascript" src="#{tplVars.themeJSPath}/jquery.artDialog.js?skin=idialog"></script>
+	<script type="text/javascript" src="#{tplVars.themeJSPath}/jquery.SuperSlide.2.1.1.js"></script>
+	<script type="text/javascript" src="#{tplVars.themeJSPath}/common.js"></script>
+	<script type="text/javascript" src="#{tplVars.themeJSPath}/timer.js"></script>
+    </h:head>
+    <h:body  style=" width:100%; height:100%;">
+    <archer:archerWeiXinMessages focus="false" showGlobalMessages="true"
+			severity="0,2"></archer:archerWeiXinMessages>
+    <ui:param name="activeCenterMenuUrl" value="/user/get_investor_permission"></ui:param>
+	<f:event type="preRenderView" listener="#{borrowerInfoHome.setId(loginUserInfo.loginUserId)}"></f:event>
+	<f:event type="preRenderView" listener="#{weixinUserHome.setId(loginUserInfo.loginUserId)}"></f:event>
+	<ui:param name="pnrCorp" value="#{configHome.getConfigValue('pnrpay_corp_account')}"></ui:param>
+    <div class="top">
+    	<div class="top_bg_1">
+        	<a href="#{path}/weixinuser/set"  style=" padding-left:90%;"><img src="#{tplVars.themeImagePath}/weixinappimages/zhanghao_1_03.png" width="4%"/></a>
+        	<p class="touxiang"><img src="#{tplVars.themeImagePath}/weixinappimages/zhanghao_2_03.png" width="24%"/></p>   
+            <div class="number_1">
+            	<p class="tel">#{loginUserInfo.loginUserId}</p>
+               
+            </div>
+        </div>
+    </div>
+   <h:form  id="form">
+    <div class="main"  style="margin-bottom: 15%">
+    	<div class="main_inner">
+        	<section>
+        		<sec:ifAnyGranted roles="INVESTOR,CORP,GUARANTEE,LOANER">
+                	<div class="pay_tb">	
+                        <p class="pwd ft" style="float:left;">真实姓名</p>
+                       	<p style="float:right; color:#999;">#{fn:substring(weixinUserHome.instance.realname,0,1)}**</p>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="pay_tb">	
+                        <p class="pwd ft" style="float:left;">身份证号</p>
+                        <p style="float:right;color:#999;">#{fn:substring(weixinUserHome.instance.idCard,0,6)} **** **** ****</p>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="pay_tb">	
+                        <p class="pwd ft" style="float:left;">性别</p>
+                        <p style="float:right;color:#999;"><h:outputText value="#{dictUtil.getValue('user_sex',weixinUserHome.instance.sex)}"/></p>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="pay_tb">	
+                        <p class="pwd ft" style="float:left;">出生日期</p>
+                        <p style="float:right;color:#999;"><h:outputText value="#{weixinUserHome.instance.birthday}">
+									<f:convertDateTime pattern="yyyy-MM-dd" timeZone="GMT+8" />
+								</h:outputText></p>
+                        <div class="clear"></div>
+                     </div>
+                     <div class="pay_tb">	
+                        <p class="pwd ft" style="float:left;">是否认证</p>
+                        <p style="float:right;color:#999;"> 已认证</p>
+                        <div class="clear"></div>
+                     </div>
+                    </sec:ifAnyGranted>
+                    <sec:ifNotGranted roles="INVESTOR,CORP,GUARANTEE,LOANER,WAIT_CONFIRM">
+                   	 <ui:fragment rendered="#{configHome.getConfigValue('pnrpay_enable') ne '2'}">
+                    	<div class="pay_tb">	
+	                        <p class="pwd ft" style="float:left;">真实姓名</p>
+	                       	<p style="float:left; color:#999;margin-left: 2%;">
+	                       		<h:inputText label="真实姓名"
+										maxlength="20" styleClass="bdsj_txt" id="realname"
+										required="true" value="#{weixinUserHome.instance.realname}">
+										<f:ajax event="blur" render="@this"></f:ajax>
+									</h:inputText>
+	                       	</p>
+	                        <div class="clear"></div>
+	                    </div>
+	                    <div class="pay_tb">	
+	                        <p class="pwd ft" style="float:left;">身份证号</p>
+	                        <p style="float:left;color:#999;margin-left: 2%;">
+	                        	<h:inputText label="身份证号" styleClass="bdsj_txt"
+										id="idCard" required="true" value="#{weixinUserHome.instance.idCard}"
+										maxlength="18">
+										<archer:validateInputRule ruleId="input.idCard"></archer:validateInputRule>
+										<archer:validateIdCardAlreadyExist></archer:validateIdCardAlreadyExist>
+										<f:ajax event="blur" render="@this"></f:ajax>
+									</h:inputText>
+	                        </p>
+	                        <div class="clear"></div>
+	                    </div>
+	                    <div class="pay_tb">	
+	                        <p class="pwd ft" style="float:left;">性&#160;&#160;&#160;&#160;&#160;&#160;&#160;别</p>
+	                        <p style="float:left;color:#999;margin-left: 2%;">&#160;&#160;
+	                        <ui:fragment rendered="#{weixinUserHome.instance.sex==null||weixinUserHome.instance.sex==''}">
+	                        	<f:event type="preRenderView" listener="#{weixinUserHome.setSexDefault()}"></f:event>
+	                        	<h:selectOneRadio value="#{weixinUserHome.instance.sex}" required="true">
+	                        			<f:selectItem itemLabel="#{userMsg.male}" itemValue="M"></f:selectItem>
+	                            		<f:selectItem itemLabel="#{userMsg.female}" itemValue="F"></f:selectItem>
+	                        	</h:selectOneRadio>
+	                        </ui:fragment>
+	                        <ui:fragment rendered="#{weixinUserHome.instance.sex!=null and weixinUserHome.instance.sex!=''}">
+	                        	<h:selectOneRadio value="#{weixinUserHome.instance.sex}" required="true">
+	                        			<f:selectItem itemLabel="#{userMsg.male}" itemValue="M"></f:selectItem>
+	                            		<f:selectItem itemLabel="#{userMsg.female}" itemValue="F"></f:selectItem>
+	                        	</h:selectOneRadio>
+	                        </ui:fragment>
+	                        		<!-- <h:selectOneMenu value="#{weixinUserHome.instance.sex}"
+										required="true">
+										<f:selectItem itemLabel="#{userMsg.male}" itemValue="M"></f:selectItem>
+	                            		<f:selectItem itemLabel="#{userMsg.female}" itemValue="F"></f:selectItem>
+									</h:selectOneMenu> -->
+	                        </p>
+	                        <div class="clear"></div>
+	                    </div>
+	                    <div class="pay_tb">	
+	                        <p class="pwd ft" style="float:left;">出生日期</p>
+	                        <p style="float:left;color:#999;margin-left: 2%;">
+	                        	<h:inputText id="ymd" value="#{weixinUserHome.instance.birthday}"
+										required="true" label="出生日期" styleClass="bdsj_txt datepicker">
+									<f:convertDateTime pattern="yyyy-MM-dd" timeZone="GMT+8"
+											locale="zh_CN" />
+								</h:inputText>
+									
+	                        </p>
+	                        <script>
+										$("#form\\:idCard").blur(function() {
+											var idcard = $("#form\\:idCard").val();
+											if(idcard!=null) {
+												if(idcard.length==18) {
+													var idcard = $("#form\\:idCard").val();
+													var year = idcard.substring(6,10);
+													var month = idcard.substring(10,12);
+													var day = idcard.substring(12,14);
+													var idstr = year+"-"+month+"-"+day;
+													$("#form\\:ymd").val(idstr);
+												}else {
+													$("#form\\:ymd").val("");
+												}
+											}
+										});
+									</script>
+	                        <div class="clear"></div>
+	                     </div>
+          				<div class="btn_t shi">
+          				<ui:fragment rendered="#{userHome.getInvestorPermissionCount() != 3}">
+          					<h:commandLink
+										onclick="return confirm('请再次核查信息，确认后不可修改')" value="实名认证"
+										action="#{weixinUserHome.getInvestorPermission}">
+									</h:commandLink>
+							</ui:fragment>
+							<ui:fragment rendered="#{userHome.getInvestorPermissionCount() == 3}">
+								<a style="background: #acacac;box-shadow:0 4px 1px #acacac;">每天只允许操作三次</a>
+									
+							</ui:fragment>
+						</div>
+	                     </ui:fragment>
+	                     <div class="tishi" style="padding-bottom: 20%;">
+							<p style="color: red;">温馨提示：</p>
+							<ul>
+						    	<li style="color: red;">1、全利网为您每天提供三次认证机会，请谨慎填写</li>
+						        <li style="color: red;">2、请核实所填信息的真实性，一旦认证成功将无法修改</li>
+						    </ul>
+						</div>
+                    </sec:ifNotGranted>
+            </section>               
+        </div>
+    </div>
+    </h:form>
+    <ui:include src="../bottom.xhtml"></ui:include>
+    </h:body>
+</html>

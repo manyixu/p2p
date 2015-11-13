@@ -1,0 +1,221 @@
+<ui:composition template="/admin/templates/ui.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:composite="http://java.sun.com/jsf/composite/primefaces"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui"
+	xmlns:archer="http://java.sun.com/jsf/archer"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:sec="http://www.springframework.org/security/facelets/tags">
+	<f:metadata>
+		<f:viewParam name="id" value="#{finthcHome.id}"></f:viewParam>
+	</f:metadata>
+
+	<o:importConstants
+		type="com.esoft.fintheircing.FinthcConstants.FinthcStatus" />
+
+	<ui:define name="content">
+		<div class="entry">
+			<p:toolbar styleClass="admin-nav-toolbar">
+				<p:toolbarGroup>
+					<h:outputLabel value="#{commonMsg.currentPositionLabel} 配资规则编辑"></h:outputLabel>
+				</p:toolbarGroup>
+				<p:toolbarGroup align="right">
+					<p:separator />
+					<p:button outcome="/admin/finthc/finthcList" value="配资规则管理"></p:button>
+				</p:toolbarGroup>
+			</p:toolbar>
+			<p:spacer></p:spacer>
+			<h:form id="form">
+				<h:panelGrid columns="2" columnClasses="col1,col2" id="editPanel">
+
+					<h:outputLabel value="#{commonMsg.IDLabel}"></h:outputLabel>
+					<h:inputText value="#{finthcHome.instance.id}" id="fcId"
+						label="#{commonMsg.IDLabel}" required="true" maxlength="32"
+						readonly="#{not empty finthcHome.instance.id}"></h:inputText>
+
+					<h:outputLabel value="名称"></h:outputLabel>
+					<h:inputText value="#{finthcHome.instance.name}" label="名称"
+						required="true"></h:inputText>
+
+					<h:outputLabel value="最大时长"></h:outputLabel>
+					<h:inputText value="#{finthcHome.instance.maxDeadline}"
+						label="最大时长" required="true">
+						<f:validateLongRange minimum="0"></f:validateLongRange>
+					</h:inputText>
+
+					<h:outputLabel value="最小时长"></h:outputLabel>
+					<h:inputText value="#{finthcHome.instance.minDeadline}"
+						label="最小时长" required="true">
+						<f:validateLongRange minimum="0"></f:validateLongRange>
+					</h:inputText>
+
+					<h:outputLabel value="时长单位"></h:outputLabel>
+					<h:selectOneMenu value="#{finthcHome.instance.unit}"
+						required="true">
+						<f:selectItem itemLabel="月" itemValue="month" />
+						<f:selectItem itemLabel="天" itemValue="day" />
+					</h:selectOneMenu>
+
+					<h:outputLabel value="最低保证金"></h:outputLabel>
+					<h:inputText value="#{finthcHome.instance.minCashDeposit}"
+						label="最低保证金" required="true">
+						<archer:validateNumber precision="2"></archer:validateNumber>
+						<f:validateDoubleRange minimum="1"></f:validateDoubleRange>
+					</h:inputText>
+
+					<h:outputLabel value="最高保证金"></h:outputLabel>
+					<h:inputText value="#{finthcHome.instance.maxCashDeposit}"
+						label="最高保证金">
+						<archer:validateNumber precision="2"></archer:validateNumber>
+						<f:validateDoubleRange minimum="0"></f:validateDoubleRange>
+					</h:inputText>
+
+					<h:outputLabel value="管理费比例"></h:outputLabel>
+					<h:inputText value="#{finthcHome.instance.manageFee}"
+						required="true" label="管理费比例">
+						<archer:validateNumber precision="4"></archer:validateNumber>
+						<f:validateDoubleRange minimum="0"></f:validateDoubleRange>
+					</h:inputText>
+
+					<ui:fragment>
+						<h:outputLabel value="杠杆"></h:outputLabel>
+						<p:commandButton value="增加" process="@this fcId"
+							action="#{finthcHome.setLeverE(null)}" update=":leverEditDialog"
+							oncomplete="editLever(xhr, status, args);"></p:commandButton>
+					</ui:fragment>
+					<h:panelGroup id="levers">
+						<ui:repeat var="lever" value="#{finthcHome.instance.levers}">
+							<p:panel>
+								<f:facet name="header">
+									#{lever.name}
+							<p:commandButton value="修改"
+										action="#{finthcHome.setLeverE(lever)}"
+										process="@this :form:fcId" update=":leverEditDialog"
+										oncomplete="PF('leverEditDlg').show();"></p:commandButton>
+									<p:commandButton value="删除"
+										actionListener="#{finthcHome.deleteLever}"
+										update=":form:levers" process="@this"
+										onstart="return confirm('您确定要删除？此操作不可恢复！')">
+										<f:setPropertyActionListener target="#{finthcHome.leverE}"
+											value="#{lever}"></f:setPropertyActionListener>
+									</p:commandButton>
+								</f:facet>
+								<h:panelGrid columns="2" cellpadding="5"
+									columnClasses="col-img-prop,col-img">
+									<ui:fragment>
+										<h:outputText value="倍数:"></h:outputText>
+										<h:outputText value="#{lever.multiple}"></h:outputText>
+									</ui:fragment>
+									<ui:fragment>
+										<h:outputText value="利率:"></h:outputText>
+										<h:outputText value="#{lever.rate}"></h:outputText>
+									</ui:fragment>
+									<ui:fragment>
+										<h:outputText value="亏损预警线"></h:outputText>
+										<h:outputText value="#{lever.lossLine}"></h:outputText>
+									</ui:fragment>
+									<ui:fragment>
+										<h:outputText value="亏损平仓线"></h:outputText>
+										<h:outputText value="#{lever.closeOutLine}"></h:outputText>
+									</ui:fragment>
+								</h:panelGrid>
+							</p:panel>
+						</ui:repeat>
+					</h:panelGroup>
+
+					<h:outputLabel value="#{commonMsg.actionLabel}"></h:outputLabel>
+					<ui:fragment>
+						<p:commandButton ajax="false" action="#{finthcHome.save}"
+							value="保存" id="passBtn"></p:commandButton>
+						<p:blockUI block="editPanel" trigger="passBtn"></p:blockUI>
+					</ui:fragment>
+				</h:panelGrid>
+
+			</h:form>
+		</div>
+
+		<h:form id="leverEditDialog">
+			<p:dialog widgetVar="leverEditDlg" modal="true" header="杠杆">
+				<!-- 				新增、修改 -->
+				<h:panelGrid columns="2" columnClasses="col1,col2">
+
+					<h:outputText value="名称"></h:outputText>
+					<h:inputText value="#{finthcHome.leverE.name}" required="true"
+						label="名称">
+						<f:validateLength maximum="50"></f:validateLength>
+					</h:inputText>
+
+					<h:outputText value="倍数"></h:outputText>
+					<h:inputText value="#{finthcHome.leverE.multiple}" required="true"
+						label="倍数">
+						<f:validateDoubleRange minimum="1"></f:validateDoubleRange>
+					</h:inputText>
+
+					<h:outputText value="利率"></h:outputText>
+					<h:inputText value="#{finthcHome.leverE.rate}" required="true"
+						label="利率">
+						<archer:validateNumber precision="4"></archer:validateNumber>
+						<f:validateDoubleRange minimum="0"></f:validateDoubleRange>
+					</h:inputText>
+
+					<h:outputLabel value="亏损预警线"></h:outputLabel>
+					<ui:fragment>
+						<h:inputText value="#{finthcHome.leverE.lossLine}" label="亏损预警线"
+							required="true">
+							<archer:validateNumber precision="2"></archer:validateNumber>
+							<f:validateDoubleRange minimum="0.01"></f:validateDoubleRange>
+						</h:inputText>
+预警线=配资额*亏损预警线					
+					</ui:fragment>
+
+					<h:outputLabel value="亏损平仓线"></h:outputLabel>
+					<ui:fragment>
+						<h:inputText value="#{finthcHome.leverE.closeOutLine}"
+							label="亏损平仓线" required="true">
+							<archer:validateNumber precision="2"></archer:validateNumber>
+							<f:validateDoubleRange minimum="0.01"></f:validateDoubleRange>
+						</h:inputText>
+平仓线=配资额*亏损平仓线
+					</ui:fragment>
+
+					<h:outputLabel value="#{commonMsg.actionLabel}"></h:outputLabel>
+					<ui:fragment>
+						<p:commandButton update=":form:levers"
+							action="#{finthcHome.saveLever}"
+							oncomplete="saveLever(xhr, status, args);" value="保存"
+							id="passBtn"></p:commandButton>
+						<p:blockUI block=":leverEditDialog" trigger="passBtn"></p:blockUI>
+					</ui:fragment>
+
+				</h:panelGrid>
+			</p:dialog>
+		</h:form>
+		<script>
+			function editLever(xhr, status, args) {
+				if (!args.validationFailed) {
+					PF('leverEditDlg').show();
+				}
+			}
+
+			function saveLever(xhr, status, args) {
+				if (!args.validationFailed) {
+					PF('leverEditDlg').hide();
+				}
+			}
+		</script>
+	</ui:define>
+</ui:composition>
+
+
+
+
+
+
+
+
+
+
+

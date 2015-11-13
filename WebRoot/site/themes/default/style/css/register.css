@@ -1,0 +1,111 @@
+@charset "utf-8";
+/* CSS Document */
+.nohighlight:focus { outline:none; }
+#header{border-bottom:1px solid #e6e6e6;}
+#main{ width:100%;padding-bottom:34px;}
+.main_inner{ width:1000px; margin:0 auto; padding-top:34px;}
+.main_con{ background:#fff;}
+.main_l{float:right;}
+.main_r{ float:left; padding:34px 25px 0 0;}
+.pass_l{ float:left;  color:#666; padding:8px 4px 0 0; text-align:right;}
+.main_l img {margin-right: -6px;margin-top: 15px;}
+.main_l{position: relative;}
+.ckxq{position: absolute;bottom:28px;left:202px;color:#333;font-family: "微软雅黑";fong-size:14px;font-weight: bold;}
+.pass_l p{ text-align:right;}
+.pass_l span{ margin-top:5px;color:#fb3b3b; font-size:16px; }
+.pass_r{ float:right;}
+.pass_rr{ float:left;}
+.huo{ position:absolute; top:0; right:0px; width:94px;}
+.huoqu{width:94px; line-height:40px; border-radius: 5px; border: 0px currentColor; white-space: nowrap; -webkit-border-radius: 5px; -moz-border-radius:5px;background:#3ec226; color:#fff; -webkit-transition: background-color .8s; -moz-transition: background-color .8s; transition: background-color .8s; text-align:center;}
+.huoqu:hover {background:#22ae09;}
+.login_error{background:url(../../images/img/login_1_03.jpg) no-repeat 98px 12px; margin-bottom:8px; padding-left:133px; padding-top:8px;font-size:12px; color:#fb3b3b; }
+.c1,.c2,.c3,.c4,.c5,.c6{ position:relative;}
+.e1{ position:absolute;bottom:-2px;}
+.e2{ position:absolute;bottom:-2px;}
+.e3{ position:absolute;bottom:-2px;}
+.e4{ position:absolute;bottom:-2px;}
+.e5{ position:absolute;bottom:-2px;}
+.e6{ position:absolute;bottom:-2px;}
+
+.primary { border-radius: 5px; border: 0px currentColor; white-space: nowrap; -webkit-border-radius: 5px; -moz-border-radius:5px;background:#1c8c02; color:#fff; -webkit-transition: background-color .8s; -moz-transition: background-color .8s; transition: background-color .8s;}
+.primary:hover {background:#22ae09;}
+.primaryy { border-radius: 5px; border: 0px currentColor; white-space: nowrap; -webkit-border-radius: 5px; -moz-border-radius:5px;background:#1c8c02; color:#fff; -webkit-transition: background-color .8s; -moz-transition: background-color .8s; transition: background-color .8s;}
+.primaryy:hover {background:#acacac;}
+
+
+/* form表单 pass-label */
+.tang-pass-login .pass-label {display: block;font-size: 12px;color: #666;padding-bottom: 10px;display: none}
+.tang-pass-login label.pass-label-userName
+{display:block;position:absolute;top:9px;left:94px;width:24px;height:24px;overflow:hidden;padding: 0 0 0 23px;background:url(../../images/img/login_2.png) no-repeat;z-index: 20}
+.tang-pass-login label.pass-label-password{display:block;position:absolute;top:12px;left:100px;width:24px;height:24px;overflow:hidden;padding: 0 0 0 23px;background:url(../../images/img/login_3.png) no-repeat;background-size: 19px 19px;z-index: 20}
+.tang-pass-login label.pass-label-email {display:block;position:absolute;top:10px;left:93px;width:29px;height:24px;overflow:hidden;padding: 0 0 0 20px;background:url(../../images/img/r_1.png) no-repeat;z-index: 20}
+.tang-pass-login label.pass-label-tel {display:block;position:absolute;top:13px;left:101px;width:0;height:24px;overflow:hidden;padding: 0 0 0 20px;background:url(../../images/img/zhece_tel.png) no-repeat;background-size: 18px 18px;z-index: 20}
+.tang-pass-login label.pass-label-ma{display:block;position:absolute;top:10px;left:98px;width:24px;height:24px;overflow:hidden;padding: 0 0 0 10px;;z-index: 20}
+.tang-pass-login label.pass-label-tuijian{display:block;position:absolute;top:11px;left:101px;width:24px;height:24px;overflow:hidden;padding: 0 0 0 20px;background:url(../../images/use_010.png) no-repeat;background-size: 18px 18px;z-index: 20}
+/*.tang-pass-login label.pass-label-userName {background-position: -3px -9px}
+.tang-pass-login label.pass-label-password {background-position: -4px -45px}
+.tang-pass-login label.pass-label-email {background-position: -4px -81px}
+*/.tang-pass-login .pass-form-item-userName label.pass-text-label-focus {background-position: -43px -9px}
+.tang-pass-login .pass-form-item-password label.pass-text-label-focus {background-position: -44px -45px}
+.tang-pass-login .pass-form-item-smsPhone label.pass-text-label-focus {}
+.tang-pass-login .pass-form-item-userName label.pass-text-label-error {background-position: -84px -9px}
+.tang-pass-login .pass-form-item-password label.pass-text-label-error {background-position: -84px -45px}
+.tang-pass-login .pass-form-item-smsPhone label.pass-text-label-error {}
+
+
+
+
+
+/* 验证码 verifyCode */
+.tang-pass-login .pass-verifyCode {width: 82px;height: 34px;background: url('http://res.ckimg.com/sites/www/v2/images/passport/loading_16_bf37cfd7.gif') no-repeat center center;border: 1px solid #DDD;float: left;margin-left: 10px}
+.tang-pass-login .pass-change-verifyCode {float: left;width:20px;height:20px;overflow: hidden;margin-left: 10px;margin-top:8px;text-indent: -999em;font-size: 12px;text-decoration: none;background: url('http://res.ckimg.com/sites/www/v2/images/passport/input_icon.png') -193px -13px no-repeat;line-height: 26px;cursor: pointer}
+.tang-pass-login .pass-change-verifyCode:hover {background-position:-193px -46px}
+.tang-pass-login .pass-success-verifyCode {display: none;height: 16px;width: 16px;background: url('http://res.ckimg.com/sites/www/v2/images/passport/right_16_9f315b0d.png') 0 0 no-repeat;position: absolute;left: 88px;top: 10px;z-index: 1999}
+
+.tang-pass-login p.pass-form-item-verifyCode:after {line-height: 20px;content: '\20';display: block;height: 0;clear: both}
+.tang-pass-login p.pass-form-item-verifyCode {position: relative;height:36px;margin-bottom:20px;zoom: 1}
+
+/* tang-pass-login */
+.tang-pass-login {position:relative;padding:0 0 10px 24px}
+.tang-pass-login a {color: #777}
+.tang-pass-login a:hover {color:#37a}
+
+/* 错误提示 generalError */
+.tang-pass-login .pass-generalErrorWrapper {display:block; opacity:0;filter:alpha(opacity=0); height: auto;_height: 20px;min-height: 20px;padding-left:24px;margin-bottom:7px;line-height:20px;color: #666;background: #FFEBEB url('http://res.ckimg.com/sites/www/v2/images/passport/ico_error_14x14.png') no-repeat 5px 3px;}
+.tang-pass-login .pass-generalError {display: block;font-size: 12px;line-height: 14px;padding-top: 3px}
+
+/* p段落 pass-form-item */
+.tang-pass-login .pass-form-item {position: relative;clear: both;z-index: 18; }
+.tang-pass-login .pass-form-item.pass-form-item-userName {z-index: 21; padding-bottom:34px}
+.tang-pass-login .pass-form-item.pass-form-item-password {padding-bottom:34px;}
+.tang-pass-login .pass-form-item.pass-form-item-submit{padding-bottom:34px}
+.tang-pass-login .pass-form-item.pass-form-item-ma{padding-bottom:34px}
+.tang-pass-login .pass-form-item.pass-form-item-tel{padding-bottom:34px}
+.tang-pass-login .pass-form-item.pass-form-item-email{padding-bottom:34px}
+
+/* input */
+input::-ms-clear {display:none}
+input::-ms-reveal {display:none}
+.tang-pass-login .pass-form-item .pass-text-input {position: relative;z-index: 17;display: block;padding: 0 10px 0 10px;margin: 0;height: 40px;width:354px;border: 1px solid #dedede;font-size: 14px;color: #666;transition: .3s;-moz-transition: .3s;	-o-transition: .3s;-webkit-transition: .3s;box-shadow:inset 1px 1px 1px #eee; border-radius:5px;}
+
+.tang-pass-login .pass-form-item .pass-text-input:hover{border: 1px solid #3ec226;}
+.tang-pass-login .pass-form-item .pass-text-input-focus {border-color: #FFDA91;background-color:#FFFEF0;}
+.tang-pass-login .pass-form-item .pass-text-input-error {border-color: #FF4C4C;background-color:#FFEBEB;}
+.tang-pass-login .pass-form-item .pass-text-input-verifyCode {width: 88px;float: left}
+.tang-pass-login .pass-form-item input.pass-text-input-userName {padding-left:50px;width:285px;}
+.tang-pass-login .pass-form-item input.pass-text-input-ma {padding-left:19px;width:205px;}
+.tang-pass-login .pass-form-item input.pass-text-input-password {padding-left:50px;width:285px;}
+
+.tang-pass-login .pass-form-item .pass-placeholder {position: absolute;overflow: hidden;z-index: 1999;display: block;top: 8px;left: 0;height: 20px;line-height: 20px;width: 140px;padding-left: 35px;font-size: 14px;color: #999;cursor: text}
+.tang-pass-login .pass-form-item .pass-placeholder-verifyCode {width: 50px;left: -24px}
+.tang-pass-login .pass-form-item .pass-placeholder-userName,
+.tang-pass-login .pass-form-item .pass-placeholder-password {left: 0px}
+
+
+button {border: none;padding: 0.6em 1.2em;color: #666;font-family: 'Lato', Calibri, Arial, sans-serif;font-size: 1em;letter-spacing: 1px;text-transform: uppercase;cursor: pointer;display: inline-block;margin: 3px 2px;
+border-radius: 2px;}
+
+.fuwu{ padding-left:83px; margin-bottom:9px; padding-top:49px;}
+.gou,.jizhu{ float:left; }
+.jizhu{ padding-left:8px; color:#666; font-size:16px;}
+.forget{ float:right; color:#666; font-size:16px;}
